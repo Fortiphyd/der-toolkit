@@ -19,8 +19,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install der-toolkit (all protocol extras + MCP)
-        run: pip install -e ".[all]"
+      - name: Install der-toolkit (all protocol extras + MCP + dev)
+        run: pip install -e ".[all,dev]"
+
+      - name: Run tests
+        run: pytest -v
 
       - name: Import every package
         run: |
