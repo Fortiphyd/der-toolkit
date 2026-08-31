@@ -1,0 +1,203 @@
+{
+  "_note": "Illustrative sample of der_common.AttackSurface for DNP3 (from examples/dnp3_map.json).",
+  "protocol": "dnp3",
+  "target": {
+    "ip": "127.0.0.1",
+    "port": 20000,
+    "protocol": "dnp3",
+    "base_path": null,
+    "unit_id": 10,
+    "hostname": null
+  },
+  "auth_profile": {
+    "scheme": "none",
+    "requires_auth": false,
+    "tls": false,
+    "tls_version": null,
+    "weak_ciphers": [],
+    "client_cert_present": false,
+    "accepted_self_signed": null,
+    "notes": null
+  },
+  "control_points": [
+    {
+      "address": "g1v2",
+      "semantic_label": "Binary Input",
+      "model": "Binary Input",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g3v2",
+      "semantic_label": "Double-bit Binary Input",
+      "model": "Double-bit Binary Input",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g30v5",
+      "semantic_label": "Analog Input",
+      "model": "Analog Input",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 0
+      },
+      "units": "1 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g30v1",
+      "semantic_label": "Analog Input",
+      "model": "Analog Input",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 1,
+        "stop": 9
+      },
+      "units": "9 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g20v1",
+      "semantic_label": "Counter",
+      "model": "Counter",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g21v1",
+      "semantic_label": "Frozen Counter",
+      "model": "Frozen Counter",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g10v2",
+      "semantic_label": "Binary Output",
+      "model": "Binary Output",
+      "readable": true,
+      "writable": true,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "critical",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g40v1",
+      "semantic_label": "Analog Output Status",
+      "model": "Analog Output Status",
+      "readable": true,
+      "writable": true,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "critical",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g50v4",
+      "semantic_label": "Time and Date",
+      "model": "Time and Date",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "info",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "g110v1",
+      "semantic_label": "Octet String",
+      "model": "Octet String",
+      "readable": true,
+      "writable": false,
+      "value": {
+        "start": 0,
+        "stop": 9
+      },
+      "units": "10 points",
+      "severity": "info",
+      "reachable_unauthenticated": true
+    }
+  ],
+  "findings": [
+    {
+      "severity": "high",
+      "title": "Outstation responds to unauthenticated DNP3 requests",
+      "description": "The outstation returned application data to a READ issued with no authentication. DNP3/TCP has no transport security by default; any master that can reach this port can read the full object model.",
+      "category": "auth",
+      "path": null,
+      "evidence": {
+        "outstation_addr": 10,
+        "master_addr": 1
+      }
+    },
+    {
+      "severity": "critical",
+      "title": "Controllable output points reachable without authentication",
+      "description": "The outstation exposes output objects (Analog Output Status, Binary Output). Because DNP3/TCP is unauthenticated, an attacker can issue Binary Output Commands (g12 CROB) or Analog Output Commands (g41) to actuate these points. (The scanner enumerates the surface; it does not send operate commands.)",
+      "category": "policy",
+      "path": null,
+      "evidence": {
+        "operable_groups": [
+          10,
+          40
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "title": "Outstation sends unsolicited responses",
+      "description": "The outstation emits unsolicited responses, aiding passive discovery.",
+      "category": "discovery",
+      "path": null,
+      "evidence": {
+        "count": 3
+      }
+    }
+  ],
+  "fuzz_findings": [],
+  "generated_at": "2026-07-29T12:00:00Z",
+  "tool_version": "0.1.0"
+}

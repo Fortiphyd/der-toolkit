@@ -1,0 +1,85 @@
+{
+  "_note": "Illustrative synthetic sample of the normalized der_common.AttackSurface schema for IEEE 2030.5.",
+  "protocol": "sep2",
+  "target": {
+    "ip": "10.10.0.42",
+    "port": 15388,
+    "protocol": "sep2",
+    "base_path": "/dcap",
+    "unit_id": null,
+    "hostname": "inverter-1"
+  },
+  "auth_profile": {
+    "scheme": "none",
+    "requires_auth": false,
+    "tls": true,
+    "tls_version": null,
+    "weak_ciphers": [],
+    "client_cert_present": false,
+    "accepted_self_signed": null,
+    "notes": null
+  },
+  "control_points": [
+    {
+      "address": "/dcap",
+      "semantic_label": "Device Capability",
+      "model": "Device Capability",
+      "readable": true,
+      "writable": true,
+      "value": null,
+      "units": null,
+      "severity": "low",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "/edev",
+      "semantic_label": "End Device (list)",
+      "model": "End Device (list)",
+      "readable": true,
+      "writable": false,
+      "value": null,
+      "units": null,
+      "severity": "info",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "/edev/1/derc",
+      "semantic_label": "DER Control",
+      "model": "DER Control",
+      "readable": true,
+      "writable": true,
+      "value": null,
+      "units": null,
+      "severity": "critical",
+      "reachable_unauthenticated": true
+    },
+    {
+      "address": "/tm",
+      "semantic_label": "Time",
+      "model": "Time",
+      "readable": true,
+      "writable": false,
+      "value": null,
+      "units": null,
+      "severity": "info",
+      "reachable_unauthenticated": true
+    }
+  ],
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "Unauthenticated write accepted: POST /edev/1/derc",
+      "description": "DER Control resource accepted a POST with no client certificate.",
+      "category": "policy",
+      "path": "/edev/1/derc",
+      "evidence": {
+        "method": "POST",
+        "status": 204,
+        "function_set": "DER Control"
+      }
+    }
+  ],
+  "fuzz_findings": [],
+  "generated_at": "2026-07-28T12:00:00Z",
+  "tool_version": "0.1.0"
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "der-mcp": {
+      "type": "stdio",
+      "command": "der-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}

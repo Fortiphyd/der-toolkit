@@ -1,0 +1,29 @@
+# --- run artifacts (never commit) ---
+runs/
+results/
+*.db
+*.pcap
+*.pcapng
+*.log
+eve.json
+
+# --- python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# --- secrets / credentials (belong to the operator, never the repo) ---
+*.key
+*.crt
+*.pem
+*.p12
+
+# --- internal working notes (session logs, personal paths -- not release docs) ---
+docs/MIGRATION_PLAN.md

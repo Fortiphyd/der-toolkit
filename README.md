@@ -1,0 +1,66 @@
+# DER Toolkit
+
+Attack-surface mapping and protocol fuzzing for distributed energy resource (DER)
+protocols — **DNP3**, **SunSpec Modbus**, and **IEEE 2030.5** — with an **MCP
+server** that lets an AI assistant drive the tools and reason over the results.
+
+Built as part of a DOE-funded research effort to help asset owners answer a
+concrete question: *which device commands and registers are reachable by an
+unauthenticated attacker on my network?*
+
+> ⚠️ **These are offensive tools.** Mapping is read-only; fuzzing can hang or
+> crash live grid equipment. Only use them against devices you own or are
+> explicitly authorized to assess. See [SECURITY.md](SECURITY.md).
+
+## Layout
+
+```
+der_common/   shared AttackSurface schema + safety/scope gate + run storage
+der_sep2/     IEEE 2030.5: discover / tls / map / fuzz   (most mature)
+der_dnp3/     DNP3: scan / map / fuzz (boofuzz)
+der_sunspec/  SunSpec Modbus: self-describing model map + device/client fuzzers
+der_mcp/      MCP server exposing all of the above
+examples/     small sample outputs
+```
+
+Every mapper/fuzzer normalizes to one `AttackSurface` model
+(`der_common/schema.py`) so results are comparable across protocols — the point
+the toolkit is built to demonstrate.
+
+## Install
+
+```bash
+pip install -e ".[all]"      # everything, or pick groups:
+pip install -e ".[sunspec]"  # just the SunSpec mapper
+pip install -e ".[mcp]"      # + the MCP server
+```
+
+## CLIs
+
+```bash
+der-sep2    map <host> --client-cert c.crt --client-key c.key
+der-sunspec map <host> --unit-id 1
+der-dnp3    map <host> --port 20000
+```
+
+## MCP server
+
+`der-mcp` speaks MCP over stdio; point Claude Desktop / Claude Code at it. Tools:
+`list_capabilities`, `discover_targets`, `map_attack_surface` (read-only),
+`start_fuzz` / `get_job` / `get_findings` (async, gated behind explicit consent).
+
+This repo ships a project-scoped `.mcp.json` that registers `der-mcp` (after
+`pip install -e ".[mcp]"`). Claude Code will prompt you to approve it the first
+time you open this directory — that one-time prompt is Claude Code's own trust
+gate for repo-committed MCP servers, not something this project can or should
+skip. To register it manually instead: `claude mcp add --scope project der-mcp
+-- der-mcp`.
+
+## Status
+
+All three protocol packages and the MCP server are working end-to-end, including
+live validation against a real reference implementation for each protocol: a real
+DNP3 outstation, a real SunSpec device simulator, and a real IEEE 2030.5 test
+server. Known gaps: no testing yet against physical vendor hardware, and the
+vendored SunSpec model definitions predate the newest 700-series DER control
+models.
