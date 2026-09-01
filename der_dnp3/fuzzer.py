@@ -597,6 +597,12 @@ def run_fuzz(host: str, port: int = 20000, max_depth: int = 2,
         receive_data_after_fuzz=True,
         ignore_connection_reset=True,
         reuse_target_connection=False,
+        # Prune old passing (non-crash) cases as the run goes so the result db
+        # doesn't grow unbounded over a long campaign -- crashes are never
+        # pruned, so no finding evidence is lost. der_sunspec/fuzzer.py has
+        # had this since it was ported from the original tool; dnp3's never
+        # did, letting its dbs balloon (~500MB+ in real campaigns).
+        fuzz_db_keep_only_n_pass_cases=1,
         # Without this, boofuzz blocks on input() after fuzzing completes to
         # keep its webinterface open -- fatal (EOFError) when run headless
         # from der-toolkit's CLI or the MCP job subprocess (no stdin).
