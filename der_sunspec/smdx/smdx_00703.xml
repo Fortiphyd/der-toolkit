@@ -1,0 +1,66 @@
+<sunSpecModels v="1">
+  <model id="703" len="17">
+    <block len="17" type="fixed">
+      <point id="ES" offset="0" access="rw" type="enum16" len="1" mandatory="false">
+        <symbol id="DISABLED">0</symbol>
+        <symbol id="ENABLED">1</symbol>
+      </point>
+      <point id="ESVHi" offset="1" access="rw" type="uint16" len="1" mandatory="false" units="Pct" sf="V_SF" />
+      <point id="ESVLo" offset="2" access="rw" type="uint16" len="1" mandatory="false" units="Pct" sf="V_SF" />
+      <point id="ESHzHi" offset="3" access="rw" type="uint32" len="2" mandatory="false" units="Hz" sf="Hz_SF" />
+      <point id="ESHzLo" offset="5" access="rw" type="uint32" len="2" mandatory="false" units="Hz" sf="Hz_SF" />
+      <point id="ESDlyTms" offset="7" access="rw" type="uint32" len="2" mandatory="false" units="Secs" />
+      <point id="ESRndTms" offset="9" access="rw" type="uint32" len="2" mandatory="false" units="Secs" />
+      <point id="ESRmpTms" offset="11" access="rw" type="uint32" len="2" mandatory="false" units="Secs" />
+      <point id="ESDlyRemTms" offset="13" access="r" type="uint32" len="2" mandatory="false" units="Secs" />
+      <point id="V_SF" offset="15" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="Hz_SF" offset="16" access="r" type="sunssf" len="1" mandatory="false" />
+    </block>
+  </model>
+  <strings id="703" locale="en">
+    <point id="ES">
+      <label>Permit Enter Service</label>
+      <description>Permit enter service.</description>
+    </point>
+    <point id="ESVHi">
+      <label>Enter Service Voltage High</label>
+      <description>Enter service voltage high threshold as percent of normal voltage.</description>
+    </point>
+    <point id="ESVLo">
+      <label>Enter Service Voltage Low</label>
+      <description>Enter service voltage low threshold as percent of normal voltage.</description>
+    </point>
+    <point id="ESHzHi">
+      <label>Enter Service Frequency High</label>
+      <description>Enter service frequency high threshold.</description>
+    </point>
+    <point id="ESHzLo">
+      <label>Enter Service Frequency Low</label>
+      <description>Enter service frequency low threshold.</description>
+    </point>
+    <point id="ESDlyTms">
+      <label>Enter Service Delay Time</label>
+      <description>Enter service delay time in seconds.</description>
+    </point>
+    <point id="ESRndTms">
+      <label>Enter Service Random Delay</label>
+      <description>Enter service random delay in seconds.</description>
+    </point>
+    <point id="ESRmpTms">
+      <label>Enter Service Ramp Time</label>
+      <description>Enter service ramp time in seconds.</description>
+    </point>
+    <point id="ESDlyRemTms">
+      <label>Enter Service Delay Remaining</label>
+      <description>Enter service delay time remaining in seconds.</description>
+    </point>
+    <point id="V_SF">
+      <label>Voltage Scale Factor</label>
+      <description>Voltage percentage scale factor.</description>
+    </point>
+    <point id="Hz_SF">
+      <label>Frequency Scale Factor</label>
+      <description>Frequency scale factor.</description>
+    </point>
+  </strings>
+</sunSpecModels>

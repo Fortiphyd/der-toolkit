@@ -1,0 +1,415 @@
+<sunSpecModels v="1">
+  <model id="701" len="153">
+    <block len="153" type="fixed">
+      <point id="ACType" offset="0" access="r" type="enum16" len="1" mandatory="true">
+        <symbol id="SINGLE_PHASE">0</symbol>
+        <symbol id="SPLIT_PHASE">1</symbol>
+        <symbol id="THREE_PHASE">2</symbol>
+      </point>
+      <point id="St" offset="1" access="r" type="enum16" len="1" mandatory="false">
+        <symbol id="OFF">0</symbol>
+        <symbol id="ON">1</symbol>
+      </point>
+      <point id="InvSt" offset="2" access="r" type="enum16" len="1" mandatory="false">
+        <symbol id="OFF">0</symbol>
+        <symbol id="SLEEPING">1</symbol>
+        <symbol id="STARTING">2</symbol>
+        <symbol id="RUNNING">3</symbol>
+        <symbol id="THROTTLED">4</symbol>
+        <symbol id="SHUTTING_DOWN">5</symbol>
+        <symbol id="FAULT">6</symbol>
+        <symbol id="STANDBY">7</symbol>
+      </point>
+      <point id="ConnSt" offset="3" access="r" type="enum16" len="1" mandatory="false">
+        <symbol id="DISCONNECTED">0</symbol>
+        <symbol id="CONNECTED">1</symbol>
+      </point>
+      <point id="Alrm" offset="4" access="r" type="bitfield32" len="2" mandatory="false">
+        <symbol id="GROUND_FAULT">0</symbol>
+        <symbol id="DC_OVER_VOLT">1</symbol>
+        <symbol id="AC_DISCONNECT">2</symbol>
+        <symbol id="DC_DISCONNECT">3</symbol>
+        <symbol id="GRID_DISCONNECT">4</symbol>
+        <symbol id="CABINET_OPEN">5</symbol>
+        <symbol id="MANUAL_SHUTDOWN">6</symbol>
+        <symbol id="OVER_TEMP">7</symbol>
+        <symbol id="OVER_FREQUENCY">8</symbol>
+        <symbol id="UNDER_FREQUENCY">9</symbol>
+        <symbol id="AC_OVER_VOLT">10</symbol>
+        <symbol id="AC_UNDER_VOLT">11</symbol>
+        <symbol id="BLOWN_STRING_FUSE">12</symbol>
+        <symbol id="UNDER_TEMP">13</symbol>
+        <symbol id="MEMORY_LOSS">14</symbol>
+        <symbol id="HW_TEST_FAILURE">15</symbol>
+        <symbol id="MANUFACTURER_ALRM">16</symbol>
+      </point>
+      <point id="DERMode" offset="6" access="r" type="bitfield32" len="2" mandatory="false">
+        <symbol id="GRID_FOLLOWING">0</symbol>
+        <symbol id="GRID_FORMING">1</symbol>
+        <symbol id="PV_CLIPPED">2</symbol>
+      </point>
+      <point id="W" offset="8" access="r" type="int16" len="1" mandatory="false" units="W" sf="W_SF" />
+      <point id="VA" offset="9" access="r" type="int16" len="1" mandatory="false" units="VA" sf="VA_SF" />
+      <point id="Var" offset="10" access="r" type="int16" len="1" mandatory="false" units="Var" sf="Var_SF" />
+      <point id="PF" offset="11" access="r" type="int16" len="1" mandatory="false" sf="PF_SF" />
+      <point id="A" offset="12" access="r" type="int16" len="1" mandatory="false" units="A" sf="A_SF" />
+      <point id="LLV" offset="13" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="LNV" offset="14" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="Hz" offset="15" access="r" type="uint32" len="2" mandatory="false" units="Hz" sf="Hz_SF" />
+      <point id="TotWhInj" offset="17" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotWhAbs" offset="21" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotVarhInj" offset="25" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="TotVarhAbs" offset="29" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="TmpAmb" offset="33" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="TmpCab" offset="34" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="TmpSnk" offset="35" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="TmpTrns" offset="36" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="TmpSw" offset="37" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="TmpOt" offset="38" access="r" type="int16" len="1" mandatory="false" units="C" sf="Tmp_SF" />
+      <point id="WL1" offset="39" access="r" type="int16" len="1" mandatory="false" units="W" sf="W_SF" />
+      <point id="VAL1" offset="40" access="r" type="int16" len="1" mandatory="false" units="VA" sf="VA_SF" />
+      <point id="VarL1" offset="41" access="r" type="int16" len="1" mandatory="false" units="Var" sf="Var_SF" />
+      <point id="PFL1" offset="42" access="r" type="int16" len="1" mandatory="false" sf="PF_SF" />
+      <point id="AL1" offset="43" access="r" type="int16" len="1" mandatory="false" units="A" sf="A_SF" />
+      <point id="VL1L2" offset="44" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="VL1" offset="45" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="TotWhInjL1" offset="46" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotWhAbsL1" offset="50" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotVarhInjL1" offset="54" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="TotVarhAbsL1" offset="58" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="WL2" offset="62" access="r" type="int16" len="1" mandatory="false" units="W" sf="W_SF" />
+      <point id="VAL2" offset="63" access="r" type="int16" len="1" mandatory="false" units="VA" sf="VA_SF" />
+      <point id="VarL2" offset="64" access="r" type="int16" len="1" mandatory="false" units="Var" sf="Var_SF" />
+      <point id="PFL2" offset="65" access="r" type="int16" len="1" mandatory="false" sf="PF_SF" />
+      <point id="AL2" offset="66" access="r" type="int16" len="1" mandatory="false" units="A" sf="A_SF" />
+      <point id="VL2L3" offset="67" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="VL2" offset="68" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="TotWhInjL2" offset="69" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotWhAbsL2" offset="73" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotVarhInjL2" offset="77" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="TotVarhAbsL2" offset="81" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="WL3" offset="85" access="r" type="int16" len="1" mandatory="false" units="W" sf="W_SF" />
+      <point id="VAL3" offset="86" access="r" type="int16" len="1" mandatory="false" units="VA" sf="VA_SF" />
+      <point id="VarL3" offset="87" access="r" type="int16" len="1" mandatory="false" units="Var" sf="Var_SF" />
+      <point id="PFL3" offset="88" access="r" type="int16" len="1" mandatory="false" sf="PF_SF" />
+      <point id="AL3" offset="89" access="r" type="int16" len="1" mandatory="false" units="A" sf="A_SF" />
+      <point id="VL3L1" offset="90" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="VL3" offset="91" access="r" type="uint16" len="1" mandatory="false" units="V" sf="V_SF" />
+      <point id="TotWhInjL3" offset="92" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotWhAbsL3" offset="96" access="r" type="uint64" len="4" mandatory="false" units="Wh" sf="TotWh_SF" />
+      <point id="TotVarhInjL3" offset="100" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="TotVarhAbsL3" offset="104" access="r" type="uint64" len="4" mandatory="false" units="Varh" sf="TotVarh_SF" />
+      <point id="ThrotPct" offset="108" access="r" type="uint16" len="1" mandatory="false" units="Pct" />
+      <point id="ThrotSrc" offset="109" access="r" type="bitfield32" len="2" mandatory="false">
+        <symbol id="MAX_W">0</symbol>
+        <symbol id="FIXED_W">1</symbol>
+        <symbol id="FIXED_VAR">2</symbol>
+        <symbol id="FIXED_PF">3</symbol>
+        <symbol id="VOLT_VAR">4</symbol>
+        <symbol id="FREQ_WATT">5</symbol>
+        <symbol id="DYN_REACT_CURR">6</symbol>
+        <symbol id="LVRT">7</symbol>
+        <symbol id="HVRT">8</symbol>
+        <symbol id="WATT_VAR">9</symbol>
+        <symbol id="VOLT_WATT">10</symbol>
+        <symbol id="SCHEDULED">11</symbol>
+        <symbol id="LFRT">12</symbol>
+        <symbol id="HFRT">13</symbol>
+        <symbol id="DERATED">14</symbol>
+      </point>
+      <point id="A_SF" offset="111" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="V_SF" offset="112" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="Hz_SF" offset="113" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="W_SF" offset="114" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="PF_SF" offset="115" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="VA_SF" offset="116" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="Var_SF" offset="117" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="TotWh_SF" offset="118" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="TotVarh_SF" offset="119" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="Tmp_SF" offset="120" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="MnAlrmInfo" offset="121" access="r" type="string" len="32" mandatory="false" />
+    </block>
+  </model>
+  <strings id="701" locale="en">
+    <point id="ACType">
+      <label>AC Wiring Type</label>
+      <description>AC wiring type.</description>
+    </point>
+    <point id="St">
+      <label>Operating State</label>
+      <description>Operating state of the DER.</description>
+    </point>
+    <point id="InvSt">
+      <label>Inverter State</label>
+      <description>Enumerated value.  Inverter state.</description>
+    </point>
+    <point id="ConnSt">
+      <label>Grid Connection State</label>
+      <description>Grid connection state of the DER.</description>
+    </point>
+    <point id="Alrm">
+      <label>Alarm Bitfield</label>
+      <description>Active alarms for the DER.</description>
+    </point>
+    <point id="DERMode">
+      <label>DER Operational Characteristics</label>
+      <description>Current operational characteristics of the DER.</description>
+    </point>
+    <point id="W">
+      <label>Active Power</label>
+      <description>Total active power. Active power is positive for DER generation and negative for absorption.</description>
+    </point>
+    <point id="VA">
+      <label>Apparent Power</label>
+      <description>Total apparent power.</description>
+    </point>
+    <point id="Var">
+      <label>Reactive Power</label>
+      <description>Total reactive power.</description>
+    </point>
+    <point id="PF">
+      <label>Power Factor</label>
+      <description>Power factor. The sign of power factor should be the sign of active power.</description>
+    </point>
+    <point id="A">
+      <label>Total AC Current</label>
+      <description>Total AC current.</description>
+    </point>
+    <point id="LLV">
+      <label>Voltage LL</label>
+      <description>Line to line AC voltage as an average of active phases.</description>
+    </point>
+    <point id="LNV">
+      <label>Voltage LN</label>
+      <description>Line to neutral AC voltage as an average of active phases.</description>
+    </point>
+    <point id="Hz">
+      <label>Frequency</label>
+      <description>AC frequency.</description>
+    </point>
+    <point id="TotWhInj">
+      <label>Total Energy Injected</label>
+      <description>Total active energy injected (Quadrants 1 &amp; 4).</description>
+    </point>
+    <point id="TotWhAbs">
+      <label>Total Energy Absorbed</label>
+      <description>Total active energy absorbed (Quadrants 2 &amp; 3).</description>
+    </point>
+    <point id="TotVarhInj">
+      <label>Total Reactive Energy Inj</label>
+      <description>Total reactive energy injected (Quadrants 1 &amp; 2).</description>
+    </point>
+    <point id="TotVarhAbs">
+      <label>Total Reactive Energy Abs</label>
+      <description>Total reactive energy absorbed (Quadrants 3 &amp; 4).</description>
+    </point>
+    <point id="TmpAmb">
+      <label>Ambient Temperature</label>
+      <description>Ambient temperature.</description>
+    </point>
+    <point id="TmpCab">
+      <label>Cabinet Temperature</label>
+      <description>Cabinet temperature.</description>
+    </point>
+    <point id="TmpSnk">
+      <label>Heat Sink Temperature</label>
+      <description>Heat sink temperature.</description>
+    </point>
+    <point id="TmpTrns">
+      <label>Transformer Temperature</label>
+      <description>Transformer temperature.</description>
+    </point>
+    <point id="TmpSw">
+      <label>IGBT/MOSFET Temperature</label>
+      <description>IGBT/MOSFET temperature.</description>
+    </point>
+    <point id="TmpOt">
+      <label>Other Temperature</label>
+      <description>Other temperature.</description>
+    </point>
+    <point id="WL1">
+      <label>Watts L1</label>
+      <description>Active power L1.</description>
+    </point>
+    <point id="VAL1">
+      <label>VA L1</label>
+      <description>Apparent power L1.</description>
+    </point>
+    <point id="VarL1">
+      <label>Var L1</label>
+      <description>Reactive power L1.</description>
+    </point>
+    <point id="PFL1">
+      <label>PF L1</label>
+      <description>Power factor phase L1.</description>
+    </point>
+    <point id="AL1">
+      <label>Amps L1</label>
+      <description>Current phase L1.</description>
+    </point>
+    <point id="VL1L2">
+      <label>Phase Voltage L1-L2</label>
+      <description>Phase voltage L1-L2.</description>
+    </point>
+    <point id="VL1">
+      <label>Phase Voltage L1-N</label>
+      <description>Phase voltage L1-N.</description>
+    </point>
+    <point id="TotWhInjL1">
+      <label>Total Watt-Hours Inj L1</label>
+      <description>Total active energy injected L1.</description>
+    </point>
+    <point id="TotWhAbsL1">
+      <label>Total Watt-Hours Abs L1</label>
+      <description>Total active energy absorbed L1.</description>
+    </point>
+    <point id="TotVarhInjL1">
+      <label>Total Var-Hours Inj L1</label>
+      <description>Total reactive energy injected L1.</description>
+    </point>
+    <point id="TotVarhAbsL1">
+      <label>Total Var-Hours Abs L1</label>
+      <description>Total reactive energy absorbed L1.</description>
+    </point>
+    <point id="WL2">
+      <label>Watts L2</label>
+      <description>Active power L2.</description>
+    </point>
+    <point id="VAL2">
+      <label>VA L2</label>
+      <description>Apparent power L2.</description>
+    </point>
+    <point id="VarL2">
+      <label>Var L2</label>
+      <description>Reactive power L2.</description>
+    </point>
+    <point id="PFL2">
+      <label>PF L2</label>
+      <description>Power factor L2.</description>
+    </point>
+    <point id="AL2">
+      <label>Amps L2</label>
+      <description>Current L2.</description>
+    </point>
+    <point id="VL2L3">
+      <label>Phase Voltage L2-L3</label>
+      <description>Phase voltage L2-L3.</description>
+    </point>
+    <point id="VL2">
+      <label>Phase Voltage L2-N</label>
+      <description>Phase voltage L2-N.</description>
+    </point>
+    <point id="TotWhInjL2">
+      <label>Total Watt-Hours Inj L2</label>
+      <description>Total active energy injected L2.</description>
+    </point>
+    <point id="TotWhAbsL2">
+      <label>Total Watt-Hours Abs L2</label>
+      <description>Total active energy absorbed L2.</description>
+    </point>
+    <point id="TotVarhInjL2">
+      <label>Total Var-Hours Inj L2</label>
+      <description>Total reactive energy injected L2.</description>
+    </point>
+    <point id="TotVarhAbsL2">
+      <label>Total Var-Hours Abs L2</label>
+      <description>Total reactive energy absorbed L2.</description>
+    </point>
+    <point id="WL3">
+      <label>Watts L3</label>
+      <description>Active power L3.</description>
+    </point>
+    <point id="VAL3">
+      <label>VA L3</label>
+      <description>Apparent power L3.</description>
+    </point>
+    <point id="VarL3">
+      <label>Var L3</label>
+      <description>Reactive power L3.</description>
+    </point>
+    <point id="PFL3">
+      <label>PF L3</label>
+      <description>Power factor L3.</description>
+    </point>
+    <point id="AL3">
+      <label>Amps L3</label>
+      <description>Current L3.</description>
+    </point>
+    <point id="VL3L1">
+      <label>Phase Voltage L3-L1</label>
+      <description>Phase voltage L3-L1.</description>
+    </point>
+    <point id="VL3">
+      <label>Phase Voltage L3-N</label>
+      <description>Phase voltage L3-N.</description>
+    </point>
+    <point id="TotWhInjL3">
+      <label>Total Watt-Hours Inj L3</label>
+      <description>Total active energy injected L3.</description>
+    </point>
+    <point id="TotWhAbsL3">
+      <label>Total Watt-Hours Abs L3</label>
+      <description>Total active energy absorbed L3.</description>
+    </point>
+    <point id="TotVarhInjL3">
+      <label>Total Var-Hours Inj L3</label>
+      <description>Total reactive energy injected L3.</description>
+    </point>
+    <point id="TotVarhAbsL3">
+      <label>Total Var-Hours Abs L3</label>
+      <description>Total reactive energy absorbed L3.</description>
+    </point>
+    <point id="ThrotPct">
+      <label>Throttling In Pct</label>
+      <description>Throttling in pct of maximum active power.</description>
+    </point>
+    <point id="ThrotSrc">
+      <label>Throttle Source Information</label>
+      <description>Active throttling source.</description>
+    </point>
+    <point id="A_SF">
+      <label>Current Scale Factor</label>
+      <description>Current scale factor.</description>
+    </point>
+    <point id="V_SF">
+      <label>Voltage Scale Factor</label>
+      <description>Voltage scale factor.</description>
+    </point>
+    <point id="Hz_SF">
+      <label>Frequency Scale Factor</label>
+      <description>Frequency scale factor.</description>
+    </point>
+    <point id="W_SF">
+      <label>Active Power Scale Factor</label>
+      <description>Active power scale factor.</description>
+    </point>
+    <point id="PF_SF">
+      <label>Power Factor Scale Factor</label>
+      <description>Power factor scale factor.</description>
+    </point>
+    <point id="VA_SF">
+      <label>Apparent Power Scale Factor</label>
+      <description>Apparent power scale factor.</description>
+    </point>
+    <point id="Var_SF">
+      <label>Reactive Power Scale Factor</label>
+      <description>Reactive power scale factor.</description>
+    </point>
+    <point id="TotWh_SF">
+      <label>Active Energy Scale Factor</label>
+      <description>Active energy scale factor.</description>
+    </point>
+    <point id="TotVarh_SF">
+      <label>Reactive Energy Scale Factor</label>
+      <description>Reactive energy scale factor.</description>
+    </point>
+    <point id="Tmp_SF">
+      <label>Temperature Scale Factor</label>
+      <description>Temperature scale factor.</description>
+    </point>
+    <point id="MnAlrmInfo">
+      <label>Manufacturer Alarm Info</label>
+      <description>Manufacturer alarm information. Valid if MANUFACTURER_ALRM indication is active.</description>
+    </point>
+  </strings>
+</sunSpecModels>

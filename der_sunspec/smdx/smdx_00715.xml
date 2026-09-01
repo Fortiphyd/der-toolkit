@@ -1,0 +1,41 @@
+<sunSpecModels v="1">
+  <model id="715" len="7">
+    <block len="7" type="fixed">
+      <point id="LocRemCtl" offset="0" access="r" type="enum16" len="1" mandatory="false">
+        <symbol id="REMOTE">0</symbol>
+        <symbol id="LOCAL">1</symbol>
+      </point>
+      <point id="DERHb" offset="1" access="r" type="uint32" len="2" mandatory="false" />
+      <point id="ControllerHb" offset="3" access="rw" type="uint32" len="2" mandatory="false" />
+      <point id="AlarmReset" offset="5" access="rw" type="uint16" len="1" mandatory="false" />
+      <point id="OpCtl" offset="6" access="rw" type="enum16" len="1" mandatory="false">
+        <symbol id="STOP">0</symbol>
+        <symbol id="START">1</symbol>
+        <symbol id="ENTER_STANDBY">2</symbol>
+        <symbol id="EXIT_STANDBY">3</symbol>
+      </point>
+    </block>
+  </model>
+  <strings id="715" locale="en">
+    <point id="LocRemCtl">
+      <label>Control Mode</label>
+      <description>DER control mode. Enumeration.</description>
+    </point>
+    <point id="DERHb">
+      <label>DER Heartbeat</label>
+      <description>Value is incremented every second by the DER with periodic resets to zero.</description>
+    </point>
+    <point id="ControllerHb">
+      <label>Controller Heartbeat</label>
+      <description>Value is incremented every second by the controller with periodic resets to zero.</description>
+    </point>
+    <point id="AlarmReset">
+      <label>Alarm Reset</label>
+      <description>Used to reset any latched alarms. 1 = Reset.</description>
+    </point>
+    <point id="OpCtl">
+      <label>Set Operation</label>
+      <description>Commands to PCS. Enumerated value.</description>
+    </point>
+  </strings>
+</sunSpecModels>

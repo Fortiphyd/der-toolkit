@@ -49,6 +49,9 @@ def _decode_point(regs: list[int], point: PointDef) -> Optional[object]:
     def u32(a, b):
         return (a << 16) | b
 
+    def u64(a, b, c, d):
+        return (a << 48) | (b << 32) | (c << 16) | d
+
     def to_signed(v, bits):
         return v - (1 << bits) if v >= (1 << (bits - 1)) else v
 
@@ -66,6 +69,10 @@ def _decode_point(regs: list[int], point: PointDef) -> Optional[object]:
             return u32(chunk[0], chunk[1])
         if t == "int32":
             return to_signed(u32(chunk[0], chunk[1]), 32)
+        if t in ("uint64", "acc64"):
+            return u64(*chunk)
+        if t == "int64":
+            return to_signed(u64(*chunk), 64)
         return chunk[0] if len(chunk) == 1 else list(chunk)
     except Exception:
         return None

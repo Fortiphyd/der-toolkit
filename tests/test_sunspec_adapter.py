@@ -52,17 +52,18 @@ def test_field_level_decode_and_writable_severity():
 
 
 def test_control_model_without_smdx_def_falls_back_to_coarse_critical_point():
-    # 704 (DER AC Controls) is a writable control model per SunSpec's spec but
-    # has no vendored SMDX def (700-series predates the vendored bundle) --
-    # the coarse fallback must still flag it critical/writable rather than
-    # silently dropping the finding because field-level decode isn't available.
-    model704 = SunSpecModel(id=704, start=200, length=10, registers=None)
-    surf = build_attack_surface(_mapping([model704]))
+    # 705 (Volt-VAR) is a writable control model per SunSpec's spec, but its
+    # repeating curve-table group is deliberately not vendored (see
+    # der_sunspec/smdx/NOTICE.md) -- the coarse fallback must still flag it
+    # critical/writable rather than silently dropping the finding because
+    # field-level decode isn't available.
+    model705 = SunSpecModel(id=705, start=200, length=10, registers=None)
+    surf = build_attack_surface(_mapping([model705]))
     cp = surf.control_points[0]
     assert cp.writable is True
     assert cp.severity == "critical"
-    assert cp.model == "SunSpec 704"
-    assert cp.semantic_label == "DER AC Controls"
+    assert cp.model == "SunSpec 705"
+    assert cp.semantic_label == "DER Volt-VAR"
 
 
 def test_non_control_model_without_smdx_def_is_low_severity_read_only():
@@ -87,8 +88,8 @@ def test_model_map_exposure_finding_always_present():
 
 
 def test_undecoded_control_model_gets_its_own_gap_finding():
-    model704 = SunSpecModel(id=704, start=200, length=10, registers=None)
-    surf = build_attack_surface(_mapping([model704]))
+    model705 = SunSpecModel(id=705, start=200, length=10, registers=None)
+    surf = build_attack_surface(_mapping([model705]))
     titles = [f.title for f in surf.findings]
     assert any("Writable DER control models reachable" in t for t in titles)
     assert any("lack a vendored field-level definition" in t for t in titles)

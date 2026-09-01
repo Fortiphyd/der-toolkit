@@ -92,6 +92,7 @@ skip. To register it manually instead: `claude mcp add --scope project der-mcp
 All three protocol packages and the MCP server are working end-to-end, including
 live validation against a real reference implementation for each protocol: a real
 DNP3 outstation, a real SunSpec device simulator, and a real IEEE 2030.5 test
-server. Known gaps: no testing yet against physical vendor hardware, and the
-vendored SunSpec model definitions predate the newest 700-series DER control
-models.
+server. Known gaps: no testing yet against physical vendor hardware, and 9 of
+the newer 700-series SunSpec DER control models (the ones with a runtime-sized
+curve table) still fall back to a coarse, model-level control point rather
+than field-level decode — see `der_sunspec/smdx/NOTICE.md`.

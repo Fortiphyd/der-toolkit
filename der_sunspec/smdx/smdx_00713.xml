@@ -1,0 +1,47 @@
+<sunSpecModels v="1">
+  <model id="713" len="7">
+    <block len="7" type="fixed">
+      <point id="WHRtg" offset="0" access="r" type="uint16" len="1" mandatory="false" units="WH" sf="WH_SF" />
+      <point id="WHAvail" offset="1" access="r" type="uint16" len="1" mandatory="false" units="WH" sf="WH_SF" />
+      <point id="SoC" offset="2" access="r" type="uint16" len="1" mandatory="false" units="Pct" sf="Pct_SF" />
+      <point id="SoH" offset="3" access="r" type="uint16" len="1" mandatory="false" units="Pct" sf="Pct_SF" />
+      <point id="Sta" offset="4" access="r" type="enum16" len="1" mandatory="false">
+        <symbol id="OK">0</symbol>
+        <symbol id="WARNING">1</symbol>
+        <symbol id="ERROR">2</symbol>
+      </point>
+      <point id="WH_SF" offset="5" access="r" type="sunssf" len="1" mandatory="false" />
+      <point id="Pct_SF" offset="6" access="r" type="sunssf" len="1" mandatory="false" />
+    </block>
+  </model>
+  <strings id="713" locale="en">
+    <point id="WHRtg">
+      <label>Energy Rating</label>
+      <description>Energy rating of the DER storage.</description>
+    </point>
+    <point id="WHAvail">
+      <label>Energy Available</label>
+      <description>Energy available of the DER storage (WHAvail = WHRtg * SoC * SoH)</description>
+    </point>
+    <point id="SoC">
+      <label>State of Charge</label>
+      <description>State of charge of the DER storage.</description>
+    </point>
+    <point id="SoH">
+      <label>State of Health</label>
+      <description>State of health of the DER storage.</description>
+    </point>
+    <point id="Sta">
+      <label>Status</label>
+      <description>Storage status.</description>
+    </point>
+    <point id="WH_SF">
+      <label>Energy Scale Factor</label>
+      <description>Scale factor for energy capacity.</description>
+    </point>
+    <point id="Pct_SF">
+      <label>Percent Scale Factor</label>
+      <description>Scale factor for percentage.</description>
+    </point>
+  </strings>
+</sunSpecModels>
