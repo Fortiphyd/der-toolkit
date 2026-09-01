@@ -20,7 +20,7 @@ der_sep2/     IEEE 2030.5: discover / tls / map / fuzz   (most mature)
 der_dnp3/     DNP3: scan / map / fuzz (boofuzz)
 der_sunspec/  SunSpec Modbus: self-describing model map + device/client fuzzers
 der_mcp/      MCP server exposing all of the above
-examples/     sample outputs + a quickstart device simulator fixture
+examples/     sample outputs + a quickstart device simulator script
 ```
 
 Every mapper/fuzzer normalizes to one `AttackSurface` model
@@ -41,12 +41,13 @@ See it work end to end against a real (simulated) device — no hardware, no
 vendor docs, no target of your own required.
 
 ```bash
-# 1. Install der-toolkit and a SunSpec reference simulator
+# 1. Install der-toolkit
 pip install -e ".[sunspec]"
-pip install pysunspec2
 
-# 2. Start a reference SunSpec/Modbus device on 127.0.0.1:5503
-suns -P 5503 -s -m examples/quickstart_device.model
+# 2. Start a tiny SunSpec/Modbus device simulator on 127.0.0.1:5503
+#    (pure Python, built on the pymodbus dependency you just installed --
+#    no separate simulator tool or compiled binary needed)
+python3 examples/quickstart_server.py
 
 # 3. In another terminal, map its attack surface
 der-sunspec map 127.0.0.1 --port 5503
@@ -62,10 +63,6 @@ Address) register accepts unauthenticated writes, flagged `critical` in the
 full JSON output (`der-sunspec map ... --output result.json`). Compare against
 [examples/sunspec_attack_surface.sample.json](examples/sunspec_attack_surface.sample.json)
 for the complete shape.
-
-`suns` is the SunSpec Alliance's own reference implementation (from
-[`pysunspec2`](https://pypi.org/project/pysunspec2/)) — the same tool this
-project's own live-target testing uses, not a mock built for this demo.
 
 ## Other CLIs
 
