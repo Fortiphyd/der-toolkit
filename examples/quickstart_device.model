@@ -1,0 +1,11 @@
+data quickstart_device {
+  001
+  66
+  string.32 : "DER Toolkit"           # Mn  (Manufacturer)
+  string.32 : "Quickstart Simulator"  # Md  (Model)
+  string.16 : ""                      # Opt (Options)
+  string.16 : "1.0"                   # Vr  (Version)
+  string.32 : "DEMO0001"              # SN  (Serial Number)
+  uint16    : 42                      # DA  (Device Address -- writable)
+  uint16    : 0xFFFF                  # pad
+}
