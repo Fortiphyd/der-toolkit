@@ -33,6 +33,7 @@ der-dnp3    = "der_dnp3.cli:main"
 der-sunspec = "der_sunspec.cli:main"
 der-sep2    = "der_sep2.cli:main"
 der-mcp     = "der_mcp.server:main"
+der-report  = "der_common.report:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["der_common", "der_dnp3", "der_sunspec", "der_sep2", "der_mcp"]

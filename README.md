@@ -71,6 +71,18 @@ der-sep2    map <host> --client-cert c.crt --client-key c.key
 der-dnp3    map <host> --port 20000
 ```
 
+## Cross-protocol summary
+
+Every `map --output result.json` command saves the same `{"attack_surfaces":
+[...]}` shape regardless of protocol. `der-report` merges any mix of them into
+one severity-ranked view — the writable, unauthenticated-reachable points
+across your whole DER deployment, not three separate JSON files you have to
+cross-reference by hand:
+
+```bash
+der-report dnp3_result.json sunspec_result.json sep2_result.json
+```
+
 ## MCP server
 
 `der-mcp` speaks MCP over stdio; point Claude Desktop / Claude Code at it. Tools:

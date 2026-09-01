@@ -37,6 +37,7 @@ jobs:
           der-dnp3 --help
           der-sunspec --help
           der-sep2 --help
+          der-report --help
 
       - name: MCP server registers its tools
         run: |
