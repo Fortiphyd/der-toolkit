@@ -52,7 +52,9 @@ The merged report ranks all 67 writable, unauthenticated-reachable points
 across all seven devices by severity in one list, regardless of protocol —
 the DER-compliant inverter's 33-field surface right next to the classic
 inverter's 22, both next to DNP3's single CROB-implying point and SEP2's
-force-opened DER control resource.
+force-opened DER control resource. A real copy of this output, if you'd
+rather read it than reproduce it, is in
+[`examples/demo_cluster_report.sample.txt`](../examples/demo_cluster_report.sample.txt).
 
 All of the above is also exercised automatically — `tests/test_demo_cluster.py`
 starts the whole cluster, runs these same `map` commands, and asserts on

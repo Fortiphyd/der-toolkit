@@ -84,6 +84,12 @@ cross-reference by hand:
 der-report dnp3_result.json sunspec_result.json sep2_result.json
 ```
 
+See [examples/demo_cluster_report.sample.txt](examples/demo_cluster_report.sample.txt)
+(or the [structured JSON](examples/demo_cluster_report.sample.json)) for a real
+merged report — 7 targets, 67 writable/unauthenticated-reachable points, 19
+cross-cutting findings — captured by running this exact command against the
+demo cluster below.
+
 ## Demo: a simulated DER cluster
 
 [`demo/`](demo/README.md) stands up seven simulated devices at once —
