@@ -88,6 +88,35 @@ mocked at the der-toolkit layer. What's simulated is the *device*, not the
   from a separate tool, not written for this demo), with two vulnerability
   modes toggled via `configs/*.yaml`.
 
+### On trusting these simulators
+
+The DNP3 and SunSpec simulators were built by reading der-toolkit's *own*
+parsing code as the spec (CRC tables, frame formats, SMDX offsets), and
+initially validated only by confirming der-toolkit's own mapper reads them
+back correctly. That proves the simulator and der-toolkit *agree with each
+other* — not that either is actually correct against the real protocol. A
+bug shared between the two would pass that check invisibly.
+
+So each was re-verified against a real, independent implementation that
+shares no code with der-toolkit's decode path:
+
+- **DNP3**: opendnp3's own `master-demo` (a real, widely-deployed C++ DNP3
+  stack) against `protection_relay.py`. This actually caught a bug —
+  the simulator only ever answered `READ` requests, since der-toolkit's own
+  scanner never sends anything else; a real master's first action is
+  `DISABLE_UNSOLICITED`, which hung waiting for a response that never came.
+  Fixed in `demo/dnp3_outstations/common.py`. Re-verified: the real master
+  now completes its full standard startup sequence (Disable Unsolicited →
+  Startup Integrity Poll → Enable Unsolicited → repeating Application Polls)
+  cleanly, every response `IIN: [0x00, 0x00]`.
+- **SunSpec**: `pysunspec2`'s own client (the SunSpec Alliance's reference
+  Python implementation) against `der_compliant_inverter.py`. Every field
+  decoded exactly as programmed, including the negative `WSet=-1500` int32
+  setpoint's two's-complement encoding — no bugs found here.
+- **SEP2** wasn't re-verified this way; it's lower risk since that server
+  predates this session's involvement entirely and isn't derived from
+  der-toolkit's own parsing code at all.
+
 One known gap, found while building this: the SEP2 server's
 `validate_cert_chain: false` mode (meant to demonstrate the abstract's
 "collapses the moment validation is misconfigured" thesis via a leaked/
