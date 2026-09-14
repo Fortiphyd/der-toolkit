@@ -1,0 +1,49 @@
+# SEP2 demo device: VULNERABLE posture. Two distinct findings live here on
+# purpose, matching the two threads the toolkit is built to surface:
+#
+#   1. A resource-level access-control misconfiguration ("collapses
+#      instantly" thesis): the registration-gated DER control surface is
+#      force-opened via open_resources below. TLS/mTLS/chain validation are
+#      all left enforced correctly -- this isolates the point that *one*
+#      misconfigured access-control setting is enough to expose the DER
+#      control surface, without anything else also having to be wrong.
+#      (Note: validate_cert_chain=false was tried first, to demonstrate this
+#      via a leaked/self-signed cert instead, but Python's stdlib ssl module
+#      has no way to accept a *presented* cert without verifying its chain --
+#      CERT_OPTIONAL only tolerates an *absent* one -- so that vulnerability
+#      mode in ssl_server.py doesn't actually work as its own docstring
+#      claims. Fixing that would mean moving ssl_server.py onto pyOpenSSL for
+#      a real custom verify callback; out of scope for this demo, tracked
+#      separately.)
+#   2. A real XML implementation bug: XXE is enabled (see
+#      der_sep2/fuzzing/xml_payloads.py) -- confirmed exploitable this
+#      session against the EndDevice/lFDI and Subscription/subscribedResource
+#      fields.
+
+server:
+  host: "0.0.0.0"
+  port: 18444
+  log_level: "INFO"
+
+tls:
+  cert_file: "certs/server.crt"
+  key_file:  "certs/server.key"
+  ca_file:   "certs/ca.crt"
+  enforce_mtls: true
+  validate_cert_chain: true
+  minimum_tls_version: "TLS1_0"
+
+acl:
+  registered_lfdis:
+    - "REGISTERED_LFDI_PLACEHOLDER"
+  enforce_registration: true
+
+vulnerability:
+  open_resources:
+    - "/edev/{id}/der"          # <-- the access-control flaw: DER control surface force-opened
+  allow_xxe: true                # <-- the implementation flaw
+  allow_billion_laughs: false
+
+mdns:
+  enabled: true
+  service_name: "sep2-vulnerable-demo"

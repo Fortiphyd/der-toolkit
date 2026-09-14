@@ -1,0 +1,34 @@
+# SEP2 demo device: HARDENED posture.
+# mTLS enforced, cert chain validated, registration enforced, no XML attack
+# surface enabled. A mapper should see the same low-severity result whether
+# it presents no cert, a self-signed cert, or an unregistered-but-valid cert
+# -- only a registered, CA-signed cert (Probe D) sees the full surface. This
+# is the contrast case for the abstract's "collapses instantly when
+# misconfigured" thesis: this one doesn't collapse.
+
+server:
+  host: "0.0.0.0"
+  port: 18443
+  log_level: "INFO"
+
+tls:
+  cert_file: "certs/server.crt"
+  key_file:  "certs/server.key"
+  ca_file:   "certs/ca.crt"
+  enforce_mtls: true
+  validate_cert_chain: true
+  minimum_tls_version: "TLS1_2"
+
+acl:
+  registered_lfdis:
+    - "REGISTERED_LFDI_PLACEHOLDER"
+  enforce_registration: true
+
+vulnerability:
+  open_resources: []
+  allow_xxe: false
+  allow_billion_laughs: false
+
+mdns:
+  enabled: true
+  service_name: "sep2-hardened-demo"
