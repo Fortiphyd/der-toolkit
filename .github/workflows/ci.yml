@@ -23,7 +23,7 @@ jobs:
         run: pip install -e ".[all,dev]"
 
       - name: Run tests
-        run: pytest -v
+        run: pytest -v -m "not integration"
 
       - name: Import every package
         run: |
@@ -84,3 +84,6 @@ jobs:
               assert len(block) == 5 + g.count * g.point_size, (g.group, len(block))
           print('DNP3 demo object-block building OK')
           "
+
+      - name: Demo cluster end-to-end (starts all 7 devices, maps each, merges the report)
+        run: pytest -v -m integration

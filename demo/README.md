@@ -54,6 +54,13 @@ the DER-compliant inverter's 33-field surface right next to the classic
 inverter's 22, both next to DNP3's single CROB-implying point and SEP2's
 force-opened DER control resource.
 
+All of the above is also exercised automatically — `tests/test_demo_cluster.py`
+starts the whole cluster, runs these same `map` commands, and asserts on
+these exact numbers, so a change to any protocol's mapper that shifts what
+the demo reports gets caught in CI rather than during a live walkthrough.
+It's marked `integration` and skipped by the fast test run; run it directly
+with `pytest -v -m integration`.
+
 ## Fuzzing
 
 Any device can be fuzzed the same way as a real target (`--authorized-scope`

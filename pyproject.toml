@@ -40,6 +40,9 @@ packages = ["der_common", "der_dnp3", "der_sunspec", "der_sep2", "der_mcp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+  "integration: spins up real subprocess servers/CLI commands (slower, excluded by default in CI's fast job)",
+]
 
 [tool.ruff]
 target-version = "py310"
