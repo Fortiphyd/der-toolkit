@@ -68,9 +68,8 @@ der-sep2 fuzz 127.0.0.1 --port 18444 \
   --authorized-scope 127.0.0.1/32 --allow-disruptive
 ```
 
-reproduces the XXE finding this project's own live-target validation found
-in the SEP2 fuzzer itself (see `docs/` history) — a real `/etc/passwd`
-reflected back through the `lFDI` field.
+reproduces a real XXE finding — `/etc/passwd` reflected back through the
+`lFDI` field.
 
 ## What's real here, and what isn't
 
@@ -88,59 +87,44 @@ mocked at the der-toolkit layer. What's simulated is the *device*, not the
   from a separate tool, not written for this demo), with two vulnerability
   modes toggled via `configs/*.yaml`.
 
-### On trusting these simulators
+### Verifying the simulators are protocol-accurate
 
-The DNP3 and SunSpec simulators were built by reading der-toolkit's *own*
-parsing code as the spec (CRC tables, frame formats, SMDX offsets), and
-initially validated only by confirming der-toolkit's own mapper reads them
-back correctly. That proves the simulator and der-toolkit *agree with each
-other* — not that either is actually correct against the real protocol. A
-bug shared between the two would pass that check invisibly.
+The DNP3 and SunSpec simulators share code with der-toolkit's own parsers
+(CRC tables, frame formats, SMDX offsets), so testing them only against
+der-toolkit's own mapper doesn't prove much on its own — a bug shared by
+both sides would pass invisibly. Each was also checked against a real,
+independent implementation:
 
-So each was re-verified against a real, independent implementation that
-shares no code with der-toolkit's decode path:
+- **DNP3** — opendnp3's own `master-demo` against `protection_relay.py`.
+  This caught a real bug: the simulator only answered `READ` requests, but
+  a real master's first move on connecting is `DISABLE_UNSOLICITED`, which
+  just hung waiting for a response. Fixed in `common.py`; the real master
+  now runs its full startup sequence cleanly (Disable Unsolicited →
+  Integrity Poll → Enable Unsolicited → Application Polls), every response
+  `IIN: [0x00, 0x00]`.
+- **SunSpec** — `pysunspec2`'s own client against `der_compliant_inverter.py`
+  decoded every field exactly as programmed, including the negative
+  `WSet=-1500` setpoint's two's-complement encoding. No bugs found.
+- **SEP2** — lower risk to begin with, since this server predates the demo
+  and isn't built on der-toolkit's parsing code, but checked anyway with
+  [`gridappsd-2030-5-client`](https://github.com/GRIDAPPSD/gridappsd-2030-5-client),
+  an independent IEEE 2030.5 Python client. A full mTLS handshake against
+  the registered cert, correct parsing of `/dcap` and `/edev`, and
+  independent confirmation (from the client side, not just the server's own
+  logs) that a self-signed cert gets rejected at the TLS layer. Full XSD
+  schema validation wasn't feasible — the real IEEE 2030.5-2018 schema is
+  paywalled, and the freely available community copies use an older,
+  pre-standardization namespace, so validating against them would just
+  compare against the wrong document.
 
-- **DNP3**: opendnp3's own `master-demo` (a real, widely-deployed C++ DNP3
-  stack) against `protection_relay.py`. This actually caught a bug —
-  the simulator only ever answered `READ` requests, since der-toolkit's own
-  scanner never sends anything else; a real master's first action is
-  `DISABLE_UNSOLICITED`, which hung waiting for a response that never came.
-  Fixed in `demo/dnp3_outstations/common.py`. Re-verified: the real master
-  now completes its full standard startup sequence (Disable Unsolicited →
-  Startup Integrity Poll → Enable Unsolicited → repeating Application Polls)
-  cleanly, every response `IIN: [0x00, 0x00]`.
-- **SunSpec**: `pysunspec2`'s own client (the SunSpec Alliance's reference
-  Python implementation) against `der_compliant_inverter.py`. Every field
-  decoded exactly as programmed, including the negative `WSet=-1500` int32
-  setpoint's two's-complement encoding — no bugs found here.
-- **SEP2**: lower risk to begin with (that server predates this session's
-  involvement entirely and isn't derived from der-toolkit's own parsing
-  code), but re-verified anyway with
-  [`gridappsd-2030-5-client`](https://github.com/GRIDAPPSD/gridappsd-2030-5-client)
-  (a real, independently-built IEEE 2030.5 Python client, no shared code)
-  against `configs/hardened.yaml`: a full mTLS handshake with the registered
-  cert, followed by correct parsing of `/dcap` and `/edev` (every namespace,
-  element, and attribute matched), plus confirmation from the *client* side
-  (not just the server's own self-report) that a self-signed cert is
-  genuinely rejected at the TLS layer (`TLSV1_ALERT_UNKNOWN_CA`). Full XSD
-  schema validation wasn't possible -- the actual IEEE 2030.5-2018 `sep.xsd`
-  is paywalled behind the IEEE standards store, and the freely-available
-  community copies (e.g. EPRI's) turned out to target an older
-  pre-standardization "SEP 2.0" namespace (`http://ieee.org/2030.5`, from
-  the original ZigBee/HomePlug Alliance work) rather than the IEEE-published
-  `urn:ieee:std:2030.5:ns` this server actually uses -- validating against
-  the wrong schema version would've produced a misleading false mismatch,
-  so that path was dropped rather than faked.
+### Known gap: `validate_cert_chain: false`
 
-One known gap, found while building this: the SEP2 server's
-`validate_cert_chain: false` mode (meant to demonstrate the abstract's
-"collapses the moment validation is misconfigured" thesis via a leaked/
-self-signed cert) doesn't actually work — Python's stdlib `ssl` module has
-no way to accept a *presented* client certificate without verifying its
-chain, so that code path in `ssl_server.py` fails the handshake for every
-client that presents *any* certificate, not just untrusted ones. The
-vulnerable config demonstrates the same "misconfiguration collapses the
-surface" thesis a different way instead (`vulnerability.open_resources`,
-which operates at the application layer and has no such issue). Fixing the
-TLS-layer version properly would mean moving `ssl_server.py` onto
-`pyOpenSSL` for a real custom verify callback.
+This mode was meant to show the "collapses when misconfigured" thesis via a
+leaked or self-signed cert, but it doesn't actually work: Python's stdlib
+`ssl` module has no way to accept a *presented* client certificate without
+verifying its chain (`CERT_OPTIONAL` only tolerates an *absent* one), so
+that path in `ssl_server.py` ends up rejecting every client certificate,
+trusted or not. `configs/vulnerable.yaml` demonstrates the same thesis a
+different way instead, via `open_resources` at the application layer. A
+proper fix would mean moving `ssl_server.py` onto `pyOpenSSL` for a real
+custom verify callback.
