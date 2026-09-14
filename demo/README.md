@@ -113,9 +113,24 @@ shares no code with der-toolkit's decode path:
   Python implementation) against `der_compliant_inverter.py`. Every field
   decoded exactly as programmed, including the negative `WSet=-1500` int32
   setpoint's two's-complement encoding — no bugs found here.
-- **SEP2** wasn't re-verified this way; it's lower risk since that server
-  predates this session's involvement entirely and isn't derived from
-  der-toolkit's own parsing code at all.
+- **SEP2**: lower risk to begin with (that server predates this session's
+  involvement entirely and isn't derived from der-toolkit's own parsing
+  code), but re-verified anyway with
+  [`gridappsd-2030-5-client`](https://github.com/GRIDAPPSD/gridappsd-2030-5-client)
+  (a real, independently-built IEEE 2030.5 Python client, no shared code)
+  against `configs/hardened.yaml`: a full mTLS handshake with the registered
+  cert, followed by correct parsing of `/dcap` and `/edev` (every namespace,
+  element, and attribute matched), plus confirmation from the *client* side
+  (not just the server's own self-report) that a self-signed cert is
+  genuinely rejected at the TLS layer (`TLSV1_ALERT_UNKNOWN_CA`). Full XSD
+  schema validation wasn't possible -- the actual IEEE 2030.5-2018 `sep.xsd`
+  is paywalled behind the IEEE standards store, and the freely-available
+  community copies (e.g. EPRI's) turned out to target an older
+  pre-standardization "SEP 2.0" namespace (`http://ieee.org/2030.5`, from
+  the original ZigBee/HomePlug Alliance work) rather than the IEEE-published
+  `urn:ieee:std:2030.5:ns` this server actually uses -- validating against
+  the wrong schema version would've produced a misleading false mismatch,
+  so that path was dropped rather than faked.
 
 One known gap, found while building this: the SEP2 server's
 `validate_cert_chain: false` mode (meant to demonstrate the abstract's
