@@ -16,8 +16,7 @@ def _encode_string(s: str, num_regs: int) -> list[int]:
 
 def _model1_registers(manufacturer: str = "Acme Corp", da: int = 5) -> list[int]:
     """Layout matches smdx_00001.xml: Mn@0(16) Md@16(16) Opt@32(8) Vr@40(8)
-    SN@48(16) DA@64(1) -- the same fields/offsets seen in this session's real
-    live-target capture (model1@4 == start 4 + offset 0, etc.)."""
+    SN@48(16) DA@64(1)."""
     regs = [0] * 66
     regs[0:16] = _encode_string(manufacturer, 16)
     regs[16:32] = _encode_string("Test Inverter", 16)
@@ -48,7 +47,7 @@ def test_field_level_decode_and_writable_severity():
     assert da.writable is True
     assert da.severity == "critical"
     assert da.reachable_unauthenticated is True
-    assert da.address == "model1@68"  # start(4) + offset(64), matches the real capture
+    assert da.address == "model1@68"  # start(4) + offset(64)
 
 
 def test_control_model_without_smdx_def_falls_back_to_coarse_critical_point():

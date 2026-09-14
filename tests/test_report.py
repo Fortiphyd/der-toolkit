@@ -1,7 +1,6 @@
 """der_common.report merges multiple protocols' saved `map --output` files
-into one severity-ranked view. Verified live this session against a real
-opendnp3 outstation + the SunSpec quickstart simulator; these tests lock in
-the aggregation/ranking logic without needing live targets.
+into one severity-ranked view. These tests lock in the aggregation/ranking
+logic without needing live targets.
 """
 
 import json

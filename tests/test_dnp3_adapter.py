@@ -1,8 +1,7 @@
 """der_dnp3.adapter decides which object groups are "operable output" (an
 attacker can actuate them via CROB/analog-output commands) versus routine
-telemetry. Locks in the severity distinctions the tool's whole thesis rests
-on, using the same object-model shape the scanner produces (see the g10/g12/
-g40/g41 flags this session's real opendnp3 live-target test confirmed).
+telemetry. Locks in that severity distinction using the same object-model
+shape the scanner produces against a real outstation (g10/g12/g40/g41).
 """
 
 from der_dnp3.adapter import build_attack_surfaces

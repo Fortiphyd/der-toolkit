@@ -5,10 +5,9 @@ Reuses der_dnp3.scanner's own tested link/transport/app framing primitives
 them, so the simulator and the real scanner/mapper agree on the wire format
 by construction. Implements just enough of a real outstation to answer the
 three reads der_dnp3/scanner.py's map/discover flow actually sends (g0v254,
-g0v255, Class 0 / g60v1) with a static object-group database -- no link-layer
-RESET_LINK_STATES handshake is needed for this flow (der_dnp3/scanner.py
-sends its reads as unconfirmed link frames), matching what a live opendnp3
-outstation was observed doing in this project's own live-target validation.
+g0v255, Class 0 / g60v1) against a static object-group database. No
+link-layer RESET_LINK_STATES handshake is needed here, since scanner.py
+sends its reads as unconfirmed link frames.
 """
 
 from __future__ import annotations
@@ -133,15 +132,11 @@ class Outstation:
             app_pdu = self._class0_response(req_seq)
         else:
             # Any other recognized function (DISABLE/ENABLE_UNSOLICITED, other
-            # reads, etc.) gets a minimal successful empty-object RESPONSE --
-            # a real outstation always answers *something* rather than
-            # silently dropping a request. Found this the hard way: testing
-            # against a real independent opendnp3 master (not der-toolkit's
-            # own scanner) showed its very first action on connecting is
-            # DISABLE_UNSOLICITED, which the original code -- only ever
-            # tested against der-toolkit's own scanner, which never sends
-            # that -- silently dropped, hanging the master in a retry loop
-            # forever before it ever reached an integrity poll.
+            # reads, etc.) still gets a minimal successful empty-object
+            # RESPONSE -- a real outstation always answers *something* rather
+            # than silently dropping a request. A real master's first move on
+            # connecting is DISABLE_UNSOLICITED, so dropping it hangs the
+            # master in a retry loop before it ever reaches an integrity poll.
             app_pdu = self._empty_response(req_seq)
 
         transport = bytes([build_transport_header(fin=1, fir=1, seq=0)])

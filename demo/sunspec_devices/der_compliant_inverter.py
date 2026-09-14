@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Modern DER-compliant inverter: Common (1) + single-phase inverter
-telemetry (101) + DER AC Controls (704) -- the richer, newer writable
-surface this session added field-level decode for: active/reactive power
-setpoints, power-factor injection/absorption, and AntiIslEna (anti-
-islanding enable) sitting right next to the power controls. Deliberately
-contrasted against classic_inverter.py's older, narrower control set.
+telemetry (101) + DER AC Controls (704) -- a richer, newer writable surface
+than the classic inverter's: active/reactive power setpoints, power-factor
+injection/absorption, and AntiIslEna (anti-islanding enable) sitting right
+next to the power controls.
 
     python3 demo/sunspec_devices/der_compliant_inverter.py [port]   # default 5602
 """

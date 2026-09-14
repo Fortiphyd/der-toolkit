@@ -2,9 +2,8 @@
 # mTLS enforced, cert chain validated, registration enforced, no XML attack
 # surface enabled. A mapper should see the same low-severity result whether
 # it presents no cert, a self-signed cert, or an unregistered-but-valid cert
-# -- only a registered, CA-signed cert (Probe D) sees the full surface. This
-# is the contrast case for the abstract's "collapses instantly when
-# misconfigured" thesis: this one doesn't collapse.
+# -- only a registered, CA-signed cert (Probe D) sees the full surface. The
+# contrast case for vulnerable.yaml: this one doesn't collapse.
 
 server:
   host: "0.0.0.0"

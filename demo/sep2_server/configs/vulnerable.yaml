@@ -1,24 +1,15 @@
-# SEP2 demo device: VULNERABLE posture. Two distinct findings live here on
-# purpose, matching the two threads the toolkit is built to surface:
+# SEP2 demo device: VULNERABLE posture, with two distinct findings on purpose:
 #
-#   1. A resource-level access-control misconfiguration ("collapses
-#      instantly" thesis): the registration-gated DER control surface is
-#      force-opened via open_resources below. TLS/mTLS/chain validation are
-#      all left enforced correctly -- this isolates the point that *one*
-#      misconfigured access-control setting is enough to expose the DER
-#      control surface, without anything else also having to be wrong.
-#      (Note: validate_cert_chain=false was tried first, to demonstrate this
-#      via a leaked/self-signed cert instead, but Python's stdlib ssl module
-#      has no way to accept a *presented* cert without verifying its chain --
-#      CERT_OPTIONAL only tolerates an *absent* one -- so that vulnerability
-#      mode in ssl_server.py doesn't actually work as its own docstring
-#      claims. Fixing that would mean moving ssl_server.py onto pyOpenSSL for
-#      a real custom verify callback; out of scope for this demo, tracked
-#      separately.)
-#   2. A real XML implementation bug: XXE is enabled (see
-#      der_sep2/fuzzing/xml_payloads.py) -- confirmed exploitable this
-#      session against the EndDevice/lFDI and Subscription/subscribedResource
-#      fields.
+#   1. An access-control misconfiguration: the registration-gated DER control
+#      surface is force-opened via open_resources below, while TLS/mTLS/chain
+#      validation stay correctly enforced -- showing that one misconfigured
+#      setting is enough to expose the control surface on its own. (A
+#      validate_cert_chain=false / leaked-cert variant of this would be more
+#      direct, but that mode in ssl_server.py doesn't actually work -- see
+#      demo/README.md.)
+#   2. A real XML implementation bug: XXE is enabled, exploitable against the
+#      EndDevice/lFDI and Subscription/subscribedResource fields (see
+#      der_sep2/fuzzing/xml_payloads.py).
 
 server:
   host: "0.0.0.0"
