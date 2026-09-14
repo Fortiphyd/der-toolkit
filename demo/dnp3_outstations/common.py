@@ -23,6 +23,7 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from der_dnp3.scanner import (
+    APP_FUNC_CONFIRM,
     APP_FUNC_READ,
     APP_FUNC_RESPONSE,
     DNP3_START,
@@ -120,17 +121,27 @@ class Outstation:
             return
         # user_data = 1-byte transport header + app layer
         app = user_data[1:]
+        if len(app) < 2:
+            return
         app_ctrl, func = app[0], app[1]
         req_seq = app_ctrl & 0x0F
-        if func != APP_FUNC_READ or len(app) < 5:
-            return
-        group, variation, qualifier = app[2], app[3], app[4]
 
-        if (group, variation) == (60, 1):
+        if func == APP_FUNC_CONFIRM:
+            return  # a Confirm gets no response, by definition
+
+        if func == APP_FUNC_READ and len(app) >= 5 and (app[2], app[3]) == (60, 1):
             app_pdu = self._class0_response(req_seq)
-        elif group == 0 and variation in (254, 255):
-            app_pdu = self._empty_response(req_seq)
         else:
+            # Any other recognized function (DISABLE/ENABLE_UNSOLICITED, other
+            # reads, etc.) gets a minimal successful empty-object RESPONSE --
+            # a real outstation always answers *something* rather than
+            # silently dropping a request. Found this the hard way: testing
+            # against a real independent opendnp3 master (not der-toolkit's
+            # own scanner) showed its very first action on connecting is
+            # DISABLE_UNSOLICITED, which the original code -- only ever
+            # tested against der-toolkit's own scanner, which never sends
+            # that -- silently dropped, hanging the master in a retry loop
+            # forever before it ever reached an integrity poll.
             app_pdu = self._empty_response(req_seq)
 
         transport = bytes([build_transport_header(fin=1, fir=1, seq=0)])
