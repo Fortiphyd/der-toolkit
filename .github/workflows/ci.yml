@@ -48,3 +48,39 @@ jobs:
           assert protocols == {'dnp3', 'sunspec', 'sep2'}, protocols
           print('der-mcp tool wiring OK:', protocols)
           "
+
+      - name: Demo SunSpec device profiles build valid register images
+        run: |
+          for f in classic_inverter der_compliant_inverter telemetry_storage_device; do
+            python -c "import sys; sys.path.insert(0, 'demo/sunspec_devices'); import $f"
+          done
+          # Each profile module's field_values are local to main(); exercise the
+          # shared encoder directly against every real field name of every model
+          # the demo profiles use instead -- this is what actually catches an
+          # offset/type/KeyError bug in common.py.
+          python -c "
+          import sys
+          sys.path.insert(0, 'demo/sunspec_devices')
+          from common import build_device_registers
+          from der_sunspec.smdx_parser import load_model_def
+
+          for mid in (1, 101, 103, 123, 302, 303, 307, 704, 715):
+              mdef = load_model_def(mid)
+              assert mdef is not None, mid
+              fields = {p.id: 1 for p in mdef.points if p.point_type != 'string'}
+              build_device_registers([(mid, fields)])
+          print('SunSpec demo register-building OK for every model the demo profiles use')
+          "
+
+      - name: Demo DNP3 outstation profiles build valid object blocks
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'demo/dnp3_outstations')
+          from common import Group
+
+          for g in (Group(1, 2, 4, 1), Group(10, 2, 4, 1), Group(30, 1, 2, 5), Group(40, 1, 2, 5)):
+              block = g.object_block()
+              assert len(block) == 5 + g.count * g.point_size, (g.group, len(block))
+          print('DNP3 demo object-block building OK')
+          "

@@ -21,6 +21,7 @@ der_dnp3/     DNP3: scan / map / fuzz (boofuzz)
 der_sunspec/  SunSpec Modbus: self-describing model map + device/client fuzzers
 der_mcp/      MCP server exposing all of the above
 examples/     sample outputs + a quickstart device simulator script
+demo/         a simulated 7-device DER cluster spanning all three protocols
 ```
 
 Every mapper/fuzzer normalizes to one `AttackSurface` model
@@ -81,6 +82,19 @@ cross-reference by hand:
 
 ```bash
 der-report dnp3_result.json sunspec_result.json sep2_result.json
+```
+
+## Demo: a simulated DER cluster
+
+[`demo/`](demo/README.md) stands up seven simulated devices at once —
+three SunSpec inverters with deliberately different control surfaces, two
+DNP3 outstations (binary vs. analog actuation), and two SEP2 servers
+(hardened vs. vulnerable) — for a full-pipeline run against something that
+looks like a real small DER deployment, not just a single isolated target:
+
+```bash
+demo/sep2_server/setup.sh      # one-time: generate the SEP2 test PKI
+python3 demo/run_cluster.py    # starts all seven devices
 ```
 
 ## MCP server
