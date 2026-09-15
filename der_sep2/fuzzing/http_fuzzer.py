@@ -35,12 +35,11 @@ import logging
 import re
 import time
 from dataclasses import dataclass, field
-from typing import Optional
 
-from der_sep2.models import Finding, ProbeType, Severity, ServiceTarget
 from der_sep2.mapping.resource_mapper import MappingResult, Sep2HTTPClient
-from der_sep2.tls.client import TLSContextFactory
 from der_sep2.mapping.resource_tree import _normalise_path, lookup_policy
+from der_sep2.models import Finding, ProbeType, ServiceTarget, Severity
+from der_sep2.tls.client import TLSContextFactory
 
 log = logging.getLogger(__name__)
 
@@ -78,7 +77,7 @@ IDOR_SENSITIVE_PATTERNS = {
 
 # Pagination test cases: (s_value, l_value, description)
 # None means "omit that parameter"
-PAGINATION_CASES: list[tuple[Optional[str], Optional[str], str]] = [
+PAGINATION_CASES: list[tuple[str | None, str | None, str]] = [
     ("-1",          None,          "negative start index"),
     (None,          "-1",          "negative limit"),
     ("0",           "0",           "zero start and limit"),
@@ -111,11 +110,11 @@ class IDORResult:
     our_path:     str           # the path we legitimately own
     probe_path:   str           # the path we're probing (different device)
     method:       str
-    status_code:  Optional[int]  = None
-    our_status:   Optional[int]  = None   # what we get for our own resource
-    response_body: Optional[bytes] = None
+    status_code:  int | None  = None
+    our_status:   int | None  = None   # what we get for our own resource
+    response_body: bytes | None = None
     elapsed_ms:   float          = 0.0
-    error:        Optional[str]  = None
+    error:        str | None  = None
 
     @property
     def is_idor(self) -> bool:
@@ -138,14 +137,14 @@ class PaginationResult:
     """Result of one pagination parameter fuzz case."""
     target:       ServiceTarget
     path:         str
-    s_value:      Optional[str]
-    l_value:      Optional[str]
+    s_value:      str | None
+    l_value:      str | None
     description:  str
-    status_code:  Optional[int]  = None
-    response_body: Optional[bytes] = None
+    status_code:  int | None  = None
+    response_body: bytes | None = None
     elapsed_ms:   float           = 0.0
     baseline_ms:  float           = 0.0
-    error:        Optional[str]   = None
+    error:        str | None   = None
 
     @property
     def query_string(self) -> str:
@@ -195,7 +194,7 @@ class HTTPFuzzer:
         self,
         target:          ServiceTarget,
         context_factory: TLSContextFactory,
-        mapping_result:  Optional[MappingResult] = None,
+        mapping_result:  MappingResult | None = None,
         rate_limit_rps:  float = 3.0,
         timeout:         float = 10.0,
         idor_range:      int   = IDOR_PROBE_RANGE,
@@ -483,8 +482,8 @@ class HTTPFuzzer:
     def _probe_pagination(
         self,
         path:        str,
-        s_val:       Optional[str],
-        l_val:       Optional[str],
+        s_val:       str | None,
+        l_val:       str | None,
         description: str,
         baseline_ms: float,
     ) -> None:
@@ -607,8 +606,8 @@ class HTTPFuzzer:
         self,
         method:  str,
         path:    str,
-        body:    Optional[bytes] = None,
-        headers: Optional[dict]  = None,
+        body:    bytes | None = None,
+        headers: dict | None  = None,
     ) -> dict:
         start = time.monotonic()
         try:
@@ -660,7 +659,7 @@ class HTTPFuzzer:
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _extract_first_numeric_id(path: str) -> tuple[Optional[int], int]:
+def _extract_first_numeric_id(path: str) -> tuple[int | None, int]:
     """
     Find the first numeric segment in a path and return (value, position).
     Position is the 0-based index into path.strip("/").split("/").
@@ -696,15 +695,15 @@ def _idor_severity(path: str) -> Severity:
 
 # SQL error markers that suggest the pagination param hit a query
 _SQLI_PATTERNS = [
-    re.compile(r"syntax\s+error", re.I),
-    re.compile(r"sql.*error|error.*sql", re.I),
+    re.compile(r"syntax\s+error", re.IGNORECASE),
+    re.compile(r"sql.*error|error.*sql", re.IGNORECASE),
     re.compile(r"ORA-\d{5}"),           # Oracle
-    re.compile(r"mysql_fetch", re.I),
-    re.compile(r"pg_query", re.I),       # PostgreSQL
-    re.compile(r"sqlite.*error", re.I),
-    re.compile(r"unclosed quotation", re.I),
-    re.compile(r"unterminated.*string", re.I),
-    re.compile(r"error in your sql", re.I),
+    re.compile(r"mysql_fetch", re.IGNORECASE),
+    re.compile(r"pg_query", re.IGNORECASE),       # PostgreSQL
+    re.compile(r"sqlite.*error", re.IGNORECASE),
+    re.compile(r"unclosed quotation", re.IGNORECASE),
+    re.compile(r"unterminated.*string", re.IGNORECASE),
+    re.compile(r"error in your sql", re.IGNORECASE),
 ]
 
 def _looks_like_sqli_response(text: str) -> bool:
@@ -748,7 +747,7 @@ def print_http_fuzzing_result(result: HTTPFuzzingResult) -> None:
 
     # IDOR summary table — show every probed path and its status
     if result.idor_results:
-        print(f"\n  IDOR probe summary:")
+        print("\n  IDOR probe summary:")
         print(f"  {'Path':<45} {'Status':>6}  {'IDOR?':>5}")
         print(f"  {'':─<45} {'─'*6}  {'─'*5}")
         for r in sorted(result.idor_results, key=lambda x: x.probe_path):

@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import socket, struct, time
-from dataclasses import dataclass
-from typing import Optional, List, Tuple, Dict, Any, Iterable
-import json
+
 import argparse
 import ipaddress
+import json
+import socket
+import struct
+import time
+from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
+from typing import Any
 
-
-DNP3_GROUP_NAMES: Dict[int, str] = {
+DNP3_GROUP_NAMES: dict[int, str] = {
     0:   "Device Attributes",
     1:   "Binary Input",
     2:   "Binary Input Event",
@@ -62,7 +65,7 @@ def describe_header(group: int, var: int, qual: int, prefix: dict) -> dict:
 
 _CRC16_DNP_TABLE = None
 
-def _build_crc16_dnp_table() -> List[int]:
+def _build_crc16_dnp_table() -> list[int]:
     # CRC-16/DNP: poly=0x3D65 refin/refout=True => reflected poly 0xA6BC
     poly = 0xA6BC
     table = []
@@ -124,7 +127,7 @@ def build_app_control(fin: int, fir: int, con: int, uns: int, seq: int) -> int:
     # bit7 FIR, bit6 FIN, bit5 CON, bit4 UNS, bits0-3 SEQ
     return ((fir & 1) << 7) | ((fin & 1) << 6) | ((con & 1) << 5) | ((uns & 1) << 4) | (seq & 0x0F)
 
-def app_ctrl_bits(app_ctrl: int) -> Dict[str, int]:
+def app_ctrl_bits(app_ctrl: int) -> dict[str, int]:
     return {
         "FIR": (app_ctrl >> 7) & 1,
         "FIN": (app_ctrl >> 6) & 1,
@@ -163,7 +166,7 @@ def expected_total_frame_len(link_length_field: int) -> int:
     blocks = (data_len + 15) // 16
     return 10 + data_len + 2 * blocks
 
-def parse_transport_ctl(b: int) -> Dict[str, int]:
+def parse_transport_ctl(b: int) -> dict[str, int]:
     return {
         "FIR": (b >> 6) & 1,
         "FIN": (b >> 7) & 1,
@@ -183,7 +186,7 @@ class TransportReassembler:
     """
     def __init__(self):
         self.active = False
-        self.expected_seq: Optional[int] = None
+        self.expected_seq: int | None = None
         self.buf = bytearray()
 
     def reset(self) -> None:
@@ -191,7 +194,7 @@ class TransportReassembler:
         self.expected_seq = None
         self.buf.clear()
 
-    def push(self, transport_ctl: int, app_slice: bytes) -> Optional[bytes]:
+    def push(self, transport_ctl: int, app_slice: bytes) -> bytes | None:
         t = parse_transport_ctl(transport_ctl)
         fir, fin, seq = t["FIR"], t["FIN"], t["SEQ"]
 
@@ -237,9 +240,9 @@ class DNP3App:
     seq: int
     uns: int
     con: int
-    iin: Optional[int]
+    iin: int | None
     raw_objects: bytes
-    object_headers: List[Tuple[int, int, int, Dict[str, int]]]
+    object_headers: list[tuple[int, int, int, dict[str, int]]]
 
 def qualifier_prefix_len(q: int) -> int:
     # length of the qualifier prefix (after g,v,q) *for the object block*
@@ -256,7 +259,7 @@ def qualifier_prefix_len(q: int) -> int:
     # add more qualifiers as you encounter them
     return -1  # unknown
 
-def qualifier_extract_count(q: int, prefix: bytes) -> Optional[int]:
+def qualifier_extract_count(q: int, prefix: bytes) -> int | None:
     if q == QUAL_COUNT8:
         return prefix[0]
     if q == QUAL_COUNT16:
@@ -272,7 +275,7 @@ def qualifier_extract_count(q: int, prefix: bytes) -> Optional[int]:
 
 # Bytes per point for common STATIC variations (not events)
 # This is intentionally incomplete; extend as you see new variations.
-POINT_SIZE: Dict[Tuple[int, int], int] = {
+POINT_SIZE: dict[tuple[int, int], int] = {
     # Binary Input static
     (1, 1): 0,  # packed (special handling)
     (1, 2): 1,  # flags (1 byte)
@@ -312,13 +315,13 @@ POINT_SIZE: Dict[Tuple[int, int], int] = {
     (121, 1): 7,
 }
 
-def parse_object_blocks(data: bytes) -> List[Dict[str, Any]]:
+def parse_object_blocks(data: bytes) -> list[dict[str, Any]]:
     """
     Attempts to iterate through multiple object blocks in the response.
     Returns a list of dicts with (group, var, qual, prefix_info, offset, payload_len).
     Stops if it can't safely skip a block.
     """
-    blocks: List[Dict[str, Any]] = []
+    blocks: list[dict[str, Any]] = []
     i = 0
     n = len(data)
 
@@ -336,7 +339,7 @@ def parse_object_blocks(data: bytes) -> List[Dict[str, Any]]:
         i += pref_len
 
         count = qualifier_extract_count(q, prefix)
-        prefix_info: Dict[str, Any] = {}
+        prefix_info: dict[str, Any] = {}
         if q == QUAL_RANGE8 and len(prefix) == 2:
             prefix_info["start"], prefix_info["stop"] = prefix[0], prefix[1]
         elif q == QUAL_RANGE16 and len(prefix) == 4:
@@ -388,7 +391,7 @@ def parse_object_blocks(data: bytes) -> List[Dict[str, Any]]:
     return blocks
 
 
-def parse_link_frame(buf: bytes) -> Optional[DNP3Frame]:
+def parse_link_frame(buf: bytes) -> DNP3Frame | None:
     if len(buf) < 10 or buf[0:2] != DNP3_START:
         return None
     length = buf[2]
@@ -416,7 +419,7 @@ def parse_link_frame(buf: bytes) -> Optional[DNP3Frame]:
 
     return DNP3Frame(dest=dest, src=src, link_control=link_control, user_data=bytes(user_data))
 
-def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[str, int]]]:
+def parse_object_headers_minimal(data: bytes) -> list[tuple[int, int, int, dict[str, int]]]:
     """
     Minimal header parser that can keep going for qualifiers with known prefix sizes.
     It does NOT decode object payloads; it only parses (g,v,q,prefix) for inventory.
@@ -427,7 +430,7 @@ def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[
         print("parsing header")
         g, v, q = data[i], data[i+1], data[i+2]
         i += 3
-        info: Dict[str, int] = {}
+        info: dict[str, int] = {}
 
         if q == QUAL_ALL_OBJECTS:
             # no prefix bytes
@@ -436,7 +439,8 @@ def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[
             break
 
         elif q == QUAL_RANGE16:
-            if i + 4 > len(data): break
+            if i + 4 > len(data):
+                break
             start, stop = struct.unpack("<HH", data[i:i+4])
             info = {"start": start, "stop": stop}
             i += 4
@@ -444,7 +448,8 @@ def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[
             break
 
         elif q == QUAL_RANGE8:
-            if i + 2 > len(data): break
+            if i + 2 > len(data):
+                break
             start, stop = data[i], data[i+1]
             info = {"start": start, "stop": stop}
             i += 2
@@ -452,14 +457,16 @@ def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[
             break
 
         elif q == QUAL_COUNT8:
-            if i + 1 > len(data): break
+            if i + 1 > len(data):
+                break
             info = {"count": data[i]}
             i += 1
             out.append((g, v, q, info))
             break
 
         elif q == QUAL_COUNT16:
-            if i + 2 > len(data): break
+            if i + 2 > len(data):
+                break
             info = {"count": struct.unpack("<H", data[i:i+2])[0]}
             i += 2
             out.append((g, v, q, info))
@@ -471,7 +478,7 @@ def parse_object_headers_minimal(data: bytes) -> List[Tuple[int, int, int, Dict[
 
     return out
 
-def parse_app(user_data: bytes) -> Optional[DNP3App]:
+def parse_app(user_data: bytes) -> DNP3App | None:
     if len(user_data) < 3:
         return None
     # transport header is 1 byte
@@ -507,7 +514,7 @@ def parse_app(user_data: bytes) -> Optional[DNP3App]:
         object_headers=headers
     )
 
-def parse_app_from_bytes(app: bytes) -> Optional[DNP3App]:
+def parse_app_from_bytes(app: bytes) -> DNP3App | None:
     """
     app bytes begin at Application Control (no Transport header included).
     Response/Unsolicited layout:
@@ -544,7 +551,7 @@ def parse_app_from_bytes(app: bytes) -> Optional[DNP3App]:
     )
 
 
-def infer_addresses_from_frame(fr: DNP3Frame) -> Optional[Tuple[int, int]]:
+def infer_addresses_from_frame(fr: DNP3Frame) -> tuple[int, int] | None:
     """
     For any inbound frame (outstation->master), assume:
       outstation = src, master = dest
@@ -554,7 +561,7 @@ def infer_addresses_from_frame(fr: DNP3Frame) -> Optional[Tuple[int, int]]:
         return None
     return (fr.dest, fr.src)  # (master, outstation)
 
-def listen_for_inbound_addresses(client: DNP3TCPClient, seconds: float = 1.5) -> Optional[Tuple[int, int]]:
+def listen_for_inbound_addresses(client: DNP3TCPClient, seconds: float = 1.5) -> tuple[int, int] | None:
     end = time.time() + seconds
     while time.time() < end:
         fr = client.recv_one_link_frame(timeout=max(0.1, end - time.time()))
@@ -586,7 +593,7 @@ def discover_outstation_address(
     listen_seconds: float = 1.5,
     per_probe_timeout: float = 1.5,
     confirmed_link: bool = False,
-) -> Optional[Tuple[int, int]]:
+) -> tuple[int, int] | None:
     """
     Returns (master_addr, outstation_addr) or None.
 
@@ -611,7 +618,7 @@ def discover_outstation_address(
 
         # 2) Active probing
         print("[discover] no inbound frames; starting active address probes...")
-        unsolicited: List[Dict[str, Any]] = []
+        unsolicited: list[dict[str, Any]] = []
 
         for out_addr in typical_outstation_addrs:
             for master_addr in typical_master_addrs:
@@ -688,7 +695,7 @@ class DNP3TCPClient:
         self.host = host
         self.port = port
         self.timeout = timeout
-        self.sock: Optional[socket.socket] = None
+        self.sock: socket.socket | None = None
         self._rxbuf = bytearray()
 
     def connect(self) -> None:
@@ -699,14 +706,16 @@ class DNP3TCPClient:
 
     def close(self) -> None:
         if self.sock:
-            try: self.sock.close()
-            finally: self.sock = None
+            try:
+                self.sock.close()
+            finally:
+                self.sock = None
 
     def send(self, data: bytes) -> None:
         assert self.sock is not None
         self.sock.sendall(data)
 
-    def recv_one_link_frame(self, timeout: float) -> Optional[DNP3Frame]:
+    def recv_one_link_frame(self, timeout: float) -> DNP3Frame | None:
         assert self.sock is not None
         end = time.time() + timeout
 
@@ -716,7 +725,7 @@ class DNP3TCPClient:
                 return fr
             try:
                 chunk = self.sock.recv(4096)
-            except socket.timeout:
+            except TimeoutError:
                 continue
             if not chunk:
                 return None
@@ -724,7 +733,7 @@ class DNP3TCPClient:
         print("**** Link response timed out ***")
         return None
 
-    def _try_parse(self) -> Optional[DNP3Frame]:
+    def _try_parse(self) -> DNP3Frame | None:
         buf = self._rxbuf
         start = buf.find(DNP3_START)
         if start < 0:
@@ -772,7 +781,7 @@ def recv_one_app_message(
     client: DNP3TCPClient,
     reasm: TransportReassembler,
     timeout: float,
-) -> Optional[DNP3App]:
+) -> DNP3App | None:
     """
     Reads link frames until it can reassemble a complete Application message.
     Returns a parsed DNP3App or None on timeout.
@@ -814,8 +823,8 @@ def txrx_expect_response(
     confirmed_link: bool = False,
     timeout: float = 7.0,
     auto_confirm_unsolicited: bool = True,
-    unsolicited_sink: Optional[List[Dict[str, Any]]] = None,
-) -> Optional[DNP3App]:
+    unsolicited_sink: list[dict[str, Any]] | None = None,
+) -> DNP3App | None:
     # send request (still single transport fragment on TX)
     t = bytes([build_transport_header(fin=1, fir=1, seq=0)])
     frame = build_dnp3_link_frame(
@@ -864,11 +873,11 @@ def txrx_expect_response(
 # Example probe
 # -------------------------
 
-def mapper_probe(host: str, port: int, master_addr: int, outstation_addr: int) -> Dict[str, Any]:
+def mapper_probe(host: str, port: int, master_addr: int, outstation_addr: int) -> dict[str, Any]:
     client = DNP3TCPClient(host, port, timeout=7.0)
-    unsolicited: List[Dict[str, Any]] = []
+    unsolicited: list[dict[str, Any]] = []
 
-    results: Dict[str, Any] = {
+    results: dict[str, Any] = {
         "target": f"{host}:{port}",
         "master_addr": master_addr,
         "outstation_addr": outstation_addr,
@@ -921,9 +930,9 @@ def scan_one_ip(
     port: int,
     listen_seconds: float,
     per_probe_timeout: float,
-    typical_master_addrs: Tuple[int, ...],
-    typical_outstation_addrs: Tuple[int, ...],
-) -> Dict[str, Any]:
+    typical_master_addrs: tuple[int, ...],
+    typical_outstation_addrs: tuple[int, ...],
+) -> dict[str, Any]:
     # First: discover link-layer addresses (or fail fast)
     discovered = discover_outstation_address(
         host=ip,
@@ -962,7 +971,7 @@ def scan_one_ip(
             "outstation_addr": outstation_addr,
         }
 
-def parse_int_list(s: str) -> Tuple[int, ...]:
+def parse_int_list(s: str) -> tuple[int, ...]:
     # "1,10,100,1024"
     vals = []
     for part in s.split(","):
@@ -996,12 +1005,12 @@ def main():
     typical_master_addrs = parse_int_list(args.masters)
     typical_outstation_addrs = parse_int_list(args.outstations)
 
-    results: List[Dict[str, Any]] = []
+    results: list[dict[str, Any]] = []
     total = len(ips)
     print(f"[scan] scanning {total} IPs in {net} on TCP/{args.port} with {args.workers} workers")
 
     # Keep ordering stable-ish by storing per-IP results in a dict then emitting sorted
-    result_by_ip: Dict[str, Dict[str, Any]] = {}
+    result_by_ip: dict[str, dict[str, Any]] = {}
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         futs = {
@@ -1056,7 +1065,7 @@ if __name__ == "__main__":
 # Library entry points (used by der_dnp3.cli and der_dnp3.adapter)
 # ---------------------------------------------------------------------------
 
-def expand_targets(cidr_or_host: str, include_network_broadcast: bool = False) -> List[str]:
+def expand_targets(cidr_or_host: str, include_network_broadcast: bool = False) -> list[str]:
     """Expand a CIDR or a single host/IP into a list of IP strings."""
     try:
         net = ipaddress.ip_network(cidr_or_host, strict=False)
@@ -1069,20 +1078,20 @@ def expand_targets(cidr_or_host: str, include_network_broadcast: bool = False) -
 
 
 def run_scan(
-    targets: List[str],
+    targets: list[str],
     port: int = 20000,
     workers: int = 8,
     listen_seconds: float = 3.0,
     probe_timeout: float = 3.0,
-    typical_master_addrs: Tuple[int, ...] = (1,),
-    typical_outstation_addrs: Tuple[int, ...] = (1, 2, 3, 10, 11, 12, 20, 100, 101, 102, 1000, 1002, 1024),
-) -> Dict[str, Any]:
+    typical_master_addrs: tuple[int, ...] = (1,),
+    typical_outstation_addrs: tuple[int, ...] = (1, 2, 3, 10, 11, 12, 20, 100, 101, 102, 1000, 1002, 1024),
+) -> dict[str, Any]:
     """Scan host IPs for DNP3 outstations and inventory their objects.
 
     Returns the same document shape the CLI writes to dnp3_map.json:
       {"port", "scanned", "ok", "results": [per-host dict, ...]}
     """
-    result_by_ip: Dict[str, Dict[str, Any]] = {}
+    result_by_ip: dict[str, dict[str, Any]] = {}
     total = len(targets)
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {

@@ -16,8 +16,8 @@ __all__ = [
     "ControlPoint",
     "Finding",
     "FuzzFinding",
-    "Target",
     "ScopeError",
+    "Target",
     "assert_in_scope",
     "require_disruptive_consent",
 ]

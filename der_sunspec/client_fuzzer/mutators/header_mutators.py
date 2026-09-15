@@ -1,5 +1,6 @@
-import struct
 import random
+import struct
+
 
 def mutate_protocol_id(mbap):
     proto_id = random.choice([0xFFFF, 0x0001, 0x00FF, 0x1234])

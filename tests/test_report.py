@@ -5,8 +5,6 @@ logic without needing live targets.
 
 import json
 
-import pytest
-
 from der_common.report import format_report, load_attack_surfaces, main, summarize
 from der_common.schema import AttackSurface, AuthProfile, ControlPoint, Finding, Target
 

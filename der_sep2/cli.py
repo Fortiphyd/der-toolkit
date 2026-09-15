@@ -34,18 +34,19 @@ import argparse
 import json
 import logging
 import sys
-from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
-from der_sep2.models import (
-    Finding, ProbeType, Severity, ServiceTarget, TLSProfile,
-)
 from der_sep2.discovery.dns_sd import DiscoveryOrchestrator
-from der_sep2.tls.client import TLSContextFactory, TLSProfiler
+from der_sep2.models import (
+    Finding,
+    ProbeType,
+    ServiceTarget,
+    Severity,
+    TLSProfile,
+)
 from der_sep2.tls.cert_analyzer import TLSFindingGenerator
-
+from der_sep2.tls.client import TLSContextFactory, TLSProfiler
 
 # ---------------------------------------------------------------------------
 # Logging setup
@@ -218,7 +219,7 @@ def cmd_discover(args: argparse.Namespace) -> list[ServiceTarget]:
 
 def cmd_tls(
     args:    argparse.Namespace,
-    targets: Optional[list[ServiceTarget]] = None,
+    targets: list[ServiceTarget] | None = None,
 ) -> tuple[list[TLSProfile], list[Finding]]:
     log = logging.getLogger("cli.tls")
 
@@ -262,7 +263,7 @@ def cmd_tls(
                 for w in profile.weak_ciphers:
                     print(f"  Weak cipher: {w.requested} → negotiated {w.negotiated} ({w.category})")
             else:
-                print(f"  Weak ciphers: none confirmed")
+                print("  Weak ciphers: none confirmed")
             print(f"  Client cert required : {profile.requires_client_cert}")
             print(f"  Accepts self-signed  : {profile.accepted_self_signed}")
             if profile.leaf_cert:
@@ -285,7 +286,7 @@ def cmd_tls(
 
 def cmd_map(
     args:    argparse.Namespace,
-    targets: Optional[list[ServiceTarget]] = None,
+    targets: list[ServiceTarget] | None = None,
 ) -> tuple[list[dict], list[Finding], list]:
     """Returns (map_dicts, findings, mapping_results) — the raw MappingResult
     objects are passed to cmd_fuzz so it can use discovered endpoints/IDs."""
@@ -550,13 +551,13 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def cmd_fuzz(
     args:           argparse.Namespace,
-    targets:        Optional[list[ServiceTarget]] = None,
-    map_results:    Optional[list]                = None,
+    targets:        list[ServiceTarget] | None = None,
+    map_results:    list | None                = None,
 ) -> tuple[list[dict], list[Finding]]:
     from der_common.scope import assert_in_scope, require_disruptive_consent
-    from der_sep2.fuzzing.xml_payloads import VulnClass
-    from der_sep2.fuzzing.xml_fuzzer import XMLFuzzer, print_fuzzing_result
     from der_sep2.fuzzing.http_fuzzer import HTTPFuzzer, print_http_fuzzing_result
+    from der_sep2.fuzzing.xml_fuzzer import XMLFuzzer, print_fuzzing_result
+    from der_sep2.fuzzing.xml_payloads import VulnClass
 
     log = logging.getLogger("cli.fuzz")
 

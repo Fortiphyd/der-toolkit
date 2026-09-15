@@ -27,9 +27,8 @@ import hashlib
 import logging
 import re
 from functools import wraps
-from typing import Optional
 
-from flask import request, current_app, g
+from flask import current_app, g, request
 from xml_responses import error_response
 
 log = logging.getLogger(__name__)
@@ -43,7 +42,7 @@ def compute_lfdi(der_bytes: bytes) -> str:
     return hashlib.sha256(der_bytes).hexdigest()[:40].upper()
 
 
-def extract_lfdi_from_request() -> Optional[str]:
+def extract_lfdi_from_request() -> str | None:
     """
     Pull the DER bytes injected by ssl_server.py and return the LFDI string,
     or None if no client cert was presented.
@@ -192,7 +191,7 @@ def enforce_policy(f):
     return wrapper
 
 
-def _check_registration(cfg: dict, lfdi: Optional[str]) -> bool:
+def _check_registration(cfg: dict, lfdi: str | None) -> bool:
     if not lfdi:
         return False
     registered = cfg.get("acl", {}).get("registered_lfdis", [])

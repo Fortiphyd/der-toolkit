@@ -16,11 +16,8 @@ import logging
 import socket
 import ssl
 import tempfile
-import time
-from pathlib import Path
-from typing import Optional
 
-from der_sep2.models import ServiceTarget, TLSProfile, ProbeType
+from der_sep2.models import ProbeType, ServiceTarget, TLSProfile
 
 log = logging.getLogger(__name__)
 
@@ -88,11 +85,12 @@ def _generate_self_signed_cert() -> tuple[str, str]:
     The caller is responsible for cleanup.
     """
     try:
+        import datetime
+
         from cryptography import x509
-        from cryptography.x509.oid import NameOID
         from cryptography.hazmat.primitives import hashes, serialization
         from cryptography.hazmat.primitives.asymmetric import ec
-        import datetime
+        from cryptography.x509.oid import NameOID
 
         key = ec.generate_private_key(ec.SECP256R1())
         subject = issuer = x509.Name([
@@ -164,11 +162,11 @@ class TLSContextFactory:
 
     def __init__(
         self,
-        ca_bundle:        Optional[str] = None,  # trusted CA bundle for server cert
-        client_cert:      Optional[str] = None,  # registered cert  (Probe D)
-        client_key:       Optional[str] = None,  # registered key   (Probe D)
-        unreg_cert:       Optional[str] = None,  # unregistered cert (Probe C)
-        unreg_key:        Optional[str] = None,  # unregistered key  (Probe C)
+        ca_bundle:        str | None = None,  # trusted CA bundle for server cert
+        client_cert:      str | None = None,  # registered cert  (Probe D)
+        client_key:       str | None = None,  # registered key   (Probe D)
+        unreg_cert:       str | None = None,  # unregistered cert (Probe C)
+        unreg_key:        str | None = None,  # unregistered key  (Probe C)
         verify_server:    bool          = False,
     ):
         self.ca_bundle     = ca_bundle
@@ -338,8 +336,8 @@ class TLSProfiler:
     def _connect(
         self,
         ctx: ssl.SSLContext,
-        server_hostname: Optional[str] = None,
-    ) -> Optional[dict]:
+        server_hostname: str | None = None,
+    ) -> dict | None:
         """
         Attempt a raw TLS connection.  Returns a dict of connection
         metadata, or None on failure.
@@ -377,7 +375,7 @@ class TLSProfiler:
                         "version": None, "cipher": None}
             log.debug(f"[TLS] SSL error connecting to {host}:{port}: {e}")
             return None
-        except (socket.timeout, ConnectionRefusedError, OSError) as e:
+        except (TimeoutError, ConnectionRefusedError, OSError) as e:
             log.debug(f"[TLS] Connection error to {host}:{port}: {e}")
             return None
 
@@ -596,9 +594,9 @@ class TLSProfiler:
 
 def profile_target(
     target:       ServiceTarget,
-    ca_bundle:    Optional[str] = None,
-    client_cert:  Optional[str] = None,
-    client_key:   Optional[str] = None,
+    ca_bundle:    str | None = None,
+    client_cert:  str | None = None,
+    client_key:   str | None = None,
     timeout:      float         = 5.0,
 ) -> TLSProfile:
     """

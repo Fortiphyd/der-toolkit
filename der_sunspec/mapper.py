@@ -15,14 +15,12 @@ Dependencies:
 """
 
 import argparse
-import logging
 import ipaddress
+import logging
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 import yaml
 from pymodbus.client import ModbusTcpClient
-from pymodbus.exceptions import ModbusException
 
 LOG = logging.getLogger("sunspec_mapper")
 
@@ -38,7 +36,7 @@ class SunSpecModel:
     id: int
     start: int        # logical register of first data point
     length: int       # number of 16-bit registers in model data block
-    registers: Optional[List[int]] = None  # full data block, if fetched
+    registers: list[int] | None = None  # full data block, if fetched
 
 
 @dataclass
@@ -46,11 +44,11 @@ class DeviceMapping:
     host: str
     unit_id: int
     sunspec_base: int  # logical register of base (where "SunS" starts)
-    models: List[SunSpecModel]
-    common_info: Optional[Dict[str, str]] = None
+    models: list[SunSpecModel]
+    common_info: dict[str, str] | None = None
 
 
-def read_holding_regs(client: ModbusTcpClient, unit_id: int, reg: int, count: int) -> Optional[List[int]]:
+def read_holding_regs(client: ModbusTcpClient, unit_id: int, reg: int, count: int) -> list[int] | None:
     """
     Read 'count' holding registers starting at register 'reg'.
 
@@ -71,7 +69,7 @@ def read_holding_regs(client: ModbusTcpClient, unit_id: int, reg: int, count: in
     return list(resp.registers)
 
 
-def find_sunspec_base(client: ModbusTcpClient, unit_id: int) -> Optional[int]:
+def find_sunspec_base(client: ModbusTcpClient, unit_id: int) -> int | None:
     """
     Try known base candidates and return the register where the "SunS" marker is found.
     """
@@ -100,13 +98,13 @@ def find_sunspec_base(client: ModbusTcpClient, unit_id: int) -> Optional[int]:
 
 
 def walk_sunspec_models(client: ModbusTcpClient, unit_id: int, sunspec_base: int,
-                        max_models: int = 200, max_reg: int = 65000) -> List[SunSpecModel]:
+                        max_models: int = 200, max_reg: int = 65000) -> list[SunSpecModel]:
     """
     Walk SunSpec model chain after 'SunS'.
 
     Returns a list of SunSpecModel entries.
     """
-    models: List[SunSpecModel] = []
+    models: list[SunSpecModel] = []
     current = sunspec_base + 2  # first model header
     count = 0
 
@@ -133,12 +131,12 @@ def walk_sunspec_models(client: ModbusTcpClient, unit_id: int, sunspec_base: int
 
 
 def read_model_registers(client: ModbusTcpClient, unit_id: int, model: SunSpecModel,
-                         chunk_size: int = 123) -> Optional[List[int]]:
+                         chunk_size: int = 123) -> list[int] | None:
     """Read a model's full data block, chunked to stay under Modbus's per-read
     register cap (chunk_size defaults just under the common 125-register limit)."""
     if model.length == 0:
         return []
-    regs: List[int] = []
+    regs: list[int] = []
     addr = model.start
     remaining = model.length
     while remaining > 0:
@@ -152,7 +150,7 @@ def read_model_registers(client: ModbusTcpClient, unit_id: int, model: SunSpecMo
     return regs
 
 
-def read_common_model(client: ModbusTcpClient, unit_id: int, base: int, models: List[SunSpecModel]) -> Optional[Dict[str, str]]:
+def read_common_model(client: ModbusTcpClient, unit_id: int, base: int, models: list[SunSpecModel]) -> dict[str, str] | None:
     """
     Read SunSpec Common Model (ID = 1), which contains:
       Mn  = Manufacturer
@@ -190,7 +188,7 @@ def read_common_model(client: ModbusTcpClient, unit_id: int, base: int, models: 
 
 
 def build_device_mapping(host: str, port: int, unit_id: int, timeout: float = 0.4,
-                         read_registers: bool = True) -> Optional[DeviceMapping]:
+                         read_registers: bool = True) -> DeviceMapping | None:
     """
     Attempt to connect and build mapping for ONE host.
 
@@ -223,11 +221,11 @@ def build_device_mapping(host: str, port: int, unit_id: int, timeout: float = 0.
         client.close()
 
 
-def mappings_to_yaml(mappings: List[DeviceMapping], failed: List[str]) -> str:
+def mappings_to_yaml(mappings: list[DeviceMapping], failed: list[str]) -> str:
     """
     Convert results into YAML with multiple hosts.
     """
-    data: Dict[str, Dict] = {}
+    data: dict[str, dict] = {}
 
     for m in mappings:
         host_entry = {
@@ -249,7 +247,7 @@ def mappings_to_yaml(mappings: List[DeviceMapping], failed: List[str]) -> str:
     return yaml.safe_dump(data, sort_keys=False)
 
 
-def mappings_to_lua(mappings: List[DeviceMapping], failed: List[str]) -> str:
+def mappings_to_lua(mappings: list[DeviceMapping], failed: list[str]) -> str:
     """
     Output results as a Lua table for Suricata (fastest format).
     """
@@ -307,8 +305,8 @@ def main() -> None:
     logging.basicConfig(level=getattr(logging, args.log_level),
                         format="%(asctime)s [%(levelname)s] %(message)s")
 
-    mappings: List[DeviceMapping] = []
-    failed: List[str] = []
+    mappings: list[DeviceMapping] = []
+    failed: list[str] = []
 
     # --- Single host mode ---
     if args.host:
@@ -355,7 +353,7 @@ if __name__ == "__main__":
 # Library entry points (used by der_sunspec.cli / der_sunspec.adapter)
 # ---------------------------------------------------------------------------
 
-def expand_targets(cidr_or_host: str) -> List[str]:
+def expand_targets(cidr_or_host: str) -> list[str]:
     """Expand a CIDR or a single host/IP into a list of IP strings."""
     try:
         net = ipaddress.ip_network(cidr_or_host, strict=False)
@@ -367,14 +365,14 @@ def expand_targets(cidr_or_host: str) -> List[str]:
     return [str(ip) for ip in ips]
 
 
-def run_scan(targets: List[str], port: int = 502, unit_id: int = 1,
-             timeout: float = 0.4, read_registers: bool = True) -> tuple[List[DeviceMapping], List[str]]:
+def run_scan(targets: list[str], port: int = 502, unit_id: int = 1,
+             timeout: float = 0.4, read_registers: bool = True) -> tuple[list[DeviceMapping], list[str]]:
     """Map SunSpec devices across a list of hosts.
 
     Returns (mappings, failed_hosts).
     """
-    mappings: List[DeviceMapping] = []
-    failed: List[str] = []
+    mappings: list[DeviceMapping] = []
+    failed: list[str] = []
     for host in targets:
         result = build_device_mapping(host, port, unit_id, timeout=timeout, read_registers=read_registers)
         if result:

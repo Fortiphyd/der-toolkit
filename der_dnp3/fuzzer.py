@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-import socket
-from typing import Optional
-from boofuzz import Session, Target, s_initialize, s_byte, s_static, s_get, s_group, s_word
-from boofuzz.connections.itarget_connection import ITargetConnection  # ITargetConnection interface :contentReference[oaicite:6]{index=6}
 import random
-from typing import Iterable
+import socket
+from collections.abc import Iterable
+
+from boofuzz import Session, Target, s_byte, s_get, s_group, s_initialize, s_word
+from boofuzz.connections.itarget_connection import (
+    ITargetConnection,  # ITargetConnection interface :contentReference[oaicite:6]{index=6}
+)
 
 # ----------------------------
 # CRC-16/DNP + link-frame packer
@@ -125,7 +127,7 @@ class Dnp3TcpWrappedConnection(ITargetConnection):
         self.dst = dst
         self.src = src
         self.link_ctrl = link_ctrl
-        self._sock: Optional[socket.socket] = None
+        self._sock: socket.socket | None = None
         self.split_strategy = split_strategy
         self.split_parts = split_parts
         self.coalesce_count = coalesce_count
@@ -149,7 +151,7 @@ class Dnp3TcpWrappedConnection(ITargetConnection):
         try:
             # Wait for ACK (secondary FC=0x00 = ACK)
             self._sock.recv(4096)
-        except socket.timeout:
+        except TimeoutError:
             pass  # proceed anyway — we're fuzzing, not guaranteeing delivery
 
 
@@ -235,7 +237,7 @@ class Dnp3TcpWrappedConnection(ITargetConnection):
     def recv(self, max_bytes: int = 4096) -> bytes:
         try:
             return self._sock.recv(max_bytes)
-        except socket.timeout:
+        except TimeoutError:
             return b""
 
 # ----------------------------

@@ -40,17 +40,17 @@ from __future__ import annotations
 
 import logging
 import re
-import ssl
 import time
 from dataclasses import dataclass, field
-from typing import Optional
 
-from der_sep2.models import Finding, ProbeType, ResourceNode, Severity, ServiceTarget
-from der_sep2.mapping.resource_mapper import MappingResult, Sep2HTTPClient
-from der_sep2.tls.client import TLSContextFactory
 from der_sep2.fuzzing.xml_payloads import (
-    FuzzPayload, VulnClass, all_payloads,
+    FuzzPayload,
+    VulnClass,
+    all_payloads,
 )
+from der_sep2.mapping.resource_mapper import MappingResult, Sep2HTTPClient
+from der_sep2.models import Finding, ProbeType, ServiceTarget, Severity
+from der_sep2.tls.client import TLSContextFactory
 
 log = logging.getLogger(__name__)
 
@@ -102,10 +102,10 @@ class FuzzResult:
     path:          str
     method:        str
     payload:       FuzzPayload
-    status_code:   Optional[int]    = None
-    response_body: Optional[bytes]  = None
+    status_code:   int | None    = None
+    response_body: bytes | None  = None
     elapsed_ms:    float            = 0.0
-    error:         Optional[str]    = None
+    error:         str | None    = None
     baseline_ms:   float            = 0.0   # GET response time for comparison
 
     @property
@@ -152,12 +152,12 @@ class XMLFuzzer:
         self,
         target:          ServiceTarget,
         context_factory: TLSContextFactory,
-        mapping_result:  Optional[MappingResult] = None,
+        mapping_result:  MappingResult | None = None,
         rate_limit_rps:  float = 2.0,   # lower default than mapper — fuzzing is noisier
         timeout:         float = 10.0,
         callback_host:   str   = "127.0.0.1",
         callback_port:   int   = 9999,
-        vuln_classes:    Optional[list[VulnClass]] = None,
+        vuln_classes:    list[VulnClass] | None = None,
     ):
         self.target          = target
         self.factory         = context_factory
@@ -264,7 +264,7 @@ class XMLFuzzer:
         if self.mapping_result:
             discovered_ids = dict(self.mapping_result.discovered_ids)
 
-        from der_sep2.mapping.resource_tree import expand_wordlist, _normalise_path
+        from der_sep2.mapping.resource_tree import _normalise_path, expand_wordlist
         all_paths = expand_wordlist(discovered_ids)
 
         for path in all_paths:

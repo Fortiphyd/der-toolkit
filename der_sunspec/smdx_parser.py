@@ -14,9 +14,8 @@ from __future__ import annotations
 
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
-from functools import lru_cache
+from functools import cache
 from importlib import resources
-from typing import Optional
 
 
 @dataclass
@@ -27,10 +26,10 @@ class PointDef:
     point_type: str
     access: str  # raw SMDX attribute, typically "r" or "rw"
     mandatory: bool
-    units: Optional[str] = None
-    scale_factor_ref: Optional[str] = None
+    units: str | None = None
+    scale_factor_ref: str | None = None
     symbols: dict[int, str] = field(default_factory=dict)
-    label: Optional[str] = None
+    label: str | None = None
 
     @property
     def writable(self) -> bool:
@@ -87,8 +86,8 @@ def _parse_xml(xml_bytes: bytes) -> ModelDef:
     return ModelDef(id=model_id, length=block_len, points=points)
 
 
-@lru_cache(maxsize=None)
-def load_model_def(model_id: int) -> Optional[ModelDef]:
+@cache
+def load_model_def(model_id: int) -> ModelDef | None:
     """Load and cache the SMDX definition for a model id, or None if we don't
     vendor one for it (see der_sunspec/smdx/NOTICE.md for coverage)."""
     name = f"smdx_{model_id:05d}.xml"

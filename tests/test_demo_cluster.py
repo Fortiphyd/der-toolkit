@@ -45,8 +45,7 @@ def _run_map(cli: str, target: str, *extra_args: str, out: Path) -> dict:
     subprocess.run(
         [cli, "map", target, *extra_args, "--output", str(out)],
         cwd=REPO_ROOT,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         check=True,
         timeout=60,
     )

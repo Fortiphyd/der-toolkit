@@ -12,7 +12,6 @@ unauthenticated Modbus are the high-severity surface either way.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Optional
 
 from der_common.schema import (
     AttackSurface,
@@ -36,7 +35,7 @@ def _severity(model_id: int) -> str:
     return "low"                   # measurement / inverter / meter models
 
 
-def _decode_point(regs: list[int], point: PointDef) -> Optional[object]:
+def _decode_point(regs: list[int], point: PointDef) -> object | None:
     """Best-effort decode of one point's raw registers into a Python value.
     Returns None (rather than raising) on anything short/malformed -- a
     partially-read device shouldn't kill the whole mapping."""
@@ -126,7 +125,7 @@ def _control_points_for_model(model) -> list[ControlPoint]:
     return [_control_point(model)]
 
 
-def build_attack_surface(mapping, port: int = 502, generated_at: Optional[str] = None) -> AttackSurface:
+def build_attack_surface(mapping, port: int = 502, generated_at: str | None = None) -> AttackSurface:
     """Convert one DeviceMapping into an AttackSurface."""
     gen = generated_at or datetime.now(tz=timezone.utc).isoformat()
     info = mapping.common_info or {}
@@ -192,6 +191,6 @@ def build_attack_surface(mapping, port: int = 502, generated_at: Optional[str] =
 
 
 def build_attack_surfaces(mappings, port: int = 502,
-                          generated_at: Optional[str] = None) -> list[AttackSurface]:
+                          generated_at: str | None = None) -> list[AttackSurface]:
     gen = generated_at or datetime.now(tz=timezone.utc).isoformat()
     return [build_attack_surface(m, port=port, generated_at=gen) for m in mappings]

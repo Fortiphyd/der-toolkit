@@ -1,5 +1,6 @@
 import random
 
+
 def mutate_function_code(func):
     """
     Replace the function code with:

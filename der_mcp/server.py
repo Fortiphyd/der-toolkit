@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 import sys
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from der_common.scope import assert_in_scope, require_disruptive_consent
 from der_mcp import mappers
@@ -54,7 +54,7 @@ def list_capabilities() -> dict[str, Any]:
 
 
 @mcp.tool()
-def discover_targets(scope: list[str], protocol: Optional[Protocol] = None) -> list[dict]:
+def discover_targets(scope: list[str], protocol: Protocol | None = None) -> list[dict]:
     """Discover DER endpoints within `scope` (IPs/CIDRs you are authorized to
     assess). READ-ONLY. If `protocol` is given, probe only that protocol,
     otherwise probe all three. Returns candidate targets."""
@@ -65,8 +65,8 @@ def discover_targets(scope: list[str], protocol: Optional[Protocol] = None) -> l
 
 @mcp.tool()
 def map_attack_surface(protocol: Protocol, ip: str, authorized_scope: list[str],
-                       port: Optional[int] = None, client_cert: Optional[str] = None,
-                       client_key: Optional[str] = None, unit_id: Optional[int] = None) -> dict:
+                       port: int | None = None, client_cert: str | None = None,
+                       client_key: str | None = None, unit_id: int | None = None) -> dict:
     """Map the unauthenticated attack surface of a single target. READ-ONLY and
     safe. Returns an AttackSurface: control points with semantic labels,
     read/write reachability, and severity. For sep2, supplying client_cert/key
@@ -83,8 +83,8 @@ def map_attack_surface(protocol: Protocol, ip: str, authorized_scope: list[str],
 
 @mcp.tool()
 def start_fuzz(protocol: Protocol, ip: str, authorized_scope: list[str],
-               port: Optional[int] = None, allow_disruptive: bool = False,
-               opts: Optional[dict] = None) -> dict:
+               port: int | None = None, allow_disruptive: bool = False,
+               opts: dict | None = None) -> dict:
     """Start an async fuzz run against a target. DISRUPTIVE: can hang or crash
     live equipment, so it requires allow_disruptive=True and an in-scope target.
     Returns {job_id}. Poll with get_job, collect with get_findings."""

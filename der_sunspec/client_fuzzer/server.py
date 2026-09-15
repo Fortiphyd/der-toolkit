@@ -1,7 +1,9 @@
 import socket
 import struct
 import threading
+
 from der_sunspec.client_fuzzer.fuzzer_engine import mutate_response
+
 
 # -----------------------------
 # Minimal MBAP + Request Parser
@@ -20,7 +22,6 @@ def parse_modbus_request(data):
     length   = struct.unpack(">H", data[4:6])[0]
     unit_id  = data[6]
     func     = data[7]
-    pdu      = data[7:]  # includes function code
 
     return {
         "trans_id": trans_id,
@@ -65,10 +66,7 @@ def build_normal_response(req):
     elif func == 6:  # Write Single Register
         pdu = bytes([func]) + req["payload"][:4]
 
-    elif func == 15:  # Write Multiple Coils
-        # Echo starting address + quantity
-        pdu = bytes([func]) + req["payload"][:4]
-    elif func == 16:  # Write Multiple Registers
+    elif func == 15 or func == 16:  # Write Multiple Coils
         # Echo starting address + quantity
         pdu = bytes([func]) + req["payload"][:4]
 

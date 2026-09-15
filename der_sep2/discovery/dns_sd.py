@@ -17,8 +17,10 @@ import ipaddress
 import logging
 import socket
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, Optional
+
+from der_sep2.models import ServiceTarget
 
 log = logging.getLogger(__name__)
 
@@ -106,8 +108,8 @@ class UnicastDNSDiscovery:
 
     def __init__(
         self,
-        nameserver:     Optional[str] = None,
-        domains:        Optional[list[str]] = None,
+        nameserver:     str | None = None,
+        domains:        list[str] | None = None,
         timeout:        float = DEFAULT_TIMEOUT,
     ):
         """
@@ -118,8 +120,8 @@ class UnicastDNSDiscovery:
             timeout:     DNS query timeout in seconds.
         """
         try:
-            import dns.resolver
             import dns.rdatatype
+            import dns.resolver
             self._dns = dns
         except ImportError:
             raise ImportError(
@@ -162,7 +164,7 @@ class UnicastDNSDiscovery:
 
     def _resolve_instance(
         self, instance_name: str, svc_type: str
-    ) -> Optional[DiscoveredService]:
+    ) -> DiscoveredService | None:
         hostname, port = self._query_srv(instance_name)
         if not hostname:
             return None
@@ -181,7 +183,7 @@ class UnicastDNSDiscovery:
             source          = "dns_sd",
         )
 
-    def _query_srv(self, name: str) -> tuple[Optional[str], int]:
+    def _query_srv(self, name: str) -> tuple[str | None, int]:
         try:
             answers = self._resolver.resolve(name, "SRV")
             r = answers[0]   # use highest-priority record
@@ -229,7 +231,7 @@ class MDNSDiscovery:
     def __init__(
         self,
         timeout:    float = 5.0,
-        interface:  Optional[str] = None,
+        interface:  str | None = None,
     ):
         self.timeout   = timeout
         self.interface = interface
@@ -245,7 +247,7 @@ class MDNSDiscovery:
             return self._discover_raw()
 
     def _discover_zeroconf(self) -> list[DiscoveredService]:
-        from zeroconf import Zeroconf, ServiceBrowser, ServiceInfo
+        from zeroconf import ServiceBrowser, ServiceInfo, Zeroconf
 
         found: list[DiscoveredService] = []
 
@@ -280,7 +282,9 @@ class MDNSDiscovery:
 
         zc       = Zeroconf()
         listener = _Listener()
-        browsers = [
+        # Must stay referenced for the scan's duration -- each ServiceBrowser's
+        # background listener thread stops firing if the object is GC'd.
+        browsers = [  # noqa: F841
             ServiceBrowser(zc, f"{svc_type}.local.", listener)
             for svc_type, _, _ in SEP2_SERVICE_TYPES
         ]
@@ -351,7 +355,7 @@ class MDNSDiscovery:
                     txt_properties = {},
                     source         = "mdns_raw",
                 ))
-            except socket.timeout:
+            except TimeoutError:
                 break
             except Exception as e:
                 log.debug(f"[mDNS raw] Recv error: {e}")
@@ -375,10 +379,10 @@ class PortScanner:
     def __init__(
         self,
         targets:  list[str],           # CIDRs or individual IPs
-        ports:    Optional[list[int]] = None,
+        ports:    list[int] | None = None,
         timeout:  float = 1.0,
         workers:  int   = 50,
-        on_found: Optional[Callable[[str, int], None]] = None,
+        on_found: Callable[[str, int], None] | None = None,
     ):
         self.targets  = targets
         self.ports    = ports or self.SEP2_PORTS
@@ -425,7 +429,7 @@ class PortScanner:
         try:
             with socket.create_connection((ip, port), timeout=self.timeout):
                 return True
-        except (socket.timeout, ConnectionRefusedError, OSError):
+        except (TimeoutError, ConnectionRefusedError, OSError):
             return False
 
     def _expand_targets(self):
@@ -452,10 +456,10 @@ class DiscoveryOrchestrator:
 
     def __init__(
         self,
-        nameserver:   Optional[str]       = None,
-        domains:      Optional[list[str]] = None,
-        scan_targets: Optional[list[str]] = None,
-        scan_ports:   Optional[list[int]] = None,
+        nameserver:   str | None       = None,
+        domains:      list[str] | None = None,
+        scan_targets: list[str] | None = None,
+        scan_ports:   list[int] | None = None,
         mdns_timeout: float               = 5.0,
         dns_timeout:  float               = 3.0,
         scan_timeout: float               = 1.0,
@@ -474,9 +478,7 @@ class DiscoveryOrchestrator:
         self.skip_dns_sd  = skip_dns_sd
         self.skip_scan    = skip_scan
 
-    def run(self) -> list["ServiceTarget"]:
-        from der_sep2.models import ServiceTarget
-
+    def run(self) -> list[ServiceTarget]:
         all_services: list[DiscoveredService] = []
 
         if not self.skip_dns_sd:

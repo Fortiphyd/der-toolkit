@@ -7,7 +7,6 @@ runtime. Each function returns plain dicts / der_common models.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Optional
 
 from der_common.schema import AttackSurface
 
@@ -22,13 +21,13 @@ def _now() -> str:
 # map_attack_surface (read-only)
 # ---------------------------------------------------------------------------
 
-def map_sep2(ip: str, port: int, client_cert: Optional[str] = None,
-             client_key: Optional[str] = None, timeout: float = 10.0,
+def map_sep2(ip: str, port: int, client_cert: str | None = None,
+             client_key: str | None = None, timeout: float = 10.0,
              max_depth: int = 8, rate_limit: float = 5.0) -> AttackSurface:
-    from der_sep2.models import ServiceTarget, ProbeType
-    from der_sep2.tls.client import TLSContextFactory, TLSProfiler
-    from der_sep2.mapping.resource_mapper import ResourceMapper
     from der_sep2.adapter import build_attack_surface
+    from der_sep2.mapping.resource_mapper import ResourceMapper
+    from der_sep2.models import ProbeType, ServiceTarget
+    from der_sep2.tls.client import TLSContextFactory, TLSProfiler
 
     target = ServiceTarget(ip=ip, port=port, hostname=ip, base_path="/dcap")
     factory = TLSContextFactory(client_cert=client_cert, client_key=client_key)
@@ -46,24 +45,24 @@ def map_sep2(ip: str, port: int, client_cert: Optional[str] = None,
                                 used_cert=bool(client_cert), generated_at=_now())
 
 
-def map_dnp3(ip: str, port: int, timeout: float = 3.0) -> Optional[AttackSurface]:
-    from der_dnp3.scanner import run_scan
+def map_dnp3(ip: str, port: int, timeout: float = 3.0) -> AttackSurface | None:
     from der_dnp3.adapter import build_attack_surfaces
+    from der_dnp3.scanner import run_scan
     doc = run_scan([ip], port=port, workers=1, listen_seconds=timeout, probe_timeout=timeout)
     surfs = build_attack_surfaces(doc, generated_at=_now())
     return surfs[0] if surfs else None
 
 
-def map_sunspec(ip: str, port: int, unit_id: int = 1, timeout: float = 0.4) -> Optional[AttackSurface]:
-    from der_sunspec.mapper import build_device_mapping
+def map_sunspec(ip: str, port: int, unit_id: int = 1, timeout: float = 0.4) -> AttackSurface | None:
     from der_sunspec.adapter import build_attack_surface
+    from der_sunspec.mapper import build_device_mapping
     m = build_device_mapping(ip, port, unit_id, timeout=timeout)
     return build_attack_surface(m, port=port, generated_at=_now()) if m else None
 
 
-def map_attack_surface(protocol: str, ip: str, port: Optional[int] = None,
-                       client_cert: Optional[str] = None, client_key: Optional[str] = None,
-                       unit_id: Optional[int] = None) -> Optional[AttackSurface]:
+def map_attack_surface(protocol: str, ip: str, port: int | None = None,
+                       client_cert: str | None = None, client_key: str | None = None,
+                       unit_id: int | None = None) -> AttackSurface | None:
     port = port or DEFAULT_PORTS[protocol]
     if protocol == "sep2":
         return map_sep2(ip, port, client_cert=client_cert, client_key=client_key)
@@ -79,7 +78,7 @@ def map_attack_surface(protocol: str, ip: str, port: Optional[int] = None,
 # ---------------------------------------------------------------------------
 
 def _discover_dnp3(scope: list[str], timeout: float) -> list[dict]:
-    from der_dnp3.scanner import expand_targets, discover_outstation_address
+    from der_dnp3.scanner import discover_outstation_address, expand_targets
     found = []
     for cidr in scope:
         for ip in expand_targets(cidr):
@@ -93,8 +92,9 @@ def _discover_dnp3(scope: list[str], timeout: float) -> list[dict]:
 
 
 def _discover_sunspec(scope: list[str], timeout: float) -> list[dict]:
-    from der_sunspec.mapper import expand_targets, find_sunspec_base
     from pymodbus.client import ModbusTcpClient
+
+    from der_sunspec.mapper import expand_targets, find_sunspec_base
     found = []
     for cidr in scope:
         for ip in expand_targets(cidr):
@@ -118,7 +118,7 @@ def _discover_sep2(scope: list[str]) -> list[dict]:
             for t in orch.run()]
 
 
-def discover(scope: list[str], protocol: Optional[str] = None, timeout: float = 1.0) -> list[dict]:
+def discover(scope: list[str], protocol: str | None = None, timeout: float = 1.0) -> list[dict]:
     protocols = [protocol] if protocol else ["dnp3", "sunspec", "sep2"]
     out: list[dict] = []
     for proto in protocols:

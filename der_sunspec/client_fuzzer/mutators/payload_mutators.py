@@ -1,5 +1,6 @@
-import random
 import os
+import random
+
 
 def mutate_payload(payload):
     """

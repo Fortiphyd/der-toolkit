@@ -1,5 +1,6 @@
-import struct
 import random
+import struct
+
 
 def mutate_length_field(mbap, payload_len):
     """

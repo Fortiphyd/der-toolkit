@@ -11,7 +11,6 @@ Commands (g12 CROB) or Analog Output Commands (g41) to actuate them.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Optional
 
 from der_common.schema import (
     AttackSurface,
@@ -31,7 +30,7 @@ _MEASUREMENT = {1, 2, 3, 4, 20, 21, 22, 23, 30, 31, 32, 33}
 _SECURE_AUTH = {120, 121, 122}
 
 
-def _points_in_range(rng: Optional[dict]) -> Optional[int]:
+def _points_in_range(rng: dict | None) -> int | None:
     if not rng:
         return None
     if "start" in rng and "stop" in rng:
@@ -137,7 +136,7 @@ def _group_name(g: int) -> str:
     return DNP3_GROUP_NAMES.get(g, f"Group {g}")
 
 
-def _one(result: dict, default_port: Optional[int], generated_at: str) -> AttackSurface:
+def _one(result: dict, default_port: int | None, generated_at: str) -> AttackSurface:
     headers = _collect_headers(result)
     groups = {h["group"] for h in headers}
     auth = AuthProfile(scheme="none", requires_auth=False, tls=False)
@@ -158,7 +157,7 @@ def _one(result: dict, default_port: Optional[int], generated_at: str) -> Attack
     )
 
 
-def build_attack_surfaces(scan_doc: dict, generated_at: Optional[str] = None) -> list[AttackSurface]:
+def build_attack_surfaces(scan_doc: dict, generated_at: str | None = None) -> list[AttackSurface]:
     """Convert a run_scan document into one AttackSurface per reachable outstation."""
     gen = generated_at or datetime.now(tz=timezone.utc).isoformat()
     return [

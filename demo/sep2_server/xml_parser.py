@@ -22,8 +22,8 @@ responses beyond just HTTP status codes.
 
 import logging
 import re
+import xml.etree.ElementTree as stdlib_et  # fallback
 from dataclasses import dataclass, field
-from typing import Optional
 
 log = logging.getLogger(__name__)
 
@@ -45,9 +45,6 @@ except ImportError:
                 "(has partial protections in Python 3.8+). "
                 "Install with: pip install defusedxml")
 
-import xml.etree.ElementTree as stdlib_et  # fallback
-
-
 # ──────────────────────────────────────────────────────────────────────────────
 
 @dataclass
@@ -65,8 +62,8 @@ class ParseResult:
     resolved_entity_values: dict[str, str] = field(default_factory=dict)
 
     # Error info
-    error: Optional[str] = None
-    blocked_reason: Optional[str] = None     # set when defusedxml raises
+    error: str | None = None
+    blocked_reason: str | None = None     # set when defusedxml raises
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -163,8 +160,8 @@ def _fire_oob_callbacks(uris: list[str]):
     the OOB callback fires regardless of how libxml2 was compiled.
     """
     import threading
-    from urllib.request import urlopen
     from urllib.error import URLError
+    from urllib.request import urlopen
 
     http_uris = [u for u in uris if u.startswith("http://") or u.startswith("https://")]
     if not http_uris:
@@ -206,7 +203,6 @@ def _parse_safe(xml_bytes: bytes) -> ParseResult:
 
     try:
         if _DEFUSEDXML_AVAILABLE:
-            import io
             root = safe_et.fromstring(xml_bytes.decode("utf-8", errors="replace"))
         else:
             root = stdlib_et.fromstring(xml_bytes.decode("utf-8", errors="replace"))

@@ -19,10 +19,8 @@ Reference: IEEE 2030.5-2018, Table 12 and Section 6 (Resource Model)
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from der_sep2.models import ACLAccess
-
 
 # ---------------------------------------------------------------------------
 # Policy table entry
@@ -282,7 +280,7 @@ POLICY_TABLE: dict[str, ResourcePolicy] = {
 }
 
 
-def lookup_policy(path: str) -> Optional[ResourcePolicy]:
+def lookup_policy(path: str) -> ResourcePolicy | None:
     """
     Find the most-specific policy for a given path.
 
@@ -327,9 +325,7 @@ def _normalise_path(path: str) -> str:
     for part in parts:
         if part in KNOWN_SEGMENTS:
             result.append(part)
-        elif part == "{id}":
-            result.append("{id}")
-        elif _looks_like_id(part):
+        elif part == "{id}" or _looks_like_id(part):
             result.append("{id}")
         else:
             result.append(part)
@@ -501,9 +497,6 @@ def expand_wordlist(discovered_ids: dict[str, list[str]]) -> list[str]:
             concrete.add(template)
             continue
 
-        # Find which prefixes are relevant for each placeholder level
-        # by walking the template left-to-right
-        segments   = template.split("{id}")
         id_options = _ids_for_template(template, discovered_ids)
 
         if not id_options:

@@ -7,10 +7,10 @@ into the WSGI environ as 'SSL_CLIENT_CERT_DER' so application code can
 compute the LFDI without relying on a reverse proxy.
 """
 
-import ssl
 import logging
-from wsgiref.simple_server import WSGIServer, WSGIRequestHandler, ServerHandler
+import ssl
 from socketserver import ThreadingMixIn
+from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 # Quiet the default wsgiref request log – we do our own structured logging
 # ──────────────────────────────────────────────────────────────────────────────
 class _QuietHandler(WSGIRequestHandler):
-    def log_message(self, fmt, *args):  # noqa: D102
+    def log_message(self, fmt, *args):
         pass  # suppress – Flask/app layer logs instead
 
     def get_environ(self):

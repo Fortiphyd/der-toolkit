@@ -1,10 +1,10 @@
 import random
 import struct
 
+from der_sunspec.client_fuzzer.mutators.bytecount_mutators import mutate_bytecount
+from der_sunspec.client_fuzzer.mutators.function_mutators import mutate_function_code
 from der_sunspec.client_fuzzer.mutators.header_mutators import mutate_protocol_id, mutate_unit_id
 from der_sunspec.client_fuzzer.mutators.length_mutators import mutate_length_field
-from der_sunspec.client_fuzzer.mutators.function_mutators import mutate_function_code
-from der_sunspec.client_fuzzer.mutators.bytecount_mutators import mutate_bytecount
 from der_sunspec.client_fuzzer.mutators.payload_mutators import mutate_payload
 
 
@@ -18,9 +18,6 @@ def mutate_response(resp_bytes, req):
     # --------------------------
 
     trans_id = resp_bytes[0:2]                # left unchanged
-    proto_id = resp_bytes[2:4]
-    length   = resp_bytes[4:6]
-    unit_id  = resp_bytes[6:7]
 
     mbap = resp_bytes[:7]
     pdu  = resp_bytes[7:]
@@ -28,7 +25,6 @@ def mutate_response(resp_bytes, req):
     payload = pdu[1:]
 
     mutated_mbap = mbap
-    mutated_pdu = pdu
 
     # --------------------------
     # Apply header mutations

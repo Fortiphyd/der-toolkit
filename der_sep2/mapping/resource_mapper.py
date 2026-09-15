@@ -28,21 +28,25 @@ from __future__ import annotations
 import logging
 import re
 import ssl
-import socket
 import time
 import urllib.parse
 from collections import defaultdict
 from dataclasses import dataclass, field
-from http.client import HTTPSConnection, HTTPResponse
-from typing import Iterator, Optional
+from http.client import HTTPSConnection
 
-from der_sep2.models import (
-    ACLAccess, Finding, ProbeResult, ProbeType,
-    ResourceNode, ServiceTarget, Severity,
-)
 from der_sep2.mapping.resource_tree import (
-    RESOURCE_WORDLIST, ResourcePolicy, expand_wordlist,
-    lookup_policy, _normalise_path,
+    ResourcePolicy,
+    expand_wordlist,
+    lookup_policy,
+)
+from der_sep2.models import (
+    ACLAccess,
+    Finding,
+    ProbeResult,
+    ProbeType,
+    ResourceNode,
+    ServiceTarget,
+    Severity,
 )
 from der_sep2.tls.client import TLSContextFactory
 
@@ -119,7 +123,7 @@ class Sep2HTTPClient:
     def __init__(
         self,
         target:  ServiceTarget,
-        ctx:     Optional[ssl.SSLContext],   # None = plain HTTP
+        ctx:     ssl.SSLContext | None,   # None = plain HTTP
         timeout: float = HTTP_TIMEOUT,
     ):
         self.target  = target
@@ -130,15 +134,15 @@ class Sep2HTTPClient:
         self,
         method:  str,
         path:    str,
-        body:    Optional[bytes] = None,
-        headers: Optional[dict]  = None,
+        body:    bytes | None = None,
+        headers: dict | None  = None,
     ) -> tuple[int, dict, bytes]:
         """
         Make a single HTTP(S) request.
         Returns (status_code, response_headers, body_bytes).
         Raises on connection / TLS failure — callers catch and store as error.
         """
-        from http.client import HTTPConnection, HTTPSConnection
+        from http.client import HTTPConnection
 
         hdrs = {
             "Accept":     "application/sep+xml",
@@ -228,7 +232,7 @@ def extract_hrefs(body: bytes) -> list[str]:
     ]
 
 
-def extract_total_count(body: bytes) -> Optional[int]:
+def extract_total_count(body: bytes) -> int | None:
     """
     Extract the total item count from a list resource response.
     The spec uses `all="N"` on the list element, e.g.:
@@ -460,7 +464,7 @@ class ResourceMapper:
         self,
         target:          ServiceTarget,
         context_factory: TLSContextFactory,
-        probe_types:     Optional[list[ProbeType]]  = None,
+        probe_types:     list[ProbeType] | None  = None,
         rate_limit_rps:  float                      = 5.0,
         max_depth:       int                        = 8,
         timeout:         float                      = HTTP_TIMEOUT,
@@ -676,7 +680,7 @@ class ResourceMapper:
         self,
         path:   str,
         node:   ResourceNode,
-        policy: Optional[ResourcePolicy],
+        policy: ResourcePolicy | None,
     ) -> None:
         """
         Core finding: resource accessible without a cert when policy
@@ -705,7 +709,6 @@ class ResourceMapper:
 
         a_ok           = _http_ok(probe_a)
         a_mtls_enforced = _mtls_enforced(probe_a)
-        d_ok           = _http_ok(probe_d)
 
         if policy.cert_required:
             if a_ok:
@@ -761,7 +764,7 @@ class ResourceMapper:
         self,
         path:   str,
         node:   ResourceNode,
-        policy: Optional[ResourcePolicy],
+        policy: ResourcePolicy | None,
     ) -> None:
         """
         Flag writable methods (POST/PUT/DELETE) on resources whose
@@ -814,7 +817,7 @@ class ResourceMapper:
         self,
         path:   str,
         node:   ResourceNode,
-        policy: Optional[ResourcePolicy],
+        policy: ResourcePolicy | None,
     ) -> None:
         """
         A resource is accessible but wasn't reachable from the href tree —
@@ -854,7 +857,7 @@ class ResourceMapper:
         self,
         path:   str,
         node:   ResourceNode,
-        policy: Optional[ResourcePolicy],
+        policy: ResourcePolicy | None,
     ) -> None:
         """
         Check for unexpected methods:
@@ -894,7 +897,7 @@ class ResourceMapper:
             time.sleep(self._min_interval - elapsed)
         self._last_request = time.monotonic()
 
-    def _best_body(self, node: ResourceNode) -> Optional[bytes]:
+    def _best_body(self, node: ResourceNode) -> bytes | None:
         """Return the response body from the most-privileged successful probe."""
         for pt in [ProbeType.VALID_REG, ProbeType.VALID_UNREG,
                    ProbeType.SELF_SIGNED, ProbeType.NO_CERT]:
@@ -903,7 +906,7 @@ class ResourceMapper:
                 return r.body
         return None
 
-    def _normalise_href(self, href: str) -> Optional[str]:
+    def _normalise_href(self, href: str) -> str | None:
         """
         Convert an href to a bare path we can probe.
         Handles absolute URLs (same host), relative paths, and strips

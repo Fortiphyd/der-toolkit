@@ -12,8 +12,9 @@ pagination logic is exercised.
 Resource hrefs are absolute paths (no host) matching the Flask route tree.
 """
 
-from flask import Response
 from datetime import datetime, timezone
+
+from flask import Response
 
 NS   = "urn:ieee:std:2030.5:ns"
 NSXS = "http://www.w3.org/2001/XMLSchema-instance"
@@ -348,7 +349,6 @@ def upt_response(upt_id: str) -> Response:
 
 
 def meter_reading_list_response(upt_id: str) -> Response:
-    now = _now_epoch()
     body = f"""<MeterReadingList xmlns="{NS}" href="/upt/{upt_id}/mr" all="2" results="2">
   <MeterReading href="/upt/{upt_id}/mr/0" subscribable="0">
     <ReadingTypeLink href="/upt/{upt_id}/mr/0/rt"/>

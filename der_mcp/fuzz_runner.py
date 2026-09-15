@@ -64,11 +64,11 @@ def _collect_boofuzz_findings(label: str, opts: dict) -> list[dict]:
 
 
 def _fuzz_sep2(host: str, port: int, opts: dict) -> list[dict]:
+    from der_sep2.adapter import _fuzz_finding
+    from der_sep2.fuzzing.http_fuzzer import HTTPFuzzer
+    from der_sep2.fuzzing.xml_fuzzer import XMLFuzzer
     from der_sep2.models import ServiceTarget
     from der_sep2.tls.client import TLSContextFactory
-    from der_sep2.fuzzing.xml_fuzzer import XMLFuzzer
-    from der_sep2.fuzzing.http_fuzzer import HTTPFuzzer
-    from der_sep2.adapter import _fuzz_finding
 
     target = ServiceTarget(ip=host, port=port, hostname=host)
     factory = TLSContextFactory(client_cert=opts.get("client_cert"),

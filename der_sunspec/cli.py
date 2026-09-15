@@ -22,8 +22,8 @@ from pathlib import Path
 
 
 def _cmd_map(args: argparse.Namespace) -> int:
-    from der_sunspec.mapper import run_scan, expand_targets, mappings_to_yaml, mappings_to_lua
     from der_sunspec.adapter import build_attack_surfaces
+    from der_sunspec.mapper import expand_targets, mappings_to_lua, mappings_to_yaml, run_scan
     from der_sunspec.models_catalog import is_control_model
 
     targets = expand_targets(args.target)
@@ -62,8 +62,8 @@ def _cmd_fuzz(args: argparse.Namespace) -> int:
     assert_in_scope(args.host, args.authorized_scope or [])
     require_disruptive_consent(args.allow_disruptive)
 
-    from der_sunspec.fuzzer import run_fuzz
     from der_common.boofuzz_db import parse_boofuzz_db, summarize_boofuzz_db
+    from der_sunspec.fuzzer import run_fuzz
     print(f"[sunspec] fuzzing {args.host}:{args.port} (DISRUPTIVE) — unit={args.unit_id}",
           file=sys.stderr)
     run_fuzz(args.host, args.port, unit_id=args.unit_id, max_depth=args.max_depth)

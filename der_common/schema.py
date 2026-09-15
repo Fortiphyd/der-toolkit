@@ -8,7 +8,7 @@ high-severity* control points uniformly, regardless of protocol.
 
 from __future__ import annotations
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -20,9 +20,9 @@ class Target(BaseModel):
     ip: str
     port: int
     protocol: Protocol
-    base_path: Optional[str] = None  # e.g. sep2 "/dcap"
-    unit_id: Optional[int] = None    # modbus/sunspec unit id
-    hostname: Optional[str] = None
+    base_path: str | None = None  # e.g. sep2 "/dcap"
+    unit_id: int | None = None    # modbus/sunspec unit id
+    hostname: str | None = None
 
 
 class AuthProfile(BaseModel):
@@ -36,11 +36,11 @@ class AuthProfile(BaseModel):
     scheme: Literal["none", "modbus", "tls_client_cert"] = "none"
     requires_auth: bool = False
     tls: bool = False
-    tls_version: Optional[str] = None
+    tls_version: str | None = None
     weak_ciphers: list[str] = Field(default_factory=list)
     client_cert_present: bool = False
-    accepted_self_signed: Optional[bool] = None
-    notes: Optional[str] = None
+    accepted_self_signed: bool | None = None
+    notes: str | None = None
 
 
 class ControlPoint(BaseModel):
@@ -52,12 +52,12 @@ class ControlPoint(BaseModel):
     """
 
     address: str                       # "40072" | "/edev/1/derc" | "group12:idx3"
-    semantic_label: Optional[str] = None
-    model: Optional[str] = None        # sunspec model / dnp3 group / sep2 resource type
+    semantic_label: str | None = None
+    model: str | None = None        # sunspec model / dnp3 group / sep2 resource type
     readable: bool = False
     writable: bool = False
     value: Any = None
-    units: Optional[str] = None
+    units: str | None = None
     severity: Severity = "info"
     reachable_unauthenticated: bool = False
 
@@ -72,11 +72,11 @@ class FuzzFinding(BaseModel):
 
     title: str
     input_summary: str
-    response_summary: Optional[str] = None
+    response_summary: str | None = None
     crashed: bool = False
     severity: Severity = "info"
-    reproducible: Optional[bool] = None
-    artifact_ref: Optional[str] = None
+    reproducible: bool | None = None
+    artifact_ref: str | None = None
 
 
 class Finding(BaseModel):
@@ -91,7 +91,7 @@ class Finding(BaseModel):
     title: str
     description: str = ""
     category: str = "general"     # "tls" | "policy" | "method" | "discovery" | ...
-    path: Optional[str] = None
+    path: str | None = None
     evidence: dict = Field(default_factory=dict)
 
 

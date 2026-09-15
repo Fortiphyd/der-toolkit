@@ -33,12 +33,11 @@ import os
 import signal
 import sys
 
-import yaml
-from flask import Flask
-
 import mdns
 import routes
 import ssl_server
+import yaml
+from flask import Flask
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Logging
@@ -88,8 +87,9 @@ def cert_file_to_lfdi(cert_path: str) -> str:
         return hashlib.sha256(der).hexdigest()[:40].upper()
     except ImportError:
         # Fallback: strip PEM headers and decode base64
-        import base64, re
-        with open(cert_path, "r") as f:
+        import base64
+        import re
+        with open(cert_path) as f:
             pem_text = f.read()
         b64 = re.sub(r"-----[^-]+-----|\s", "", pem_text)
         der = base64.b64decode(b64)

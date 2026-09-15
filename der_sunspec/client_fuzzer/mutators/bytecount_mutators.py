@@ -1,5 +1,6 @@
 import random
 
+
 def mutate_bytecount(bytecount, payload_len):
     """
     Return a mismatched bytecount.

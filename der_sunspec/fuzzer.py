@@ -15,7 +15,18 @@ parser itself, which every SunSpec device implements identically.
 
 from __future__ import annotations
 
-from boofuzz import Block, Word, Byte, Size, Repeat, RandomData, Request, Session, Target, TCPSocketConnection
+from boofuzz import (
+    Block,
+    Byte,
+    RandomData,
+    Repeat,
+    Request,
+    Session,
+    Size,
+    Target,
+    TCPSocketConnection,
+    Word,
+)
 
 
 def _build_function_codes(unit_id: int):

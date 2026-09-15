@@ -12,11 +12,11 @@ Each route is wrapped with @enforce_policy which:
 """
 
 import logging
-from flask import Blueprint, request, g, current_app, Response
 
-from auth import enforce_policy
-import xml_responses as xr
 import xml_parser as xp
+import xml_responses as xr
+from auth import enforce_policy
+from flask import Blueprint, Response, current_app, g, request
 
 log = logging.getLogger(__name__)
 bp  = Blueprint("sep2", __name__)

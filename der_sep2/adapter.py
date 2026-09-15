@@ -10,7 +10,6 @@ self-describing ``semantic_label`` pulled from the 2030.5 function-set policy.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Optional
 
 from der_common.schema import (
     AttackSurface,
@@ -20,7 +19,7 @@ from der_common.schema import (
     FuzzFinding,
     Target,
 )
-
+from der_sep2.mapping.resource_tree import lookup_policy
 from der_sep2.models import (
     ACLAccess,
     ProbeType,
@@ -30,7 +29,6 @@ from der_sep2.models import (
     TLSProfile,
 )
 from der_sep2.models import Finding as Sep2Finding
-from der_sep2.mapping.resource_tree import lookup_policy
 
 _SEV_ORDER = ["info", "low", "medium", "high", "critical"]
 _WRITE_MASK = ACLAccess.POST | ACLAccess.PUT | ACLAccess.DELETE
@@ -70,7 +68,7 @@ def target_to_common(t: ServiceTarget) -> Target:
     )
 
 
-def auth_profile(map_result, tls_profile: Optional[TLSProfile], used_cert: bool) -> AuthProfile:
+def auth_profile(map_result, tls_profile: TLSProfile | None, used_cert: bool) -> AuthProfile:
     """Derive the AuthProfile from a TLS handshake (if available) and the
     observed reachability of the no-cert probe across the resource tree."""
     nodes = map_result.nodes.values()
@@ -170,11 +168,11 @@ def _fuzz_finding(f: Sep2Finding) -> FuzzFinding:
 
 def build_attack_surface(
     map_result,
-    tls_profile: Optional[TLSProfile] = None,
+    tls_profile: TLSProfile | None = None,
     used_cert: bool = False,
-    security_findings: Optional[list[Sep2Finding]] = None,
-    fuzz_findings: Optional[list[Sep2Finding]] = None,
-    generated_at: Optional[str] = None,
+    security_findings: list[Sep2Finding] | None = None,
+    fuzz_findings: list[Sep2Finding] | None = None,
+    generated_at: str | None = None,
 ) -> AttackSurface:
     """Assemble a normalized AttackSurface from one target's mapping run."""
     # per-path severity taken from the mapper's own graded findings

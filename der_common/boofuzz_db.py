@@ -20,7 +20,6 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 from der_common.schema import FuzzFinding
 
@@ -32,12 +31,12 @@ def _hex_preview(data: object, limit: int = 64) -> str:
     return b[:limit].hex() + ("..." if len(b) > limit else "")
 
 
-def _first(cur: sqlite3.Cursor, sql: str, params: tuple) -> Optional[object]:
+def _first(cur: sqlite3.Cursor, sql: str, params: tuple) -> object | None:
     row = cur.execute(sql, params).fetchone()
     return row[0] if row else None
 
 
-def parse_boofuzz_db(db_path: str | Path, max_crashes: Optional[int] = None) -> list[FuzzFinding]:
+def parse_boofuzz_db(db_path: str | Path, max_crashes: int | None = None) -> list[FuzzFinding]:
     """Return one FuzzFinding per test case boofuzz flagged with a `fail` step.
 
     The case name (e.g. "dnp3_qual_08_count_2b:[...count:65535]") already

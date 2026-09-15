@@ -14,7 +14,6 @@ import subprocess
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from der_common.runstore import DEFAULT_RUNS_ROOT, new_run_dir
 
@@ -25,7 +24,7 @@ class Job:
     protocol: str
     target: str
     run_dir: str
-    proc: Optional[subprocess.Popen] = None
+    proc: subprocess.Popen | None = None
 
 
 class JobManager:

@@ -16,12 +16,10 @@ Findings generated here:
 
 from __future__ import annotations
 
-import hashlib
 import logging
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import timezone
 
-from der_sep2.models import CertInfo, Finding, Severity, ServiceTarget, TLSProfile
+from der_sep2.models import CertInfo, Finding, ServiceTarget, Severity, TLSProfile
 
 log = logging.getLogger(__name__)
 
@@ -32,11 +30,10 @@ class CertAnalyzer:
     """Parse DER/PEM certificate bytes into a CertInfo."""
 
     @staticmethod
-    def from_der(der_bytes: bytes) -> Optional[CertInfo]:
+    def from_der(der_bytes: bytes) -> CertInfo | None:
         try:
             from cryptography import x509
             from cryptography.hazmat.primitives import hashes
-            from cryptography.hazmat.primitives.serialization import Encoding
 
             cert = x509.load_der_x509_certificate(der_bytes)
 
@@ -87,7 +84,7 @@ class CertAnalyzer:
             return None
 
     @staticmethod
-    def from_pem(pem_bytes: bytes) -> Optional[CertInfo]:
+    def from_pem(pem_bytes: bytes) -> CertInfo | None:
         try:
             from cryptography import x509
             cert = x509.load_pem_x509_certificate(pem_bytes)
@@ -134,7 +131,6 @@ class TLSFindingGenerator:
             return findings
 
         # Expired cert
-        now = datetime.now(tz=timezone.utc)
         if cert.is_expired:
             findings.append(Finding(
                 severity    = Severity.HIGH,

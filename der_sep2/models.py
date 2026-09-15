@@ -5,11 +5,10 @@ Shared data structures used across all modules.
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, Flag, auto
-from typing import Optional
-
 
 # ---------------------------------------------------------------------------
 # Enumerations
@@ -43,12 +42,16 @@ class ACLAccess(Flag):
     FULL   = DELETE | PUT | POST | GET  # 0xf
 
     @classmethod
-    def from_int(cls, value: int) -> "ACLAccess":
+    def from_int(cls, value: int) -> ACLAccess:
         result = cls.NONE
-        if value & 0x8: result |= cls.GET
-        if value & 0x4: result |= cls.POST
-        if value & 0x2: result |= cls.PUT
-        if value & 0x1: result |= cls.DELETE
+        if value & 0x8:
+            result |= cls.GET
+        if value & 0x4:
+            result |= cls.POST
+        if value & 0x2:
+            result |= cls.PUT
+        if value & 0x1:
+            result |= cls.DELETE
         return result
 
 
@@ -66,12 +69,12 @@ class ServiceTarget:
     ip:          str
     port:        int
     base_path:   str = "/dcap"
-    hostname:    Optional[str] = None   # as advertised in SRV record
+    hostname:    str | None = None   # as advertised in SRV record
     tls:         bool = True
 
     # DNS-SD metadata
-    instance_name:  Optional[str] = None
-    service_type:   Optional[str] = None   # e.g. "_2030-5._tcp"
+    instance_name:  str | None = None
+    service_type:   str | None = None   # e.g. "_2030-5._tcp"
     txt_properties: dict[str, str] = field(default_factory=dict)
 
     # How was this target found?
@@ -136,8 +139,8 @@ class WeakCipherResult:
 class TLSProfile:
     """Full TLS handshake result for a target."""
     target:           ServiceTarget
-    negotiated_version:  Optional[str]           = None
-    negotiated_cipher:   Optional[str]           = None
+    negotiated_version:  str | None           = None
+    negotiated_cipher:   str | None           = None
     supported_versions:  list[str]               = field(default_factory=list)
     weak_ciphers:        list[WeakCipherResult]  = field(default_factory=list)
     # kept for backwards compat — mirrors weak_ciphers[*].requested
@@ -145,10 +148,10 @@ class TLSProfile:
     cert_chain:          list[CertInfo]          = field(default_factory=list)
     requires_client_cert: bool                   = False
     accepted_self_signed: bool                   = False
-    error:               Optional[str]           = None
+    error:               str | None           = None
 
     @property
-    def leaf_cert(self) -> Optional[CertInfo]:
+    def leaf_cert(self) -> CertInfo | None:
         return self.cert_chain[0] if self.cert_chain else None
 
 
@@ -163,18 +166,18 @@ class ProbeResult:
     probe_type:   ProbeType
     method:       str
     path:         str
-    status_code:  Optional[int]    = None
+    status_code:  int | None    = None
     headers:      dict             = field(default_factory=dict)
-    body:         Optional[bytes]  = None
-    elapsed_ms:   Optional[float]  = None
-    error:        Optional[str]    = None
+    body:         bytes | None  = None
+    elapsed_ms:   float | None  = None
+    error:        str | None    = None
 
     @property
     def success(self) -> bool:
         return self.status_code is not None and self.status_code < 500
 
     @property
-    def body_text(self) -> Optional[str]:
+    def body_text(self) -> str | None:
         if self.body:
             try:
                 return self.body.decode("utf-8", errors="replace")
@@ -191,7 +194,7 @@ class ResourceNode:
     """
     path:           str
     probe_results:  dict[ProbeType, ProbeResult] = field(default_factory=dict)
-    children:       list["ResourceNode"]         = field(default_factory=list)
+    children:       list[ResourceNode]         = field(default_factory=list)
     hrefs:          list[str]                    = field(default_factory=list)
 
     @property
@@ -220,8 +223,8 @@ class Finding:
     description: str
     target:      ServiceTarget
     evidence:    dict              = field(default_factory=dict)
-    path:        Optional[str]    = None
-    probe_type:  Optional[ProbeType] = None
+    path:        str | None    = None
+    probe_type:  ProbeType | None = None
     timestamp:   datetime         = field(default_factory=datetime.utcnow)
 
     def __str__(self) -> str:

@@ -31,8 +31,8 @@ def _cmd_discover(args: argparse.Namespace) -> int:
 
 
 def _cmd_map(args: argparse.Namespace) -> int:
-    from der_dnp3.scanner import run_scan, expand_targets, parse_int_list
     from der_dnp3.adapter import build_attack_surfaces
+    from der_dnp3.scanner import expand_targets, parse_int_list, run_scan
 
     ips = expand_targets(args.target, include_network_broadcast=args.include_network_broadcast)
     scan_doc = run_scan(
@@ -66,8 +66,8 @@ def _cmd_fuzz(args: argparse.Namespace) -> int:
     assert_in_scope(args.host, args.authorized_scope or [])
     require_disruptive_consent(args.allow_disruptive)
 
-    from der_dnp3.fuzzer import run_fuzz
     from der_common.boofuzz_db import parse_boofuzz_db, summarize_boofuzz_db
+    from der_dnp3.fuzzer import run_fuzz
     print(f"[dnp3] fuzzing {args.host}:{args.port} (DISRUPTIVE) — "
           f"outstation={args.outstation} master={args.master}")
     run_fuzz(args.host, args.port, max_depth=args.max_depth,
