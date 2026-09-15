@@ -64,8 +64,18 @@ def build_ssl_context(cfg: dict) -> ssl.SSLContext:
     validate_cert_chain=true  → CA is loaded; any cert that IS presented must
                                 chain to it (self-signed / unknown-CA certs are
                                 rejected at TLS handshake time).
-    validate_cert_chain=false → CA is NOT loaded; any cert (including
-                                self-signed) is accepted by TLS (Probe B passes).
+    validate_cert_chain=false → intended to mean "accept any presented cert,
+                                chain or no chain," but does NOT do that: with
+                                no CA loaded, CERT_OPTIONAL still tries to
+                                verify any cert that IS presented, finds no
+                                trust anchor, and rejects the handshake --
+                                stdlib ssl has no way to accept a client cert
+                                without verifying it. So this setting is
+                                currently a no-op in practice (same effective
+                                behavior as leaving it true, just without a CA
+                                to check against); see demo/README.md's
+                                "Known gap" section. Neither hardened.yaml nor
+                                vulnerable.yaml sets this false today.
 
     enforce_mtls is intentionally NOT applied here — it is read by auth.py and
     used to block cert-required routes at the HTTP layer instead.
@@ -87,8 +97,10 @@ def build_ssl_context(cfg: dict) -> ssl.SSLContext:
         )
     else:
         log.warning(
-            "TLS: CERT_OPTIONAL + NO CA — self-signed certs accepted at TLS layer "
-            "(vulnerability mode: validate_cert_chain=false)"
+            "TLS: CERT_OPTIONAL + NO CA — note this does NOT accept self-signed "
+            "certs as intended; stdlib ssl rejects any presented cert it can't "
+            "verify, with or without a CA loaded. See build_ssl_context()'s "
+            "docstring and demo/README.md's Known gap section."
         )
 
     version_map = {
