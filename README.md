@@ -1,5 +1,8 @@
 # DER Toolkit
 
+![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
+![Python 3.10 | 3.11 | 3.12](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
+
 Attack-surface mapping and protocol fuzzing for distributed energy resource (DER)
 protocols — **DNP3**, **SunSpec Modbus**, and **IEEE 2030.5** — with an **MCP
 server** that lets an AI assistant drive the tools and reason over the results.
@@ -54,10 +57,7 @@ python3 examples/quickstart_server.py
 der-sunspec map 127.0.0.1 --port 5503
 ```
 
-```
-[sunspec] 1 device(s) mapped, 0 failed
-  127.0.0.1 unit=1: 1 models, 0 writable control model(s) , 1 unauth-writable field(s)
-```
+![der-sunspec map finding one unauthenticated writable field on the quickstart simulator](docs/img/quickstart.svg)
 
 That one unauth-writable field is real: the device's Modbus `DA` (Device
 Address) register accepts unauthenticated writes, flagged `critical` in the
@@ -84,11 +84,13 @@ cross-reference by hand:
 der-report dnp3_result.json sunspec_result.json sep2_result.json
 ```
 
-See [examples/demo_cluster_report.sample.txt](examples/demo_cluster_report.sample.txt)
-(or the [structured JSON](examples/demo_cluster_report.sample.json)) for a real
-merged report — 7 targets, 67 writable/unauthenticated-reachable points, 19
-cross-cutting findings — captured by running this exact command against the
-demo cluster below.
+![der-report merging seven devices across all three protocols into one severity-ranked list](docs/img/cross_protocol_report.svg)
+
+That's real output (trimmed for length) from the demo cluster below — 7
+targets, 67 writable/unauthenticated-reachable points, 19 cross-cutting
+findings. Full, untrimmed version:
+[examples/demo_cluster_report.sample.txt](examples/demo_cluster_report.sample.txt)
+([structured JSON](examples/demo_cluster_report.sample.json)).
 
 ## Demo: a simulated DER cluster
 
