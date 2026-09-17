@@ -57,7 +57,7 @@ def read_holding_regs(client: ModbusTcpClient, unit_id: int, reg: int, count: in
     strategy for scanning is to probe the explicit register number.
     """
     try:
-        resp = client.read_holding_registers(address=reg, count=count, slave=unit_id)
+        resp = client.read_holding_registers(address=reg, count=count, device_id=unit_id)
     except Exception as e:
         LOG.error("Error reading %d regs at %d: %s", count, reg, e)
         return None

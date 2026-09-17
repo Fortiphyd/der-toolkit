@@ -69,18 +69,18 @@ def serve(registers: list[int], port: int, name: str) -> None:
     """Serve `registers` as a Modbus/TCP device on 127.0.0.1:port. Same
     pymodbus-based approach as examples/quickstart_server.py."""
     from pymodbus.datastore import (
+        ModbusDeviceContext,
         ModbusSequentialDataBlock,
         ModbusServerContext,
-        ModbusSlaveContext,
     )
     from pymodbus.server import StartTcpServer
 
-    # pymodbus's ModbusSlaveContext always adds 1 to the requested protocol
+    # pymodbus's ModbusDeviceContext always adds 1 to the requested protocol
     # address before indexing into the store (no zero_mode toggle in
     # pymodbus 3.x) -- start the block at 1 so protocol address 0 maps to
     # registers[0], matching where der_sunspec's mapper looks for "SunS".
     block = ModbusSequentialDataBlock(1, registers)
-    slave_ctx = ModbusSlaveContext(hr=block)
-    context = ModbusServerContext(slaves=slave_ctx, single=True)
+    device_ctx = ModbusDeviceContext(hr=block)
+    context = ModbusServerContext(devices=device_ctx, single=True)
     print(f"{name} -- SunSpec simulator on 127.0.0.1:{port} -- Ctrl-C to stop", flush=True)
     StartTcpServer(context=context, address=("127.0.0.1", port))

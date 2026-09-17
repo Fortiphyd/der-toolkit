@@ -17,9 +17,9 @@ from __future__ import annotations
 import sys
 
 from pymodbus.datastore import (
+    ModbusDeviceContext,
     ModbusSequentialDataBlock,
     ModbusServerContext,
-    ModbusSlaveContext,
 )
 from pymodbus.server import StartTcpServer
 
@@ -46,14 +46,14 @@ def build_registers() -> list[int]:
 def main() -> None:
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 5503
     registers = build_registers()
-    # pymodbus's ModbusSlaveContext.getValues/setValues always add 1 to the
+    # pymodbus's ModbusDeviceContext.getValues/setValues always add 1 to the
     # requested protocol address before indexing into the store (there is no
     # zero_mode toggle in pymodbus 3.x) -- start the block at 1 so protocol
     # address 0 maps to registers[0], matching where der_sunspec's mapper
     # looks for the "SunS" marker.
     block = ModbusSequentialDataBlock(1, registers)
-    slave_ctx = ModbusSlaveContext(hr=block)
-    context = ModbusServerContext(slaves=slave_ctx, single=True)
+    device_ctx = ModbusDeviceContext(hr=block)
+    context = ModbusServerContext(devices=device_ctx, single=True)
     print(f"Quickstart SunSpec simulator on 127.0.0.1:{port} -- Ctrl-C to stop", flush=True)
     StartTcpServer(context=context, address=("127.0.0.1", port))
 

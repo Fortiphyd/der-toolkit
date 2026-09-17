@@ -21,11 +21,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-sunspec = ["pymodbus>=3", "boofuzz>=0.4"]
+sunspec = ["pymodbus>=3.10", "boofuzz>=0.4"]
 sep2    = ["cryptography>=42", "zeroconf>=0.130", "httpx>=0.27"]
 dnp3    = ["boofuzz>=0.4"]
 mcp     = ["mcp>=1.2"]
-all     = ["pymodbus>=3", "cryptography>=42", "zeroconf>=0.130", "httpx>=0.27", "boofuzz>=0.4", "mcp>=1.2"]
+all     = ["pymodbus>=3.10", "cryptography>=42", "zeroconf>=0.130", "httpx>=0.27", "boofuzz>=0.4", "mcp>=1.2"]
 dev     = ["pytest>=8", "ruff>=0.5"]
 
 [project.scripts]
