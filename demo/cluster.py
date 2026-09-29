@@ -51,6 +51,24 @@ DEVICES = [
      [sys.executable, "server.py", "--config", "configs/vulnerable.yaml"]),
 ]
 
+# Two more devices, deliberately NOT part of DEVICES above: small,
+# hand-written, intentionally vulnerable fuzzing targets (see
+# demo/dnp3_outstations/vulnerable_outstation.py and
+# demo/sunspec_devices/vulnerable_device.py) -- even a plain, read-only
+# `map` crashes them (a mapper's ordinary base-address probing is enough),
+# so they're excluded from the "map everything + der-report" flow and
+# from tests/test_demo_cluster.py's DEVICES-based assertions. run_cluster.py
+# still starts them alongside DEVICES so one recording can show mapping
+# and fuzzing together; use FUZZING_EXAMPLES (demo/README.md) to drive them.
+FUZZ_TARGETS = [
+    ("DNP3 fuzzing target (vulnerable)",    "dnp3",    "127.0.20.3", 20000,
+     [sys.executable, str(DEMO_DIR / "dnp3_outstations" / "vulnerable_outstation.py"),
+      "127.0.20.3", "20000"]),
+    ("SunSpec fuzzing target (vulnerable)", "sunspec", "127.0.10.4", 502,
+     _authbind([sys.executable, str(DEMO_DIR / "sunspec_devices" / "vulnerable_device.py"),
+                "127.0.10.4", "502"])),
+]
+
 SEP2_CERTS_DIR = DEMO_DIR / "sep2_server" / "certs"
 AUTHBIND_BYPORT = Path(f"/etc/authbind/byport/{AUTHBIND_PORT}")
 

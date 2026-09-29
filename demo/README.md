@@ -1,12 +1,17 @@
 # Demo: a simulated DER cluster
 
-Seven simulated devices spanning all three protocols, deliberately varied
-so a full-pipeline run has something interesting to say about each one —
-not just "the tool ran," but a genuinely different finding per device.
+Nine simulated devices spanning all three protocols: seven make up the
+"mapping cluster," deliberately varied so a full-pipeline run has something
+interesting to say about each one — not just "the tool ran," but a
+genuinely different finding per device. The other two are small,
+intentionally-vulnerable fuzzing targets (one DNP3, one SunSpec) — see
+[Fuzzing](#fuzzing) below. `demo/run_cluster.py` starts all nine together,
+so one recording can show mapping, cross-protocol reporting, and fuzzing
+without restarting anything in between.
 
 Each device gets its own address and the real standard port for its
 protocol (Modbus/TCP 502, DNP3 20000, IEEE 2030.5 15388), rather than all
-seven crowding onto `127.0.0.1` at made-up ports — closer to what mapping
+nine crowding onto `127.0.0.1` at made-up ports — closer to what mapping
 an actual small site looks like. The addresses are still loopback (no
 network setup needed), just spread across three /24s by protocol so
 nothing collides:
@@ -20,8 +25,11 @@ nothing collides:
 | Setpoint controller                  | DNP3     | 127.0.20.2:20000    | Analog output status (g40v1) — implies analog commands (g41) are operable: "rewrite a setpoint". No binary I/O at all. |
 | SEP2 server (hardened)               | SEP2     | 127.0.30.1:15388    | Correctly configured: mTLS + chain validation + registration all enforced. The contrast case. |
 | SEP2 server (vulnerable)             | SEP2     | 127.0.30.2:15388    | Two real findings: an access-control misconfiguration (DER control surface force-opened) and a real XML implementation bug (XXE) |
+| *DNP3 fuzzing target (vulnerable)*   | DNP3     | 127.0.20.3:20000    | *Not part of the mapping cluster* — small, intentionally naive parser built to give `der-dnp3 fuzz` something real to crash |
+| *SunSpec fuzzing target (vulnerable)*| SunSpec  | 127.0.10.4:502      | *Not part of the mapping cluster* — small, intentionally naive parser built to give `der-sunspec fuzz` something real to crash |
 
-Port 502 is privileged, so the three SunSpec devices run under
+Port 502 is privileged, so four of the nine devices (the three "real"
+SunSpec inverters, plus the SunSpec fuzzing target) run under
 [`authbind`](https://en.wikipedia.org/wiki/Authbind) rather than as root.
 One-time setup (safe and narrowly scoped — it only grants your user
 permission to bind port 502, nothing broader):
@@ -39,7 +47,7 @@ sudo chown $USER /etc/authbind/byport/502
 # One-time: generate the SEP2 server's test PKI, and authbind (above)
 demo/sep2_server/setup.sh
 
-# Start all seven devices
+# Start all nine devices
 python3 demo/run_cluster.py
 ```
 
@@ -165,28 +173,36 @@ reproduces a real XXE finding — `/etc/passwd` reflected back through the
 
 ### DNP3 and SunSpec: two more fuzzing targets, custom-built and intentionally vulnerable
 
-Neither of the DNP3 outstations or three SunSpec inverters in the main
-cluster is fuzzable in a way worth demonstrating — the outstations are
+Neither the DNP3 outstations nor the three SunSpec inverters in the mapping
+cluster are fuzzable in a way worth demonstrating — the outstations are
 fairly defensive, and the SunSpec devices' actual wire-protocol handling is
 `pymodbus`, a mature library that isn't a realistic target for a short
-fuzzing run. So there are two more targets, **not part of the main cluster**
-(`demo/run_cluster.py` doesn't start them), built specifically to have a
-real, findable bug each — small, hand-written, deliberately naive protocol
+fuzzing run. So there are two more devices, purpose-built to have a real,
+findable bug each: small, hand-written, deliberately naive protocol
 handlers, the opposite of the "real, defensible parser" standard the rest
 of this toolkit holds itself to. Don't mistake either for a finding about
 DNP3, Modbus, `pymodbus`, or der-toolkit's own parsers.
 
-```bash
-# DNP3: trusts the last byte of any request as a raw index into its point
-# list, no bounds check.
-python3 demo/dnp3_outstations/vulnerable_outstation.py &
-der-dnp3 fuzz 127.0.20.3 --port 20000 --authorized-scope 127.0.20.3/32 --allow-disruptive
+`demo/run_cluster.py` starts both alongside the mapping cluster (see the
+device table above), but they're deliberately **excluded from the mapping
+cluster itself and from the "map everything + der-report" example** — even
+a plain, read-only `map` crashes them (a mapper's ordinary base-address
+probing is unbounded enough to trip the same bug), so mixing them into that
+flow would just look like a mapping failure. Fuzz them directly instead:
 
-# SunSpec: trusts the MBAP length field and the Read Holding Registers
-# count field with no validation -- same root cause, two spots.
-authbind --deep python3 demo/sunspec_devices/vulnerable_device.py &   # port 502 is privileged, see above
-der-sunspec fuzz 127.0.10.4 --port 502 --authorized-scope 127.0.10.4/32 --allow-disruptive
+```bash
+der-dnp3    fuzz 127.0.20.3 --port 20000 --authorized-scope 127.0.20.3/32 --allow-disruptive
+der-sunspec fuzz 127.0.10.4 --port 502   --authorized-scope 127.0.10.4/32 --allow-disruptive
 ```
+
+(Running either standalone, without the rest of the cluster: `python3
+demo/dnp3_outstations/vulnerable_outstation.py` or `authbind --deep
+python3 demo/sunspec_devices/vulnerable_device.py`.)
+
+DNP3's bug: trusts the last byte of any request as a raw index into its
+point list, no bounds check. SunSpec's: trusts the MBAP length field and
+the Read Holding Registers count field with no validation -- same root
+cause, two spots.
 
 Both crash almost immediately — watch the target's own terminal, not the
 fuzzer's summary. Neither `der-dnp3 fuzz` nor `der-sunspec fuzz` currently

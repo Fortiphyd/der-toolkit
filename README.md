@@ -95,15 +95,16 @@ findings. Full, untrimmed version:
 
 ## Demo: a simulated DER cluster
 
-[`demo/`](demo/README.md) stands up seven simulated devices at once —
-three SunSpec inverters with deliberately different control surfaces, two
-DNP3 outstations (binary vs. analog actuation), and two SEP2 servers
-(hardened vs. vulnerable) — for a full-pipeline run against something that
-looks like a real small DER deployment, not just a single isolated target:
+[`demo/`](demo/README.md) stands up nine simulated devices at once — seven
+make up the mapping cluster (three SunSpec inverters with deliberately
+different control surfaces, two DNP3 outstations, and two SEP2 servers,
+hardened vs. vulnerable) for a full-pipeline run against something that
+looks like a real small DER deployment, plus two more purpose-built,
+intentionally-vulnerable fuzzing targets:
 
 ```bash
 demo/sep2_server/setup.sh      # one-time: generate the SEP2 test PKI
-python3 demo/run_cluster.py    # starts all seven devices
+python3 demo/run_cluster.py    # starts all nine devices
 ```
 
 The cluster also works as an MCP demo — see
