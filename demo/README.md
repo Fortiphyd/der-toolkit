@@ -82,6 +82,70 @@ the demo reports gets caught in CI rather than during a live walkthrough.
 It's marked `integration` and skipped by the fast test run; run it directly
 with `pytest -v -m integration`.
 
+## Driving it with an AI assistant (MCP)
+
+Everything above also works through `der-mcp` instead of the CLI — the same
+mapping/discovery code, exposed as tools an AI assistant can call directly
+rather than commands you type. This is the more interesting story for the
+toolkit: given the ranges below and a plain-language ask, an assistant can
+discover, map, and summarize the whole cluster's attack surface on its own.
+
+**Setup:**
+
+```bash
+# 1. Install with the mcp extra
+pip install -e ".[mcp]"
+
+# 2. Start the cluster, same as the Quick start above
+demo/sep2_server/setup.sh
+python3 demo/run_cluster.py
+```
+
+This repo already ships a project-scoped `.mcp.json` registering `der-mcp` —
+opening this directory in Claude Code prompts a one-time approval (see the
+top-level README's MCP section). For Claude Desktop instead, add it manually
+to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "der-mcp": { "command": "der-mcp" }
+  }
+}
+```
+
+**Example prompt**, once the cluster is running:
+
+> I have a small DER (distributed energy resource) test deployment I'm
+> authorized to assess. Using the der-mcp tools, please:
+>
+> 1. Discover what's running across these ranges (treat them as authorized
+>    scope for this session): `127.0.10.0/29` (expect SunSpec/Modbus
+>    inverters), `127.0.20.0/29` (expect DNP3 outstations), `127.0.30.0/29`
+>    (expect IEEE 2030.5/SEP2 servers).
+> 2. Map the attack surface of everything you find. For any SEP2 servers,
+>    also map using this client certificate to check what a leaked
+>    credential would expose: cert
+>    `demo/sep2_server/certs/client_registered.crt`, key
+>    `demo/sep2_server/certs/client_registered.key`.
+> 3. Summarize the findings across all three protocols, ranked by severity,
+>    and call out anything an attacker with no credentials could actually
+>    control.
+
+A couple of things worth knowing before you run this:
+
+- SunSpec and SEP2 discovery are near-instant (a Modbus register read and an
+  HTTP probe, respectively). DNP3 is noticeably slower — up to a minute or so
+  per outstation — because DNP3 has no self-announcing discovery mechanism at
+  all; finding the right outstation address means actively probing
+  combinations of candidate addresses. That's inherent to the protocol, not
+  a hang.
+- This exercises `discover_targets` and `map_attack_surface` (both read-only).
+  Fuzzing via MCP (`start_fuzz`) works the same way but needs explicit
+  `allow_disruptive=True` and should only be aimed at devices you're
+  authorized to potentially crash or hang — the demo devices are fine, a
+  found-on-the-network device is not.
+
 ## Fuzzing
 
 Any device can be fuzzed the same way as a real target (`--authorized-scope`

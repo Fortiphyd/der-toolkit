@@ -82,8 +82,15 @@ def _discover_dnp3(scope: list[str], timeout: float) -> list[dict]:
     found = []
     for cidr in scope:
         for ip in expand_targets(cidr):
-            got = discover_outstation_address(ip, 20000, listen_seconds=timeout,
-                                              per_probe_timeout=timeout)
+            try:
+                got = discover_outstation_address(ip, 20000, listen_seconds=timeout,
+                                                  per_probe_timeout=timeout)
+            except OSError:
+                # No listener at this address -- expected for most of a range;
+                # discover_outstation_address itself only handles protocol-level
+                # probe failures, not connection failures (unlike der-dnp3 map's
+                # CLI path, which catches per-host).
+                continue
             if got:
                 master, outstation = got
                 found.append({"ip": ip, "port": 20000, "protocol": "dnp3",

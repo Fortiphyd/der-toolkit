@@ -106,6 +106,11 @@ demo/sep2_server/setup.sh      # one-time: generate the SEP2 test PKI
 python3 demo/run_cluster.py    # starts all seven devices
 ```
 
+The cluster also works as an MCP demo — see
+[demo/README.md's walkthrough](demo/README.md#driving-it-with-an-ai-assistant-mcp)
+for the setup and an example prompt that has an AI assistant discover, map,
+and summarize it on its own.
+
 ## MCP server
 
 `der-mcp` speaks MCP over stdio; point Claude Desktop / Claude Code at it. Tools:
