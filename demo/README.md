@@ -163,6 +163,45 @@ der-sep2 fuzz 127.0.30.2 --port 15388 \
 reproduces a real XXE finding — `/etc/passwd` reflected back through the
 `lFDI` field.
 
+### DNP3 and SunSpec: two more fuzzing targets, custom-built and intentionally vulnerable
+
+Neither of the DNP3 outstations or three SunSpec inverters in the main
+cluster is fuzzable in a way worth demonstrating — the outstations are
+fairly defensive, and the SunSpec devices' actual wire-protocol handling is
+`pymodbus`, a mature library that isn't a realistic target for a short
+fuzzing run. So there are two more targets, **not part of the main cluster**
+(`demo/run_cluster.py` doesn't start them), built specifically to have a
+real, findable bug each — small, hand-written, deliberately naive protocol
+handlers, the opposite of the "real, defensible parser" standard the rest
+of this toolkit holds itself to. Don't mistake either for a finding about
+DNP3, Modbus, `pymodbus`, or der-toolkit's own parsers.
+
+```bash
+# DNP3: trusts the last byte of any request as a raw index into its point
+# list, no bounds check.
+python3 demo/dnp3_outstations/vulnerable_outstation.py &
+der-dnp3 fuzz 127.0.20.3 --port 20000 --authorized-scope 127.0.20.3/32 --allow-disruptive
+
+# SunSpec: trusts the MBAP length field and the Read Holding Registers
+# count field with no validation -- same root cause, two spots.
+authbind --deep python3 demo/sunspec_devices/vulnerable_device.py &   # port 502 is privileged, see above
+der-sunspec fuzz 127.0.10.4 --port 502 --authorized-scope 127.0.10.4/32 --allow-disruptive
+```
+
+Both crash almost immediately — watch the target's own terminal, not the
+fuzzer's summary. Neither `der-dnp3 fuzz` nor `der-sunspec fuzz` currently
+flags either of these as a crash in its own results, even though both
+target processes throw a real, repeatable, unhandled exception on nearly
+every request (verified directly against `boofuzz-results/*.db` via
+`der_common.boofuzz_db.summarize_boofuzz_db`: 0 crashed cases reported in
+both, whether the connection got silently dropped, as with DNP3, or reset,
+as with SunSpec). The bug only kills the per-connection handler thread, not
+the whole process — neither fuzzer's crash detection is currently wired to
+notice that from the outside. That's a real, honest gap in the current
+crash detection, not something papered over here — the exception is real
+and immediately visible in the target's own log, just not (yet) surfaced
+by the fuzzer's own summary.
+
 ## What's real here, and what isn't
 
 Every device's behavior is exercised through the same unmodified mapper/
