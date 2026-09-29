@@ -192,6 +192,13 @@ def build_device_mapping(host: str, port: int, unit_id: int, timeout: float = 0.
     """
     Attempt to connect and build mapping for ONE host.
 
+    Raises ConnectionError if nothing answers at host:port at all (no TCP
+    listener) -- distinct from returning None, which means something DID
+    answer but wasn't identifiable as a SunSpec device. Callers scanning a
+    CIDR range want to treat those very differently: an empty address is
+    expected and not worth reporting, but a host that answers and isn't
+    SunSpec is a real anomaly worth flagging.
+
     `read_registers` fetches each model's full data block (one extra Modbus
     read per model, chunked for large blocks) so the adapter can decode
     field-level control points instead of just the model-level header. Set
@@ -199,8 +206,7 @@ def build_device_mapping(host: str, port: int, unit_id: int, timeout: float = 0.
     """
     client = ModbusTcpClient(host=host, port=port, timeout=timeout)
     if not client.connect():
-        LOG.warning("Connection failed to %s:%d", host, port)
-        return None
+        raise ConnectionError(f"no response from {host}:{port}")
 
     try:
         base = find_sunspec_base(client, unit_id)
@@ -311,7 +317,10 @@ def main() -> None:
     # --- Single host mode ---
     if args.host:
         LOG.info("Scanning single host %s", args.host)
-        result = build_device_mapping(args.host, args.port, args.unit_id)
+        try:
+            result = build_device_mapping(args.host, args.port, args.unit_id)
+        except ConnectionError:
+            result = None
         if result:
             mappings.append(result)
         else:
@@ -324,7 +333,10 @@ def main() -> None:
         for ip in net.hosts():
             ip_str = str(ip)
             LOG.info("Scanning %s", ip_str)
-            result = build_device_mapping(ip_str, args.port, args.unit_id)
+            try:
+                result = build_device_mapping(ip_str, args.port, args.unit_id)
+            except ConnectionError:
+                continue
             if result:
                 mappings.append(result)
             else:
@@ -369,12 +381,20 @@ def run_scan(targets: list[str], port: int = 502, unit_id: int = 1,
              timeout: float = 0.4, read_registers: bool = True) -> tuple[list[DeviceMapping], list[str]]:
     """Map SunSpec devices across a list of hosts.
 
-    Returns (mappings, failed_hosts).
+    Returns (mappings, failed_hosts). `failed_hosts` is hosts that answered
+    but weren't identifiable as SunSpec -- a real anomaly worth flagging,
+    e.g. something else listening on the Modbus port, or a device that
+    accepted the connection then broke on the first read. Addresses with
+    nothing listening at all are silently skipped: for a CIDR scan, an
+    empty address is the expected, uninteresting case, not a failure.
     """
     mappings: list[DeviceMapping] = []
     failed: list[str] = []
     for host in targets:
-        result = build_device_mapping(host, port, unit_id, timeout=timeout, read_registers=read_registers)
+        try:
+            result = build_device_mapping(host, port, unit_id, timeout=timeout, read_registers=read_registers)
+        except ConnectionError:
+            continue
         if result:
             mappings.append(result)
         else:

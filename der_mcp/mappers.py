@@ -56,7 +56,10 @@ def map_dnp3(ip: str, port: int, timeout: float = 3.0) -> AttackSurface | None:
 def map_sunspec(ip: str, port: int, unit_id: int = 1, timeout: float = 0.4) -> AttackSurface | None:
     from der_sunspec.adapter import build_attack_surface
     from der_sunspec.mapper import build_device_mapping
-    m = build_device_mapping(ip, port, unit_id, timeout=timeout)
+    try:
+        m = build_device_mapping(ip, port, unit_id, timeout=timeout)
+    except ConnectionError:
+        m = None
     return build_attack_surface(m, port=port, generated_at=_now()) if m else None
 
 
