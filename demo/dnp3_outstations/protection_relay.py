@@ -6,7 +6,8 @@ logic, the classic "flip a breaker" finding), and a couple of read-only
 analog inputs (g30v1). No analog output at all -- contrast against
 setpoint_controller.py's analog-only actuation surface.
 
-    python3 demo/dnp3_outstations/protection_relay.py [port]   # default 21000, outstation addr 10
+    python3 demo/dnp3_outstations/protection_relay.py [host] [port]
+    # default 127.0.20.1:20000, outstation addr 10
 """
 
 import sys
@@ -15,12 +16,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import Group, Outstation
 
-DEFAULT_PORT = 21000
+DEFAULT_HOST = "127.0.20.1"
+DEFAULT_PORT = 20000
 OUTSTATION_ADDR = 10
 
 
 def main() -> None:
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PORT
+    host = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HOST
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT
     outstation = Outstation(
         name="Protection relay (breaker-style CROB)",
         outstation_addr=OUTSTATION_ADDR,
@@ -30,7 +33,7 @@ def main() -> None:
             Group(group=30, variation=1, count=2, point_size=5),  # Analog Input (line current/voltage)
         ],
     )
-    outstation.serve(port)
+    outstation.serve(port, host=host)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,8 @@ than the classic inverter's: active/reactive power setpoints, power-factor
 injection/absorption, and AntiIslEna (anti-islanding enable) sitting right
 next to the power controls.
 
-    python3 demo/sunspec_devices/der_compliant_inverter.py [port]   # default 5602
+    python3 demo/sunspec_devices/der_compliant_inverter.py [host] [port]
+    # default 127.0.10.2:502 -- port 502 needs authbind, see demo/README.md
 """
 
 import sys
@@ -14,11 +15,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import build_device_registers, serve
 
-DEFAULT_PORT = 5602
+DEFAULT_HOST = "127.0.10.2"
+DEFAULT_PORT = 502
 
 
 def main() -> None:
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PORT
+    host = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HOST
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT
     registers = build_device_registers([
         (1, {
             "Mn": "Volt Dynamics", "Md": "VD-DER1547 Grid-Forming Inverter",
@@ -43,7 +46,7 @@ def main() -> None:
             "VarSet_SF": 0, "VarSetPct_SF": -2,
         }),
     ])
-    serve(registers, port, "DER-compliant inverter (Volt Dynamics VD-DER1547)")
+    serve(registers, host, port, "DER-compliant inverter (Volt Dynamics VD-DER1547)")
 
 
 if __name__ == "__main__":

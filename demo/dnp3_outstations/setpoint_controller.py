@@ -5,7 +5,8 @@ Input (g30v1, read-only measured values) and Analog Output status (g40v1
 setpoint" finding). No binary output/CROB at all -- contrast against
 protection_relay.py's binary-switching actuation surface.
 
-    python3 demo/dnp3_outstations/setpoint_controller.py [port]   # default 21001, outstation addr 11
+    python3 demo/dnp3_outstations/setpoint_controller.py [host] [port]
+    # default 127.0.20.2:20000, outstation addr 11
 """
 
 import sys
@@ -14,12 +15,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import Group, Outstation
 
-DEFAULT_PORT = 21001
+DEFAULT_HOST = "127.0.20.2"
+DEFAULT_PORT = 20000
 OUTSTATION_ADDR = 11
 
 
 def main() -> None:
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PORT
+    host = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HOST
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT
     outstation = Outstation(
         name="Setpoint controller (analog-output only)",
         outstation_addr=OUTSTATION_ADDR,
@@ -28,7 +31,7 @@ def main() -> None:
             Group(group=40, variation=1, count=2, point_size=5),  # Analog Output status (-> g41 operable)
         ],
     )
-    outstation.serve(port)
+    outstation.serve(port, host=host)
 
 
 if __name__ == "__main__":

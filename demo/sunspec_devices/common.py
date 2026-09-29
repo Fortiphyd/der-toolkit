@@ -65,9 +65,12 @@ def build_device_registers(models: list[tuple[int, dict]]) -> list[int]:
     return regs
 
 
-def serve(registers: list[int], port: int, name: str) -> None:
-    """Serve `registers` as a Modbus/TCP device on 127.0.0.1:port. Same
-    pymodbus-based approach as examples/quickstart_server.py."""
+def serve(registers: list[int], host: str, port: int, name: str) -> None:
+    """Serve `registers` as a Modbus/TCP device on host:port. Same
+    pymodbus-based approach as examples/quickstart_server.py.
+
+    port 502 (the real Modbus/TCP port) needs authbind or an equivalent --
+    see demo/README.md."""
     from pymodbus.datastore import (
         ModbusDeviceContext,
         ModbusSequentialDataBlock,
@@ -82,5 +85,5 @@ def serve(registers: list[int], port: int, name: str) -> None:
     block = ModbusSequentialDataBlock(1, registers)
     device_ctx = ModbusDeviceContext(hr=block)
     context = ModbusServerContext(devices=device_ctx, single=True)
-    print(f"{name} -- SunSpec simulator on 127.0.0.1:{port} -- Ctrl-C to stop", flush=True)
-    StartTcpServer(context=context, address=("127.0.0.1", port))
+    print(f"{name} -- SunSpec simulator on {host}:{port} -- Ctrl-C to stop", flush=True)
+    StartTcpServer(context=context, address=(host, port))

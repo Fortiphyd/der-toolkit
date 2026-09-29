@@ -8,8 +8,10 @@ DER cluster" demonstration.
 Prints a table of what's running and where, then blocks until Ctrl-C,
 terminating every child process on exit.
 
-Requires the SEP2 server's PKI to already exist -- run
-demo/sep2_server/setup.sh once first.
+Requires the SEP2 server's PKI to already exist (run
+demo/sep2_server/setup.sh once first) and authbind set up for port 502
+(see demo/README.md) -- the three SunSpec devices bind the real Modbus
+port, which is privileged.
 """
 
 from __future__ import annotations
@@ -28,8 +30,8 @@ def main() -> None:
               file=sys.stderr)
         sys.exit(1)
 
-    for label, protocol, port, _argv in DEVICES:
-        print(f"  [{protocol:8s}] 127.0.0.1:{port:<6d} {label}")
+    for label, protocol, host, port, _argv in DEVICES:
+        print(f"  [{protocol:8s}] {host}:{port:<6d} {label}")
 
     try:
         procs = start_all()
@@ -39,17 +41,17 @@ def main() -> None:
 
     print(f"\nAll {len(procs)} devices running. Ctrl-C to stop the cluster.\n")
     print("Example: map every device, then merge into one cross-protocol report:\n")
-    for label, protocol, port, _argv in DEVICES:
+    for label, protocol, host, port, _argv in DEVICES:
         if protocol == "sep2":
-            print(f"  der-sep2 map 127.0.0.1 --port {port} "
+            print(f"  der-sep2 map {host} --port {port} "
                   f"--client-cert demo/sep2_server/certs/client_registered.crt "
                   f"--client-key demo/sep2_server/certs/client_registered.key "
                   f"--ca-bundle demo/sep2_server/certs/ca.crt "
-                  f"--output /tmp/{port}.json")
+                  f"--output /tmp/{host}.json")
         else:
             cli = "der-sunspec" if protocol == "sunspec" else "der-dnp3"
-            print(f"  {cli} map 127.0.0.1 --port {port} --output /tmp/{port}.json")
-    print("\n  der-report /tmp/*.json\n")
+            print(f"  {cli} map {host} --port {port} --output /tmp/{host}.json")
+    print("\n  der-report /tmp/127.0.*.json\n")
 
     def _shutdown(sig, frame):
         print("\nStopping cluster...")

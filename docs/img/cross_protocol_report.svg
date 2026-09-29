@@ -19,147 +19,147 @@
         font-weight: 700;
     }
 
-    .terminal-1741741831-matrix {
+    .terminal-2339037051-matrix {
         font-family: Fira Code, monospace;
         font-size: 20px;
         line-height: 24.4px;
         font-variant-east-asian: full-width;
     }
 
-    .terminal-1741741831-title {
+    .terminal-2339037051-title {
         font-size: 18px;
         font-weight: bold;
         font-family: arial;
     }
 
-    .terminal-1741741831-r1 { fill: #c5c8c6 }
+    .terminal-2339037051-r1 { fill: #c5c8c6 }
     </style>
 
     <defs>
-    <clipPath id="terminal-1741741831-clip-terminal">
+    <clipPath id="terminal-2339037051-clip-terminal">
       <rect x="0" y="0" width="1451.0" height="682.1999999999999" />
     </clipPath>
-    <clipPath id="terminal-1741741831-line-0">
+    <clipPath id="terminal-2339037051-line-0">
     <rect x="0" y="1.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-1">
+<clipPath id="terminal-2339037051-line-1">
     <rect x="0" y="25.9" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-2">
+<clipPath id="terminal-2339037051-line-2">
     <rect x="0" y="50.3" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-3">
+<clipPath id="terminal-2339037051-line-3">
     <rect x="0" y="74.7" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-4">
+<clipPath id="terminal-2339037051-line-4">
     <rect x="0" y="99.1" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-5">
+<clipPath id="terminal-2339037051-line-5">
     <rect x="0" y="123.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-6">
+<clipPath id="terminal-2339037051-line-6">
     <rect x="0" y="147.9" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-7">
+<clipPath id="terminal-2339037051-line-7">
     <rect x="0" y="172.3" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-8">
+<clipPath id="terminal-2339037051-line-8">
     <rect x="0" y="196.7" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-9">
+<clipPath id="terminal-2339037051-line-9">
     <rect x="0" y="221.1" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-10">
+<clipPath id="terminal-2339037051-line-10">
     <rect x="0" y="245.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-11">
+<clipPath id="terminal-2339037051-line-11">
     <rect x="0" y="269.9" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-12">
+<clipPath id="terminal-2339037051-line-12">
     <rect x="0" y="294.3" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-13">
+<clipPath id="terminal-2339037051-line-13">
     <rect x="0" y="318.7" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-14">
+<clipPath id="terminal-2339037051-line-14">
     <rect x="0" y="343.1" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-15">
+<clipPath id="terminal-2339037051-line-15">
     <rect x="0" y="367.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-16">
+<clipPath id="terminal-2339037051-line-16">
     <rect x="0" y="391.9" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-17">
+<clipPath id="terminal-2339037051-line-17">
     <rect x="0" y="416.3" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-18">
+<clipPath id="terminal-2339037051-line-18">
     <rect x="0" y="440.7" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-19">
+<clipPath id="terminal-2339037051-line-19">
     <rect x="0" y="465.1" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-20">
+<clipPath id="terminal-2339037051-line-20">
     <rect x="0" y="489.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-21">
+<clipPath id="terminal-2339037051-line-21">
     <rect x="0" y="513.9" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-22">
+<clipPath id="terminal-2339037051-line-22">
     <rect x="0" y="538.3" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-23">
+<clipPath id="terminal-2339037051-line-23">
     <rect x="0" y="562.7" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-24">
+<clipPath id="terminal-2339037051-line-24">
     <rect x="0" y="587.1" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-25">
+<clipPath id="terminal-2339037051-line-25">
     <rect x="0" y="611.5" width="1452" height="24.65"/>
             </clipPath>
-<clipPath id="terminal-1741741831-line-26">
+<clipPath id="terminal-2339037051-line-26">
     <rect x="0" y="635.9" width="1452" height="24.65"/>
             </clipPath>
     </defs>
 
-    <rect fill="#292929" stroke="rgba(255,255,255,0.35)" stroke-width="1" x="1" y="1" width="1468" height="731.2" rx="8"/><text class="terminal-1741741831-title" fill="#c5c8c6" text-anchor="middle" x="734" y="27">der-report&#160;--&#160;cross-protocol&#160;summary</text>
+    <rect fill="#292929" stroke="rgba(255,255,255,0.35)" stroke-width="1" x="1" y="1" width="1468" height="731.2" rx="8"/><text class="terminal-2339037051-title" fill="#c5c8c6" text-anchor="middle" x="734" y="27">der-report&#160;--&#160;cross-protocol&#160;summary</text>
             <g transform="translate(26,22)">
             <circle cx="0" cy="0" r="7" fill="#ff5f57"/>
             <circle cx="22" cy="0" r="7" fill="#febc2e"/>
             <circle cx="44" cy="0" r="7" fill="#28c840"/>
             </g>
         
-    <g transform="translate(9, 41)" clip-path="url(#terminal-1741741831-clip-terminal)">
+    <g transform="translate(9, 41)" clip-path="url(#terminal-2339037051-clip-terminal)">
     
-    <g class="terminal-1741741831-matrix">
-    <text class="terminal-1741741831-r1" x="0" y="20" textLength="363" clip-path="url(#terminal-1741741831-line-0)">$&#160;der-report&#160;/tmp/der_demo/*.json</text><text class="terminal-1741741831-r1" x="1452" y="20" textLength="11" clip-path="url(#terminal-1741741831-line-0)">
-</text><text class="terminal-1741741831-r1" x="1452" y="44.4" textLength="11" clip-path="url(#terminal-1741741831-line-1)">
-</text><text class="terminal-1741741831-r1" x="0" y="68.8" textLength="660" clip-path="url(#terminal-1741741831-line-2)">============================================================</text><text class="terminal-1741741831-r1" x="1452" y="68.8" textLength="11" clip-path="url(#terminal-1741741831-line-2)">
-</text><text class="terminal-1741741831-r1" x="0" y="93.2" textLength="429" clip-path="url(#terminal-1741741831-line-3)">&#160;&#160;CROSS-PROTOCOL&#160;ATTACK&#160;SURFACE&#160;SUMMARY</text><text class="terminal-1741741831-r1" x="1452" y="93.2" textLength="11" clip-path="url(#terminal-1741741831-line-3)">
-</text><text class="terminal-1741741831-r1" x="0" y="117.6" textLength="660" clip-path="url(#terminal-1741741831-line-4)">============================================================</text><text class="terminal-1741741831-r1" x="1452" y="117.6" textLength="11" clip-path="url(#terminal-1741741831-line-4)">
-</text><text class="terminal-1741741831-r1" x="1452" y="142" textLength="11" clip-path="url(#terminal-1741741831-line-5)">
-</text><text class="terminal-1741741831-r1" x="0" y="166.4" textLength="561" clip-path="url(#terminal-1741741831-line-6)">Targets&#160;assessed:&#160;7&#160;&#160;(sep2:&#160;2,&#160;dnp3:&#160;2,&#160;sunspec:&#160;3)</text><text class="terminal-1741741831-r1" x="1452" y="166.4" textLength="11" clip-path="url(#terminal-1741741831-line-6)">
-</text><text class="terminal-1741741831-r1" x="1452" y="190.8" textLength="11" clip-path="url(#terminal-1741741831-line-7)">
-</text><text class="terminal-1741741831-r1" x="0" y="215.2" textLength="605" clip-path="url(#terminal-1741741831-line-8)">Writable&#160;+&#160;unauthenticated-reachable&#160;control&#160;points:&#160;67</text><text class="terminal-1741741831-r1" x="1452" y="215.2" textLength="11" clip-path="url(#terminal-1741741831-line-8)">
-</text><text class="terminal-1741741831-r1" x="0" y="239.6" textLength="660" clip-path="url(#terminal-1741741831-line-9)">------------------------------------------------------------</text><text class="terminal-1741741831-r1" x="1452" y="239.6" textLength="11" clip-path="url(#terminal-1741741831-line-9)">
-</text><text class="terminal-1741741831-r1" x="0" y="264" textLength="1089" clip-path="url(#terminal-1741741831-line-10)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.0.1:21000&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;g10v2&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Binary&#160;Output&#160;=&#160;{&#x27;start&#x27;:&#160;0,&#160;&#x27;stop&#x27;:&#160;3}</text><text class="terminal-1741741831-r1" x="1452" y="264" textLength="11" clip-path="url(#terminal-1741741831-line-10)">
-</text><text class="terminal-1741741831-r1" x="0" y="288.4" textLength="1166" clip-path="url(#terminal-1741741831-line-11)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.0.1:21001&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;g40v1&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Analog&#160;Output&#160;Status&#160;=&#160;{&#x27;start&#x27;:&#160;0,&#160;&#x27;stop&#x27;:&#160;1}</text><text class="terminal-1741741831-r1" x="1452" y="288.4" textLength="11" clip-path="url(#terminal-1741741831-line-11)">
-</text><text class="terminal-1741741831-r1" x="0" y="312.8" textLength="957" clip-path="url(#terminal-1741741831-line-12)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.0.1:5601&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model1@68&#160;&#160;&#160;&#160;&#160;&#160;Common&#160;/&#160;Device&#160;Address&#160;=&#160;1</text><text class="terminal-1741741831-r1" x="1452" y="312.8" textLength="11" clip-path="url(#terminal-1741741831-line-12)">
-</text><text class="terminal-1741741831-r1" x="0" y="337.2" textLength="1100" clip-path="url(#terminal-1741741831-line-13)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.0.1:5601&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model123@126&#160;&#160;&#160;Immediate&#160;Controls&#160;/&#160;Conn&#160;=&#160;&#x27;DISCONNECT&#x27;</text><text class="terminal-1741741831-r1" x="1452" y="337.2" textLength="11" clip-path="url(#terminal-1741741831-line-13)">
-</text><text class="terminal-1741741831-r1" x="0" y="361.6" textLength="1221" clip-path="url(#terminal-1741741831-line-14)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.0.1:5602&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model704@146&#160;&#160;&#160;DER&#160;AC&#160;Controls&#160;/&#160;Active&#160;Power&#160;Setpoint&#160;(W)&#160;=&#160;-1500</text><text class="terminal-1741741831-r1" x="1452" y="361.6" textLength="11" clip-path="url(#terminal-1741741831-line-14)">
-</text><text class="terminal-1741741831-r1" x="0" y="386" textLength="1155" clip-path="url(#terminal-1741741831-line-15)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.0.1:5603&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model715@101&#160;&#160;&#160;DER&#160;Capacity&#160;Status&#160;/&#160;Set&#160;Operation&#160;=&#160;&#x27;START&#x27;</text><text class="terminal-1741741831-r1" x="1452" y="386" textLength="11" clip-path="url(#terminal-1741741831-line-15)">
-</text><text class="terminal-1741741831-r1" x="0" y="410.4" textLength="1100" clip-path="url(#terminal-1741741831-line-16)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.0.1:18444&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/edev/0/der&#160;&#160;&#160;&#160;DER&#160;(Distributed&#160;Energy&#160;Resource)&#160;=&#160;None</text><text class="terminal-1741741831-r1" x="1452" y="410.4" textLength="11" clip-path="url(#terminal-1741741831-line-16)">
-</text><text class="terminal-1741741831-r1" x="0" y="434.8" textLength="1144" clip-path="url(#terminal-1741741831-line-17)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.0.1:18444&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;/edev/0/der/0/ctrl&#160;DER&#160;(Distributed&#160;Energy&#160;Resource)&#160;=&#160;None</text><text class="terminal-1741741831-r1" x="1452" y="434.8" textLength="11" clip-path="url(#terminal-1741741831-line-17)">
-</text><text class="terminal-1741741831-r1" x="0" y="459.2" textLength="187" clip-path="url(#terminal-1741741831-line-18)">&#160;&#160;...&#160;59&#160;more&#160;...</text><text class="terminal-1741741831-r1" x="1452" y="459.2" textLength="11" clip-path="url(#terminal-1741741831-line-18)">
-</text><text class="terminal-1741741831-r1" x="1452" y="483.6" textLength="11" clip-path="url(#terminal-1741741831-line-19)">
-</text><text class="terminal-1741741831-r1" x="0" y="508" textLength="286" clip-path="url(#terminal-1741741831-line-20)">Cross-cutting&#160;findings:&#160;19</text><text class="terminal-1741741831-r1" x="1452" y="508" textLength="11" clip-path="url(#terminal-1741741831-line-20)">
-</text><text class="terminal-1741741831-r1" x="0" y="532.4" textLength="660" clip-path="url(#terminal-1741741831-line-21)">------------------------------------------------------------</text><text class="terminal-1741741831-r1" x="1452" y="532.4" textLength="11" clip-path="url(#terminal-1741741831-line-21)">
-</text><text class="terminal-1741741831-r1" x="0" y="556.8" textLength="1144" clip-path="url(#terminal-1741741831-line-22)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.0.1:21000&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Controllable&#160;output&#160;points&#160;reachable&#160;without&#160;authentication</text><text class="terminal-1741741831-r1" x="1452" y="556.8" textLength="11" clip-path="url(#terminal-1741741831-line-22)">
-</text><text class="terminal-1741741831-r1" x="0" y="581.2" textLength="1155" clip-path="url(#terminal-1741741831-line-23)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.0.1:5601&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Writable&#160;DER&#160;control&#160;models&#160;reachable&#160;without&#160;authentication</text><text class="terminal-1741741831-r1" x="1452" y="581.2" textLength="11" clip-path="url(#terminal-1741741831-line-23)">
-</text><text class="terminal-1741741831-r1" x="0" y="605.6" textLength="1144" clip-path="url(#terminal-1741741831-line-24)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.0.1:18444&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Resource&#160;accessible&#160;without&#160;client&#160;certificate:&#160;/edev/0/der</text><text class="terminal-1741741831-r1" x="1452" y="605.6" textLength="11" clip-path="url(#terminal-1741741831-line-24)">
-</text><text class="terminal-1741741831-r1" x="0" y="630" textLength="1067" clip-path="url(#terminal-1741741831-line-25)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.0.1:21000&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Outstation&#160;responds&#160;to&#160;unauthenticated&#160;DNP3&#160;requests</text><text class="terminal-1741741831-r1" x="1452" y="630" textLength="11" clip-path="url(#terminal-1741741831-line-25)">
-</text><text class="terminal-1741741831-r1" x="0" y="654.4" textLength="1375" clip-path="url(#terminal-1741741831-line-26)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sunspec&#160;&#160;127.0.0.1:5601&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SunSpec&#160;device&#160;exposes&#160;its&#160;self-describing&#160;model&#160;map&#160;over&#160;unauthenticated&#160;Modbus</text><text class="terminal-1741741831-r1" x="1452" y="654.4" textLength="11" clip-path="url(#terminal-1741741831-line-26)">
-</text><text class="terminal-1741741831-r1" x="0" y="678.8" textLength="187" clip-path="url(#terminal-1741741831-line-27)">&#160;&#160;...&#160;14&#160;more&#160;...</text><text class="terminal-1741741831-r1" x="1452" y="678.8" textLength="11" clip-path="url(#terminal-1741741831-line-27)">
+    <g class="terminal-2339037051-matrix">
+    <text class="terminal-2339037051-r1" x="0" y="20" textLength="363" clip-path="url(#terminal-2339037051-line-0)">$&#160;der-report&#160;/tmp/der_demo/*.json</text><text class="terminal-2339037051-r1" x="1452" y="20" textLength="11" clip-path="url(#terminal-2339037051-line-0)">
+</text><text class="terminal-2339037051-r1" x="1452" y="44.4" textLength="11" clip-path="url(#terminal-2339037051-line-1)">
+</text><text class="terminal-2339037051-r1" x="0" y="68.8" textLength="660" clip-path="url(#terminal-2339037051-line-2)">============================================================</text><text class="terminal-2339037051-r1" x="1452" y="68.8" textLength="11" clip-path="url(#terminal-2339037051-line-2)">
+</text><text class="terminal-2339037051-r1" x="0" y="93.2" textLength="429" clip-path="url(#terminal-2339037051-line-3)">&#160;&#160;CROSS-PROTOCOL&#160;ATTACK&#160;SURFACE&#160;SUMMARY</text><text class="terminal-2339037051-r1" x="1452" y="93.2" textLength="11" clip-path="url(#terminal-2339037051-line-3)">
+</text><text class="terminal-2339037051-r1" x="0" y="117.6" textLength="660" clip-path="url(#terminal-2339037051-line-4)">============================================================</text><text class="terminal-2339037051-r1" x="1452" y="117.6" textLength="11" clip-path="url(#terminal-2339037051-line-4)">
+</text><text class="terminal-2339037051-r1" x="1452" y="142" textLength="11" clip-path="url(#terminal-2339037051-line-5)">
+</text><text class="terminal-2339037051-r1" x="0" y="166.4" textLength="561" clip-path="url(#terminal-2339037051-line-6)">Targets&#160;assessed:&#160;7&#160;&#160;(sunspec:&#160;3,&#160;sep2:&#160;2,&#160;dnp3:&#160;2)</text><text class="terminal-2339037051-r1" x="1452" y="166.4" textLength="11" clip-path="url(#terminal-2339037051-line-6)">
+</text><text class="terminal-2339037051-r1" x="1452" y="190.8" textLength="11" clip-path="url(#terminal-2339037051-line-7)">
+</text><text class="terminal-2339037051-r1" x="0" y="215.2" textLength="605" clip-path="url(#terminal-2339037051-line-8)">Writable&#160;+&#160;unauthenticated-reachable&#160;control&#160;points:&#160;67</text><text class="terminal-2339037051-r1" x="1452" y="215.2" textLength="11" clip-path="url(#terminal-2339037051-line-8)">
+</text><text class="terminal-2339037051-r1" x="0" y="239.6" textLength="660" clip-path="url(#terminal-2339037051-line-9)">------------------------------------------------------------</text><text class="terminal-2339037051-r1" x="1452" y="239.6" textLength="11" clip-path="url(#terminal-2339037051-line-9)">
+</text><text class="terminal-2339037051-r1" x="0" y="264" textLength="957" clip-path="url(#terminal-2339037051-line-10)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.10.1:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model1@68&#160;&#160;&#160;&#160;&#160;&#160;Common&#160;/&#160;Device&#160;Address&#160;=&#160;1</text><text class="terminal-2339037051-r1" x="1452" y="264" textLength="11" clip-path="url(#terminal-2339037051-line-10)">
+</text><text class="terminal-2339037051-r1" x="0" y="288.4" textLength="1100" clip-path="url(#terminal-2339037051-line-11)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.10.1:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model123@126&#160;&#160;&#160;Immediate&#160;Controls&#160;/&#160;Conn&#160;=&#160;&#x27;DISCONNECT&#x27;</text><text class="terminal-2339037051-r1" x="1452" y="288.4" textLength="11" clip-path="url(#terminal-2339037051-line-11)">
+</text><text class="terminal-2339037051-r1" x="0" y="312.8" textLength="1221" clip-path="url(#terminal-2339037051-line-12)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.10.2:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model704@146&#160;&#160;&#160;DER&#160;AC&#160;Controls&#160;/&#160;Active&#160;Power&#160;Setpoint&#160;(W)&#160;=&#160;-1500</text><text class="terminal-2339037051-r1" x="1452" y="312.8" textLength="11" clip-path="url(#terminal-2339037051-line-12)">
+</text><text class="terminal-2339037051-r1" x="0" y="337.2" textLength="1155" clip-path="url(#terminal-2339037051-line-13)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.10.3:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;model715@101&#160;&#160;&#160;DER&#160;Capacity&#160;Status&#160;/&#160;Set&#160;Operation&#160;=&#160;&#x27;START&#x27;</text><text class="terminal-2339037051-r1" x="1452" y="337.2" textLength="11" clip-path="url(#terminal-2339037051-line-13)">
+</text><text class="terminal-2339037051-r1" x="0" y="361.6" textLength="1089" clip-path="url(#terminal-2339037051-line-14)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.20.1:20000&#160;&#160;&#160;&#160;&#160;&#160;&#160;g10v2&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Binary&#160;Output&#160;=&#160;{&#x27;start&#x27;:&#160;0,&#160;&#x27;stop&#x27;:&#160;3}</text><text class="terminal-2339037051-r1" x="1452" y="361.6" textLength="11" clip-path="url(#terminal-2339037051-line-14)">
+</text><text class="terminal-2339037051-r1" x="0" y="386" textLength="1166" clip-path="url(#terminal-2339037051-line-15)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.20.2:20000&#160;&#160;&#160;&#160;&#160;&#160;&#160;g40v1&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Analog&#160;Output&#160;Status&#160;=&#160;{&#x27;start&#x27;:&#160;0,&#160;&#x27;stop&#x27;:&#160;1}</text><text class="terminal-2339037051-r1" x="1452" y="386" textLength="11" clip-path="url(#terminal-2339037051-line-15)">
+</text><text class="terminal-2339037051-r1" x="0" y="410.4" textLength="1100" clip-path="url(#terminal-2339037051-line-16)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.30.2:15388&#160;&#160;&#160;&#160;&#160;&#160;&#160;/edev/0/der&#160;&#160;&#160;&#160;DER&#160;(Distributed&#160;Energy&#160;Resource)&#160;=&#160;None</text><text class="terminal-2339037051-r1" x="1452" y="410.4" textLength="11" clip-path="url(#terminal-2339037051-line-16)">
+</text><text class="terminal-2339037051-r1" x="0" y="434.8" textLength="1144" clip-path="url(#terminal-2339037051-line-17)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.30.2:15388&#160;&#160;&#160;&#160;&#160;&#160;&#160;/edev/0/der/0/ctrl&#160;DER&#160;(Distributed&#160;Energy&#160;Resource)&#160;=&#160;None</text><text class="terminal-2339037051-r1" x="1452" y="434.8" textLength="11" clip-path="url(#terminal-2339037051-line-17)">
+</text><text class="terminal-2339037051-r1" x="0" y="459.2" textLength="187" clip-path="url(#terminal-2339037051-line-18)">&#160;&#160;...&#160;59&#160;more&#160;...</text><text class="terminal-2339037051-r1" x="1452" y="459.2" textLength="11" clip-path="url(#terminal-2339037051-line-18)">
+</text><text class="terminal-2339037051-r1" x="1452" y="483.6" textLength="11" clip-path="url(#terminal-2339037051-line-19)">
+</text><text class="terminal-2339037051-r1" x="0" y="508" textLength="286" clip-path="url(#terminal-2339037051-line-20)">Cross-cutting&#160;findings:&#160;19</text><text class="terminal-2339037051-r1" x="1452" y="508" textLength="11" clip-path="url(#terminal-2339037051-line-20)">
+</text><text class="terminal-2339037051-r1" x="0" y="532.4" textLength="660" clip-path="url(#terminal-2339037051-line-21)">------------------------------------------------------------</text><text class="terminal-2339037051-r1" x="1452" y="532.4" textLength="11" clip-path="url(#terminal-2339037051-line-21)">
+</text><text class="terminal-2339037051-r1" x="0" y="556.8" textLength="1155" clip-path="url(#terminal-2339037051-line-22)">&#160;&#160;[CRITICAL]&#160;sunspec&#160;&#160;127.0.10.1:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Writable&#160;DER&#160;control&#160;models&#160;reachable&#160;without&#160;authentication</text><text class="terminal-2339037051-r1" x="1452" y="556.8" textLength="11" clip-path="url(#terminal-2339037051-line-22)">
+</text><text class="terminal-2339037051-r1" x="0" y="581.2" textLength="1144" clip-path="url(#terminal-2339037051-line-23)">&#160;&#160;[CRITICAL]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.20.1:20000&#160;&#160;&#160;&#160;&#160;&#160;&#160;Controllable&#160;output&#160;points&#160;reachable&#160;without&#160;authentication</text><text class="terminal-2339037051-r1" x="1452" y="581.2" textLength="11" clip-path="url(#terminal-2339037051-line-23)">
+</text><text class="terminal-2339037051-r1" x="0" y="605.6" textLength="1375" clip-path="url(#terminal-2339037051-line-24)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sunspec&#160;&#160;127.0.10.1:502&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SunSpec&#160;device&#160;exposes&#160;its&#160;self-describing&#160;model&#160;map&#160;over&#160;unauthenticated&#160;Modbus</text><text class="terminal-2339037051-r1" x="1452" y="605.6" textLength="11" clip-path="url(#terminal-2339037051-line-24)">
+</text><text class="terminal-2339037051-r1" x="0" y="630" textLength="1067" clip-path="url(#terminal-2339037051-line-25)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;dnp3&#160;&#160;&#160;&#160;&#160;127.0.20.1:20000&#160;&#160;&#160;&#160;&#160;&#160;&#160;Outstation&#160;responds&#160;to&#160;unauthenticated&#160;DNP3&#160;requests</text><text class="terminal-2339037051-r1" x="1452" y="630" textLength="11" clip-path="url(#terminal-2339037051-line-25)">
+</text><text class="terminal-2339037051-r1" x="0" y="654.4" textLength="1144" clip-path="url(#terminal-2339037051-line-26)">&#160;&#160;[HIGH&#160;&#160;&#160;&#160;]&#160;sep2&#160;&#160;&#160;&#160;&#160;127.0.30.2:15388&#160;&#160;&#160;&#160;&#160;&#160;&#160;Resource&#160;accessible&#160;without&#160;client&#160;certificate:&#160;/edev/0/der</text><text class="terminal-2339037051-r1" x="1452" y="654.4" textLength="11" clip-path="url(#terminal-2339037051-line-26)">
+</text><text class="terminal-2339037051-r1" x="0" y="678.8" textLength="187" clip-path="url(#terminal-2339037051-line-27)">&#160;&#160;...&#160;14&#160;more&#160;...</text><text class="terminal-2339037051-r1" x="1452" y="678.8" textLength="11" clip-path="url(#terminal-2339037051-line-27)">
 </text>
     </g>
     </g>

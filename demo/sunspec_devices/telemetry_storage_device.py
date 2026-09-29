@@ -7,7 +7,8 @@ exception: a small but genuinely dangerous operational control (OpCtl --
 "Set Operation", plus a heartbeat/alarm-reset pair) rather than a power
 setpoint, showing that "writable" doesn't always mean "power limit."
 
-    python3 demo/sunspec_devices/telemetry_storage_device.py [port]   # default 5603
+    python3 demo/sunspec_devices/telemetry_storage_device.py [host] [port]
+    # default 127.0.10.3:502 -- port 502 needs authbind, see demo/README.md
 """
 
 import sys
@@ -16,11 +17,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import build_device_registers, serve
 
-DEFAULT_PORT = 5603
+DEFAULT_HOST = "127.0.10.3"
+DEFAULT_PORT = 502
 
 
 def main() -> None:
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PORT
+    host = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_HOST
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT
     registers = build_device_registers([
         (1, {
             "Mn": "Fieldpoint Sensors", "Md": "FP-WX200 Met Station + BESS Controller",
@@ -37,7 +40,7 @@ def main() -> None:
             "ControllerHb": 8_640_000, "AlarmReset": 0, "OpCtl": 1,
         }),
     ])
-    serve(registers, port, "Telemetry/storage device (Fieldpoint FP-WX200)")
+    serve(registers, host, port, "Telemetry/storage device (Fieldpoint FP-WX200)")
 
 
 if __name__ == "__main__":

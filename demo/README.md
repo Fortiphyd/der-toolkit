@@ -4,20 +4,39 @@ Seven simulated devices spanning all three protocols, deliberately varied
 so a full-pipeline run has something interesting to say about each one —
 not just "the tool ran," but a genuinely different finding per device.
 
-| Device                              | Protocol | Port  | What it's for |
-|--------------------------------------|----------|-------|----------------|
-| Classic PV inverter                  | SunSpec  | 5601  | The textbook writable surface: model 123 Immediate Controls (power limit, PF, VAR) |
-| DER-compliant inverter               | SunSpec  | 5602  | The newer, richer surface: model 704 DER AC Controls (32 writable fields, incl. anti-islanding enable) |
-| Telemetry/storage device             | SunSpec  | 5603  | Mostly read-only sensors (irradiance, temp, weather) + one small operational control (model 715) |
-| Protection relay                     | DNP3     | 21000 | Binary output status (g10v2) — implies CROB (g12) is operable: "flip a breaker" |
-| Setpoint controller                  | DNP3     | 21001 | Analog output status (g40v1) — implies analog commands (g41) are operable: "rewrite a setpoint". No binary I/O at all. |
-| SEP2 server (hardened)               | SEP2     | 18443 | Correctly configured: mTLS + chain validation + registration all enforced. The contrast case. |
-| SEP2 server (vulnerable)             | SEP2     | 18444 | Two real findings: an access-control misconfiguration (DER control surface force-opened) and a real XML implementation bug (XXE) |
+Each device gets its own address and the real standard port for its
+protocol (Modbus/TCP 502, DNP3 20000, IEEE 2030.5 15388), rather than all
+seven crowding onto `127.0.0.1` at made-up ports — closer to what mapping
+an actual small site looks like. The addresses are still loopback (no
+network setup needed), just spread across three /24s by protocol so
+nothing collides:
+
+| Device                              | Protocol | Address            | What it's for |
+|--------------------------------------|----------|---------------------|----------------|
+| Classic PV inverter                  | SunSpec  | 127.0.10.1:502      | The textbook writable surface: model 123 Immediate Controls (power limit, PF, VAR) |
+| DER-compliant inverter               | SunSpec  | 127.0.10.2:502      | The newer, richer surface: model 704 DER AC Controls (32 writable fields, incl. anti-islanding enable) |
+| Telemetry/storage device             | SunSpec  | 127.0.10.3:502      | Mostly read-only sensors (irradiance, temp, weather) + one small operational control (model 715) |
+| Protection relay                     | DNP3     | 127.0.20.1:20000    | Binary output status (g10v2) — implies CROB (g12) is operable: "flip a breaker" |
+| Setpoint controller                  | DNP3     | 127.0.20.2:20000    | Analog output status (g40v1) — implies analog commands (g41) are operable: "rewrite a setpoint". No binary I/O at all. |
+| SEP2 server (hardened)               | SEP2     | 127.0.30.1:15388    | Correctly configured: mTLS + chain validation + registration all enforced. The contrast case. |
+| SEP2 server (vulnerable)             | SEP2     | 127.0.30.2:15388    | Two real findings: an access-control misconfiguration (DER control surface force-opened) and a real XML implementation bug (XXE) |
+
+Port 502 is privileged, so the three SunSpec devices run under
+[`authbind`](https://en.wikipedia.org/wiki/Authbind) rather than as root.
+One-time setup (safe and narrowly scoped — it only grants your user
+permission to bind port 502, nothing broader):
+
+```bash
+sudo apt-get install -y authbind
+sudo touch /etc/authbind/byport/502
+sudo chmod 500 /etc/authbind/byport/502
+sudo chown $USER /etc/authbind/byport/502
+```
 
 ## Quick start
 
 ```bash
-# One-time: generate the SEP2 server's test PKI
+# One-time: generate the SEP2 server's test PKI, and authbind (above)
 demo/sep2_server/setup.sh
 
 # Start all seven devices
@@ -29,21 +48,21 @@ report — `run_cluster.py` prints the exact commands to copy-paste, or:
 
 ```bash
 mkdir -p /tmp/der_demo
-der-sunspec map 127.0.0.1 --port 5601 --output /tmp/der_demo/5601.json
-der-sunspec map 127.0.0.1 --port 5602 --output /tmp/der_demo/5602.json
-der-sunspec map 127.0.0.1 --port 5603 --output /tmp/der_demo/5603.json
-der-dnp3    map 127.0.0.1 --port 21000 --output /tmp/der_demo/21000.json
-der-dnp3    map 127.0.0.1 --port 21001 --output /tmp/der_demo/21001.json
-der-sep2    map 127.0.0.1 --port 18443 \
+der-sunspec map 127.0.10.1 --port 502 --output /tmp/der_demo/classic.json
+der-sunspec map 127.0.10.2 --port 502 --output /tmp/der_demo/der_compliant.json
+der-sunspec map 127.0.10.3 --port 502 --output /tmp/der_demo/telemetry.json
+der-dnp3    map 127.0.20.1 --port 20000 --output /tmp/der_demo/relay.json
+der-dnp3    map 127.0.20.2 --port 20000 --output /tmp/der_demo/setpoint.json
+der-sep2    map 127.0.30.1 --port 15388 \
   --client-cert demo/sep2_server/certs/client_registered.crt \
   --client-key  demo/sep2_server/certs/client_registered.key \
   --ca-bundle   demo/sep2_server/certs/ca.crt \
-  --output /tmp/der_demo/18443.json
-der-sep2    map 127.0.0.1 --port 18444 \
+  --output /tmp/der_demo/hardened.json
+der-sep2    map 127.0.30.2 --port 15388 \
   --client-cert demo/sep2_server/certs/client_registered.crt \
   --client-key  demo/sep2_server/certs/client_registered.key \
   --ca-bundle   demo/sep2_server/certs/ca.crt \
-  --output /tmp/der_demo/18444.json
+  --output /tmp/der_demo/vulnerable.json
 
 der-report /tmp/der_demo/*.json
 ```
@@ -70,11 +89,11 @@ Any device can be fuzzed the same way as a real target (`--authorized-scope`
 toolkit):
 
 ```bash
-der-sep2 fuzz 127.0.0.1 --port 18444 \
+der-sep2 fuzz 127.0.30.2 --port 15388 \
   --client-cert demo/sep2_server/certs/client_registered.crt \
   --client-key  demo/sep2_server/certs/client_registered.key \
   --ca-bundle   demo/sep2_server/certs/ca.crt \
-  --authorized-scope 127.0.0.1/32 --allow-disruptive
+  --authorized-scope 127.0.30.2/32 --allow-disruptive
 ```
 
 reproduces a real XXE finding — `/etc/passwd` reflected back through the

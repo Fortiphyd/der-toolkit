@@ -69,26 +69,26 @@ def _sep2_args() -> list[str]:
 
 
 def test_classic_pv_inverter(cluster, tmp_path):
-    data = _run_map("der-sunspec", "127.0.0.1", "--port", "5601", out=tmp_path / "out.json")
+    data = _run_map("der-sunspec", "127.0.10.1", "--port", "502", out=tmp_path / "out.json")
     surface = data["attack_surfaces"][0]
     assert len(_writable_addresses(surface)) == 22
 
 
 def test_der_compliant_inverter(cluster, tmp_path):
-    data = _run_map("der-sunspec", "127.0.0.1", "--port", "5602", out=tmp_path / "out.json")
+    data = _run_map("der-sunspec", "127.0.10.2", "--port", "502", out=tmp_path / "out.json")
     surface = data["attack_surfaces"][0]
     assert len(_writable_addresses(surface)) == 33
 
 
 def test_telemetry_storage_device(cluster, tmp_path):
-    data = _run_map("der-sunspec", "127.0.0.1", "--port", "5603", out=tmp_path / "out.json")
+    data = _run_map("der-sunspec", "127.0.10.3", "--port", "502", out=tmp_path / "out.json")
     surface = data["attack_surfaces"][0]
     assert len(_writable_addresses(surface)) == 4
 
 
 def test_protection_relay(cluster, tmp_path):
     data = _run_map(
-        "der-dnp3", "127.0.0.1", "--port", "21000", "--listen-seconds", "3",
+        "der-dnp3", "127.0.20.1", "--port", "20000", "--listen-seconds", "6",
         out=tmp_path / "out.json",
     )
     surface = data["attack_surfaces"][0]
@@ -97,7 +97,7 @@ def test_protection_relay(cluster, tmp_path):
 
 def test_setpoint_controller(cluster, tmp_path):
     data = _run_map(
-        "der-dnp3", "127.0.0.1", "--port", "21001", "--listen-seconds", "3",
+        "der-dnp3", "127.0.20.2", "--port", "20000", "--listen-seconds", "6",
         out=tmp_path / "out.json",
     )
     surface = data["attack_surfaces"][0]
@@ -106,7 +106,7 @@ def test_setpoint_controller(cluster, tmp_path):
 
 def test_sep2_hardened_has_no_high_or_critical_findings(cluster, tmp_path):
     data = _run_map(
-        "der-sep2", "127.0.0.1", "--port", "18443", *_sep2_args(),
+        "der-sep2", "127.0.30.1", "--port", "15388", *_sep2_args(),
         out=tmp_path / "out.json",
     )
     surface = data["attack_surfaces"][0]
@@ -118,7 +118,7 @@ def test_sep2_hardened_has_no_high_or_critical_findings(cluster, tmp_path):
 
 def test_sep2_vulnerable_flags_the_open_der_control_surface(cluster, tmp_path):
     data = _run_map(
-        "der-sep2", "127.0.0.1", "--port", "18444", *_sep2_args(),
+        "der-sep2", "127.0.30.2", "--port", "15388", *_sep2_args(),
         out=tmp_path / "out.json",
     )
     surface = data["attack_surfaces"][0]
@@ -140,15 +140,15 @@ def test_sep2_vulnerable_flags_the_open_der_control_surface(cluster, tmp_path):
 
 def test_full_cluster_report_matches_documented_totals(cluster, tmp_path):
     saved = []
-    for label, protocol, port, _argv in DEVICES:
-        out = tmp_path / f"{port}.json"
+    for label, protocol, host, port, _argv in DEVICES:
+        out = tmp_path / f"{host}.json"
         if protocol == "sunspec":
-            _run_map("der-sunspec", "127.0.0.1", "--port", str(port), out=out)
+            _run_map("der-sunspec", host, "--port", str(port), out=out)
         elif protocol == "dnp3":
-            _run_map("der-dnp3", "127.0.0.1", "--port", str(port),
-                      "--listen-seconds", "3", out=out)
+            _run_map("der-dnp3", host, "--port", str(port),
+                      "--listen-seconds", "6", out=out)
         else:
-            _run_map("der-sep2", "127.0.0.1", "--port", str(port), *_sep2_args(), out=out)
+            _run_map("der-sep2", host, "--port", str(port), *_sep2_args(), out=out)
         saved.append(out)
 
     report_out = tmp_path / "report.json"

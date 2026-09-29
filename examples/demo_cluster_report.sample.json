@@ -2,6 +2,10 @@
   "_note": "Real der-report output from der-toolkit's own demo cluster (demo/), unmodified beyond this note -- see demo/README.md and examples/demo_cluster_report.sample.txt for the equivalent console rendering.",
   "targets_assessed": 7,
   "by_protocol": {
+    "sunspec": {
+      "targets": 3,
+      "writable_reachable": 59
+    },
     "sep2": {
       "targets": 2,
       "writable_reachable": 6
@@ -9,16 +13,452 @@
     "dnp3": {
       "targets": 2,
       "writable_reachable": 2
-    },
-    "sunspec": {
-      "targets": 3,
-      "writable_reachable": 59
     }
   },
   "writable_reachable_points": [
     {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model1@68",
+      "semantic_label": "Common / Device Address",
+      "severity": "critical",
+      "value": 1
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@124",
+      "semantic_label": "Immediate Controls / Conn_WinTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@125",
+      "semantic_label": "Immediate Controls / Conn_RvrtTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@126",
+      "semantic_label": "Immediate Controls / Conn",
+      "severity": "critical",
+      "value": "DISCONNECT"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@127",
+      "semantic_label": "Immediate Controls / WMaxLimPct",
+      "severity": "critical",
+      "value": 10000
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@128",
+      "semantic_label": "Immediate Controls / WMaxLimPct_WinTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@129",
+      "semantic_label": "Immediate Controls / WMaxLimPct_RvrtTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@130",
+      "semantic_label": "Immediate Controls / WMaxLimPct_RmpTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@131",
+      "semantic_label": "Immediate Controls / WMaxLim_Ena",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@132",
+      "semantic_label": "Immediate Controls / OutPFSet",
+      "severity": "critical",
+      "value": 10000
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@133",
+      "semantic_label": "Immediate Controls / OutPFSet_WinTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@134",
+      "semantic_label": "Immediate Controls / OutPFSet_RvrtTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@135",
+      "semantic_label": "Immediate Controls / OutPFSet_RmpTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@136",
+      "semantic_label": "Immediate Controls / OutPFSet_Ena",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@137",
+      "semantic_label": "Immediate Controls / VArWMaxPct",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@138",
+      "semantic_label": "Immediate Controls / VArMaxPct",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@139",
+      "semantic_label": "Immediate Controls / VArAvalPct",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@140",
+      "semantic_label": "Immediate Controls / VArPct_WinTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@141",
+      "semantic_label": "Immediate Controls / VArPct_RvrtTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@142",
+      "semantic_label": "Immediate Controls / VArPct_RmpTms",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@143",
+      "semantic_label": "Immediate Controls / VArPct_Mod",
+      "severity": "critical",
+      "value": "NONE"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "address": "model123@144",
+      "semantic_label": "Immediate Controls / VArPct_Ena",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model1@68",
+      "semantic_label": "Common / Device Address",
+      "severity": "critical",
+      "value": 2
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@124",
+      "semantic_label": "DER AC Controls / Power Factor Enable (W Inj) Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@125",
+      "semantic_label": "DER AC Controls / Power Factor Reversion Enable (W Inj)",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@126",
+      "semantic_label": "DER AC Controls / PF Reversion Time (W Inj)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@130",
+      "semantic_label": "DER AC Controls / Power Factor Enable (W Abs) Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@131",
+      "semantic_label": "DER AC Controls / Power Factor Reversion Enable (W Abs)",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@132",
+      "semantic_label": "DER AC Controls / PF Reversion Time (W Abs)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@136",
+      "semantic_label": "DER AC Controls / Limit Max Power Pct Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@137",
+      "semantic_label": "DER AC Controls / Limit Max Power Pct Setpoint",
+      "severity": "critical",
+      "value": 8000
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@138",
+      "semantic_label": "DER AC Controls / Reversion Limit Max Power Pct",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@139",
+      "semantic_label": "DER AC Controls / Reversion Limit Max Power Pct Enable",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@140",
+      "semantic_label": "DER AC Controls / Limit Max Power Pct Reversion Time",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@144",
+      "semantic_label": "DER AC Controls / Set Active Power Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@145",
+      "semantic_label": "DER AC Controls / Set Active Power Mode",
+      "severity": "critical",
+      "value": "W_MAX_PCT"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@146",
+      "semantic_label": "DER AC Controls / Active Power Setpoint (W)",
+      "severity": "critical",
+      "value": -1500
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@148",
+      "semantic_label": "DER AC Controls / Reversion Active Power (W)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@150",
+      "semantic_label": "DER AC Controls / Active Power Setpoint (Pct)",
+      "severity": "critical",
+      "value": 75
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@151",
+      "semantic_label": "DER AC Controls / Reversion Active Power (Pct)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@152",
+      "semantic_label": "DER AC Controls / Reversion Active Power Enable",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@153",
+      "semantic_label": "DER AC Controls / Active Power Reversion Time",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@157",
+      "semantic_label": "DER AC Controls / Set Reactive Power Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@158",
+      "semantic_label": "DER AC Controls / Set Reactive Power Mode",
+      "severity": "critical",
+      "value": "W_MAX_PCT"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@159",
+      "semantic_label": "DER AC Controls / Reactive Power Priority",
+      "severity": "critical",
+      "value": "ACTIVE"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@160",
+      "semantic_label": "DER AC Controls / Reactive Power Setpoint (Vars)",
+      "severity": "critical",
+      "value": 500
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@162",
+      "semantic_label": "DER AC Controls / Reversion Reactive Power (Vars)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@164",
+      "semantic_label": "DER AC Controls / Reactive Power Setpoint (Pct)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@165",
+      "semantic_label": "DER AC Controls / Reversion Reactive Power (Pct)",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@166",
+      "semantic_label": "DER AC Controls / Reversion Reactive Power Enable",
+      "severity": "critical",
+      "value": "DISABLED"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@167",
+      "semantic_label": "DER AC Controls / Reactive Power Reversion Time",
+      "severity": "critical",
+      "value": 0
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@171",
+      "semantic_label": "DER AC Controls / Normal Ramp Rate",
+      "severity": "critical",
+      "value": 10
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@172",
+      "semantic_label": "DER AC Controls / Normal Ramp Rate Reference",
+      "severity": "critical",
+      "value": "A_MAX"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@173",
+      "semantic_label": "DER AC Controls / Reactive Power Ramp Rate",
+      "severity": "critical",
+      "value": 10
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "address": "model704@174",
+      "semantic_label": "DER AC Controls / Anti-Islanding Enable",
+      "severity": "critical",
+      "value": "ENABLED"
+    },
+    {
       "protocol": "dnp3",
-      "target": "127.0.0.1:21000",
+      "target": "127.0.20.1:20000",
       "address": "g10v2",
       "semantic_label": "Binary Output",
       "severity": "critical",
@@ -29,7 +469,7 @@
     },
     {
       "protocol": "dnp3",
-      "target": "127.0.0.1:21001",
+      "target": "127.0.20.2:20000",
       "address": "g40v1",
       "semantic_label": "Analog Output Status",
       "severity": "critical",
@@ -40,447 +480,7 @@
     },
     {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model1@68",
-      "semantic_label": "Common / Device Address",
-      "severity": "critical",
-      "value": 1
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@124",
-      "semantic_label": "Immediate Controls / Conn_WinTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@125",
-      "semantic_label": "Immediate Controls / Conn_RvrtTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@126",
-      "semantic_label": "Immediate Controls / Conn",
-      "severity": "critical",
-      "value": "DISCONNECT"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@127",
-      "semantic_label": "Immediate Controls / WMaxLimPct",
-      "severity": "critical",
-      "value": 10000
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@128",
-      "semantic_label": "Immediate Controls / WMaxLimPct_WinTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@129",
-      "semantic_label": "Immediate Controls / WMaxLimPct_RvrtTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@130",
-      "semantic_label": "Immediate Controls / WMaxLimPct_RmpTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@131",
-      "semantic_label": "Immediate Controls / WMaxLim_Ena",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@132",
-      "semantic_label": "Immediate Controls / OutPFSet",
-      "severity": "critical",
-      "value": 10000
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@133",
-      "semantic_label": "Immediate Controls / OutPFSet_WinTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@134",
-      "semantic_label": "Immediate Controls / OutPFSet_RvrtTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@135",
-      "semantic_label": "Immediate Controls / OutPFSet_RmpTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@136",
-      "semantic_label": "Immediate Controls / OutPFSet_Ena",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@137",
-      "semantic_label": "Immediate Controls / VArWMaxPct",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@138",
-      "semantic_label": "Immediate Controls / VArMaxPct",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@139",
-      "semantic_label": "Immediate Controls / VArAvalPct",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@140",
-      "semantic_label": "Immediate Controls / VArPct_WinTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@141",
-      "semantic_label": "Immediate Controls / VArPct_RvrtTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@142",
-      "semantic_label": "Immediate Controls / VArPct_RmpTms",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@143",
-      "semantic_label": "Immediate Controls / VArPct_Mod",
-      "severity": "critical",
-      "value": "NONE"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "address": "model123@144",
-      "semantic_label": "Immediate Controls / VArPct_Ena",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model1@68",
-      "semantic_label": "Common / Device Address",
-      "severity": "critical",
-      "value": 2
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@124",
-      "semantic_label": "DER AC Controls / Power Factor Enable (W Inj) Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@125",
-      "semantic_label": "DER AC Controls / Power Factor Reversion Enable (W Inj)",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@126",
-      "semantic_label": "DER AC Controls / PF Reversion Time (W Inj)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@130",
-      "semantic_label": "DER AC Controls / Power Factor Enable (W Abs) Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@131",
-      "semantic_label": "DER AC Controls / Power Factor Reversion Enable (W Abs)",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@132",
-      "semantic_label": "DER AC Controls / PF Reversion Time (W Abs)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@136",
-      "semantic_label": "DER AC Controls / Limit Max Power Pct Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@137",
-      "semantic_label": "DER AC Controls / Limit Max Power Pct Setpoint",
-      "severity": "critical",
-      "value": 8000
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@138",
-      "semantic_label": "DER AC Controls / Reversion Limit Max Power Pct",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@139",
-      "semantic_label": "DER AC Controls / Reversion Limit Max Power Pct Enable",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@140",
-      "semantic_label": "DER AC Controls / Limit Max Power Pct Reversion Time",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@144",
-      "semantic_label": "DER AC Controls / Set Active Power Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@145",
-      "semantic_label": "DER AC Controls / Set Active Power Mode",
-      "severity": "critical",
-      "value": "W_MAX_PCT"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@146",
-      "semantic_label": "DER AC Controls / Active Power Setpoint (W)",
-      "severity": "critical",
-      "value": -1500
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@148",
-      "semantic_label": "DER AC Controls / Reversion Active Power (W)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@150",
-      "semantic_label": "DER AC Controls / Active Power Setpoint (Pct)",
-      "severity": "critical",
-      "value": 75
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@151",
-      "semantic_label": "DER AC Controls / Reversion Active Power (Pct)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@152",
-      "semantic_label": "DER AC Controls / Reversion Active Power Enable",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@153",
-      "semantic_label": "DER AC Controls / Active Power Reversion Time",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@157",
-      "semantic_label": "DER AC Controls / Set Reactive Power Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@158",
-      "semantic_label": "DER AC Controls / Set Reactive Power Mode",
-      "severity": "critical",
-      "value": "W_MAX_PCT"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@159",
-      "semantic_label": "DER AC Controls / Reactive Power Priority",
-      "severity": "critical",
-      "value": "ACTIVE"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@160",
-      "semantic_label": "DER AC Controls / Reactive Power Setpoint (Vars)",
-      "severity": "critical",
-      "value": 500
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@162",
-      "semantic_label": "DER AC Controls / Reversion Reactive Power (Vars)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@164",
-      "semantic_label": "DER AC Controls / Reactive Power Setpoint (Pct)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@165",
-      "semantic_label": "DER AC Controls / Reversion Reactive Power (Pct)",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@166",
-      "semantic_label": "DER AC Controls / Reversion Reactive Power Enable",
-      "severity": "critical",
-      "value": "DISABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@167",
-      "semantic_label": "DER AC Controls / Reactive Power Reversion Time",
-      "severity": "critical",
-      "value": 0
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@171",
-      "semantic_label": "DER AC Controls / Normal Ramp Rate",
-      "severity": "critical",
-      "value": 10
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@172",
-      "semantic_label": "DER AC Controls / Normal Ramp Rate Reference",
-      "severity": "critical",
-      "value": "A_MAX"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@173",
-      "semantic_label": "DER AC Controls / Reactive Power Ramp Rate",
-      "severity": "critical",
-      "value": 10
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "address": "model704@174",
-      "semantic_label": "DER AC Controls / Anti-Islanding Enable",
-      "severity": "critical",
-      "value": "ENABLED"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5603",
+      "target": "127.0.10.3:502",
       "address": "model1@68",
       "semantic_label": "Common / Device Address",
       "severity": "critical",
@@ -488,7 +488,7 @@
     },
     {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5603",
+      "target": "127.0.10.3:502",
       "address": "model715@98",
       "semantic_label": "DER Capacity Status / Controller Heartbeat",
       "severity": "critical",
@@ -496,7 +496,7 @@
     },
     {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5603",
+      "target": "127.0.10.3:502",
       "address": "model715@100",
       "semantic_label": "DER Capacity Status / Alarm Reset",
       "severity": "critical",
@@ -504,7 +504,7 @@
     },
     {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5603",
+      "target": "127.0.10.3:502",
       "address": "model715@101",
       "semantic_label": "DER Capacity Status / Set Operation",
       "severity": "critical",
@@ -512,7 +512,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "address": "/edev/0/der",
       "semantic_label": "DER (Distributed Energy Resource)",
       "severity": "high",
@@ -520,7 +520,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "address": "/edev/0/der/0/ctrl",
       "semantic_label": "DER (Distributed Energy Resource)",
       "severity": "high",
@@ -528,7 +528,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "address": "/edev/1/der",
       "semantic_label": "DER (Distributed Energy Resource)",
       "severity": "high",
@@ -536,7 +536,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "address": "/edev/1/der/0/ctrl",
       "semantic_label": "DER (Distributed Energy Resource)",
       "severity": "high",
@@ -544,7 +544,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18443",
+      "target": "127.0.30.1:15388",
       "address": "/dcap",
       "semantic_label": "Device Capability",
       "severity": "info",
@@ -552,7 +552,7 @@
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "address": "/dcap",
       "semantic_label": "Device Capability",
       "severity": "info",
@@ -561,134 +561,134 @@
   ],
   "findings": [
     {
-      "protocol": "dnp3",
-      "target": "127.0.0.1:21000",
-      "severity": "critical",
-      "title": "Controllable output points reachable without authentication",
-      "category": "policy"
-    },
-    {
-      "protocol": "dnp3",
-      "target": "127.0.0.1:21001",
-      "severity": "critical",
-      "title": "Controllable output points reachable without authentication",
-      "category": "policy"
-    },
-    {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
+      "target": "127.0.10.1:502",
       "severity": "critical",
       "title": "Writable DER control models reachable without authentication",
       "category": "policy"
     },
     {
       "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
+      "target": "127.0.10.2:502",
       "severity": "critical",
       "title": "Writable DER control models reachable without authentication",
       "category": "policy"
+    },
+    {
+      "protocol": "dnp3",
+      "target": "127.0.20.1:20000",
+      "severity": "critical",
+      "title": "Controllable output points reachable without authentication",
+      "category": "policy"
+    },
+    {
+      "protocol": "dnp3",
+      "target": "127.0.20.2:20000",
+      "severity": "critical",
+      "title": "Controllable output points reachable without authentication",
+      "category": "policy"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.1:502",
+      "severity": "high",
+      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
+      "category": "auth"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.2:502",
+      "severity": "high",
+      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
+      "category": "auth"
+    },
+    {
+      "protocol": "dnp3",
+      "target": "127.0.20.1:20000",
+      "severity": "high",
+      "title": "Outstation responds to unauthenticated DNP3 requests",
+      "category": "auth"
+    },
+    {
+      "protocol": "dnp3",
+      "target": "127.0.20.2:20000",
+      "severity": "high",
+      "title": "Outstation responds to unauthenticated DNP3 requests",
+      "category": "auth"
+    },
+    {
+      "protocol": "sunspec",
+      "target": "127.0.10.3:502",
+      "severity": "high",
+      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
+      "category": "auth"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "high",
       "title": "Resource accessible without client certificate: /edev/0/der",
       "category": "tls"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "high",
       "title": "Resource accessible without client certificate: /edev/0/der/0/ctrl",
       "category": "tls"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "high",
       "title": "Resource accessible without client certificate: /edev/1/der",
       "category": "tls"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "high",
       "title": "Resource accessible without client certificate: /edev/1/der/0/ctrl",
       "category": "tls"
     },
     {
-      "protocol": "dnp3",
-      "target": "127.0.0.1:21000",
-      "severity": "high",
-      "title": "Outstation responds to unauthenticated DNP3 requests",
-      "category": "auth"
-    },
-    {
-      "protocol": "dnp3",
-      "target": "127.0.0.1:21001",
-      "severity": "high",
-      "title": "Outstation responds to unauthenticated DNP3 requests",
-      "category": "auth"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5601",
-      "severity": "high",
-      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
-      "category": "auth"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5602",
-      "severity": "high",
-      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
-      "category": "auth"
-    },
-    {
-      "protocol": "sunspec",
-      "target": "127.0.0.1:5603",
-      "severity": "high",
-      "title": "SunSpec device exposes its self-describing model map over unauthenticated Modbus",
-      "category": "auth"
-    },
-    {
       "protocol": "sep2",
-      "target": "127.0.0.1:18443",
+      "target": "127.0.30.1:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /dcap",
       "category": "discovery"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18443",
+      "target": "127.0.30.1:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /edev/0/sub",
       "category": "discovery"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18443",
+      "target": "127.0.30.1:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /edev/1/sub",
       "category": "discovery"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /dcap",
       "category": "discovery"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /edev/0/sub",
       "category": "discovery"
     },
     {
       "protocol": "sep2",
-      "target": "127.0.0.1:18444",
+      "target": "127.0.30.2:15388",
       "severity": "info",
       "title": "Accessible resource not linked from resource tree: /edev/1/sub",
       "category": "discovery"

@@ -10,96 +10,96 @@
   CROSS-PROTOCOL ATTACK SURFACE SUMMARY
 ============================================================
 
-Targets assessed: 7  (sep2: 2, dnp3: 2, sunspec: 3)
+Targets assessed: 7  (sunspec: 3, sep2: 2, dnp3: 2)
 
 Writable + unauthenticated-reachable control points: 67
 ------------------------------------------------------------
-  [CRITICAL] dnp3     127.0.0.1:21000        g10v2          Binary Output = {'start': 0, 'stop': 3}
-  [CRITICAL] dnp3     127.0.0.1:21001        g40v1          Analog Output Status = {'start': 0, 'stop': 1}
-  [CRITICAL] sunspec  127.0.0.1:5601         model1@68      Common / Device Address = 1
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@124   Immediate Controls / Conn_WinTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@125   Immediate Controls / Conn_RvrtTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@126   Immediate Controls / Conn = 'DISCONNECT'
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@127   Immediate Controls / WMaxLimPct = 10000
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@128   Immediate Controls / WMaxLimPct_WinTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@129   Immediate Controls / WMaxLimPct_RvrtTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@130   Immediate Controls / WMaxLimPct_RmpTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@131   Immediate Controls / WMaxLim_Ena = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@132   Immediate Controls / OutPFSet = 10000
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@133   Immediate Controls / OutPFSet_WinTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@134   Immediate Controls / OutPFSet_RvrtTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@135   Immediate Controls / OutPFSet_RmpTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@136   Immediate Controls / OutPFSet_Ena = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@137   Immediate Controls / VArWMaxPct = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@138   Immediate Controls / VArMaxPct = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@139   Immediate Controls / VArAvalPct = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@140   Immediate Controls / VArPct_WinTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@141   Immediate Controls / VArPct_RvrtTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@142   Immediate Controls / VArPct_RmpTms = 0
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@143   Immediate Controls / VArPct_Mod = 'NONE'
-  [CRITICAL] sunspec  127.0.0.1:5601         model123@144   Immediate Controls / VArPct_Ena = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model1@68      Common / Device Address = 2
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@124   DER AC Controls / Power Factor Enable (W Inj) Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@125   DER AC Controls / Power Factor Reversion Enable (W Inj) = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@126   DER AC Controls / PF Reversion Time (W Inj) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@130   DER AC Controls / Power Factor Enable (W Abs) Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@131   DER AC Controls / Power Factor Reversion Enable (W Abs) = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@132   DER AC Controls / PF Reversion Time (W Abs) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@136   DER AC Controls / Limit Max Power Pct Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@137   DER AC Controls / Limit Max Power Pct Setpoint = 8000
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@138   DER AC Controls / Reversion Limit Max Power Pct = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@139   DER AC Controls / Reversion Limit Max Power Pct Enable = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@140   DER AC Controls / Limit Max Power Pct Reversion Time = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@144   DER AC Controls / Set Active Power Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@145   DER AC Controls / Set Active Power Mode = 'W_MAX_PCT'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@146   DER AC Controls / Active Power Setpoint (W) = -1500
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@148   DER AC Controls / Reversion Active Power (W) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@150   DER AC Controls / Active Power Setpoint (Pct) = 75
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@151   DER AC Controls / Reversion Active Power (Pct) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@152   DER AC Controls / Reversion Active Power Enable = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@153   DER AC Controls / Active Power Reversion Time = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@157   DER AC Controls / Set Reactive Power Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@158   DER AC Controls / Set Reactive Power Mode = 'W_MAX_PCT'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@159   DER AC Controls / Reactive Power Priority = 'ACTIVE'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@160   DER AC Controls / Reactive Power Setpoint (Vars) = 500
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@162   DER AC Controls / Reversion Reactive Power (Vars) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@164   DER AC Controls / Reactive Power Setpoint (Pct) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@165   DER AC Controls / Reversion Reactive Power (Pct) = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@166   DER AC Controls / Reversion Reactive Power Enable = 'DISABLED'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@167   DER AC Controls / Reactive Power Reversion Time = 0
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@171   DER AC Controls / Normal Ramp Rate = 10
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@172   DER AC Controls / Normal Ramp Rate Reference = 'A_MAX'
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@173   DER AC Controls / Reactive Power Ramp Rate = 10
-  [CRITICAL] sunspec  127.0.0.1:5602         model704@174   DER AC Controls / Anti-Islanding Enable = 'ENABLED'
-  [CRITICAL] sunspec  127.0.0.1:5603         model1@68      Common / Device Address = 3
-  [CRITICAL] sunspec  127.0.0.1:5603         model715@98    DER Capacity Status / Controller Heartbeat = 8640000
-  [CRITICAL] sunspec  127.0.0.1:5603         model715@100   DER Capacity Status / Alarm Reset = 0
-  [CRITICAL] sunspec  127.0.0.1:5603         model715@101   DER Capacity Status / Set Operation = 'START'
-  [HIGH    ] sep2     127.0.0.1:18444        /edev/0/der    DER (Distributed Energy Resource) = None
-  [HIGH    ] sep2     127.0.0.1:18444        /edev/0/der/0/ctrl DER (Distributed Energy Resource) = None
-  [HIGH    ] sep2     127.0.0.1:18444        /edev/1/der    DER (Distributed Energy Resource) = None
-  [HIGH    ] sep2     127.0.0.1:18444        /edev/1/der/0/ctrl DER (Distributed Energy Resource) = None
-  [INFO    ] sep2     127.0.0.1:18443        /dcap          Device Capability = None
-  [INFO    ] sep2     127.0.0.1:18444        /dcap          Device Capability = None
+  [CRITICAL] sunspec  127.0.10.1:502         model1@68      Common / Device Address = 1
+  [CRITICAL] sunspec  127.0.10.1:502         model123@124   Immediate Controls / Conn_WinTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@125   Immediate Controls / Conn_RvrtTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@126   Immediate Controls / Conn = 'DISCONNECT'
+  [CRITICAL] sunspec  127.0.10.1:502         model123@127   Immediate Controls / WMaxLimPct = 10000
+  [CRITICAL] sunspec  127.0.10.1:502         model123@128   Immediate Controls / WMaxLimPct_WinTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@129   Immediate Controls / WMaxLimPct_RvrtTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@130   Immediate Controls / WMaxLimPct_RmpTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@131   Immediate Controls / WMaxLim_Ena = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.1:502         model123@132   Immediate Controls / OutPFSet = 10000
+  [CRITICAL] sunspec  127.0.10.1:502         model123@133   Immediate Controls / OutPFSet_WinTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@134   Immediate Controls / OutPFSet_RvrtTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@135   Immediate Controls / OutPFSet_RmpTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@136   Immediate Controls / OutPFSet_Ena = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.1:502         model123@137   Immediate Controls / VArWMaxPct = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@138   Immediate Controls / VArMaxPct = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@139   Immediate Controls / VArAvalPct = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@140   Immediate Controls / VArPct_WinTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@141   Immediate Controls / VArPct_RvrtTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@142   Immediate Controls / VArPct_RmpTms = 0
+  [CRITICAL] sunspec  127.0.10.1:502         model123@143   Immediate Controls / VArPct_Mod = 'NONE'
+  [CRITICAL] sunspec  127.0.10.1:502         model123@144   Immediate Controls / VArPct_Ena = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model1@68      Common / Device Address = 2
+  [CRITICAL] sunspec  127.0.10.2:502         model704@124   DER AC Controls / Power Factor Enable (W Inj) Enable = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@125   DER AC Controls / Power Factor Reversion Enable (W Inj) = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@126   DER AC Controls / PF Reversion Time (W Inj) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@130   DER AC Controls / Power Factor Enable (W Abs) Enable = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@131   DER AC Controls / Power Factor Reversion Enable (W Abs) = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@132   DER AC Controls / PF Reversion Time (W Abs) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@136   DER AC Controls / Limit Max Power Pct Enable = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@137   DER AC Controls / Limit Max Power Pct Setpoint = 8000
+  [CRITICAL] sunspec  127.0.10.2:502         model704@138   DER AC Controls / Reversion Limit Max Power Pct = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@139   DER AC Controls / Reversion Limit Max Power Pct Enable = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@140   DER AC Controls / Limit Max Power Pct Reversion Time = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@144   DER AC Controls / Set Active Power Enable = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@145   DER AC Controls / Set Active Power Mode = 'W_MAX_PCT'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@146   DER AC Controls / Active Power Setpoint (W) = -1500
+  [CRITICAL] sunspec  127.0.10.2:502         model704@148   DER AC Controls / Reversion Active Power (W) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@150   DER AC Controls / Active Power Setpoint (Pct) = 75
+  [CRITICAL] sunspec  127.0.10.2:502         model704@151   DER AC Controls / Reversion Active Power (Pct) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@152   DER AC Controls / Reversion Active Power Enable = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@153   DER AC Controls / Active Power Reversion Time = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@157   DER AC Controls / Set Reactive Power Enable = 'ENABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@158   DER AC Controls / Set Reactive Power Mode = 'W_MAX_PCT'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@159   DER AC Controls / Reactive Power Priority = 'ACTIVE'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@160   DER AC Controls / Reactive Power Setpoint (Vars) = 500
+  [CRITICAL] sunspec  127.0.10.2:502         model704@162   DER AC Controls / Reversion Reactive Power (Vars) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@164   DER AC Controls / Reactive Power Setpoint (Pct) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@165   DER AC Controls / Reversion Reactive Power (Pct) = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@166   DER AC Controls / Reversion Reactive Power Enable = 'DISABLED'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@167   DER AC Controls / Reactive Power Reversion Time = 0
+  [CRITICAL] sunspec  127.0.10.2:502         model704@171   DER AC Controls / Normal Ramp Rate = 10
+  [CRITICAL] sunspec  127.0.10.2:502         model704@172   DER AC Controls / Normal Ramp Rate Reference = 'A_MAX'
+  [CRITICAL] sunspec  127.0.10.2:502         model704@173   DER AC Controls / Reactive Power Ramp Rate = 10
+  [CRITICAL] sunspec  127.0.10.2:502         model704@174   DER AC Controls / Anti-Islanding Enable = 'ENABLED'
+  [CRITICAL] dnp3     127.0.20.1:20000       g10v2          Binary Output = {'start': 0, 'stop': 3}
+  [CRITICAL] dnp3     127.0.20.2:20000       g40v1          Analog Output Status = {'start': 0, 'stop': 1}
+  [CRITICAL] sunspec  127.0.10.3:502         model1@68      Common / Device Address = 3
+  [CRITICAL] sunspec  127.0.10.3:502         model715@98    DER Capacity Status / Controller Heartbeat = 8640000
+  [CRITICAL] sunspec  127.0.10.3:502         model715@100   DER Capacity Status / Alarm Reset = 0
+  [CRITICAL] sunspec  127.0.10.3:502         model715@101   DER Capacity Status / Set Operation = 'START'
+  [HIGH    ] sep2     127.0.30.2:15388       /edev/0/der    DER (Distributed Energy Resource) = None
+  [HIGH    ] sep2     127.0.30.2:15388       /edev/0/der/0/ctrl DER (Distributed Energy Resource) = None
+  [HIGH    ] sep2     127.0.30.2:15388       /edev/1/der    DER (Distributed Energy Resource) = None
+  [HIGH    ] sep2     127.0.30.2:15388       /edev/1/der/0/ctrl DER (Distributed Energy Resource) = None
+  [INFO    ] sep2     127.0.30.1:15388       /dcap          Device Capability = None
+  [INFO    ] sep2     127.0.30.2:15388       /dcap          Device Capability = None
 
 Cross-cutting findings: 19
 ------------------------------------------------------------
-  [CRITICAL] dnp3     127.0.0.1:21000        Controllable output points reachable without authentication
-  [CRITICAL] dnp3     127.0.0.1:21001        Controllable output points reachable without authentication
-  [CRITICAL] sunspec  127.0.0.1:5601         Writable DER control models reachable without authentication
-  [CRITICAL] sunspec  127.0.0.1:5602         Writable DER control models reachable without authentication
-  [HIGH    ] sep2     127.0.0.1:18444        Resource accessible without client certificate: /edev/0/der
-  [HIGH    ] sep2     127.0.0.1:18444        Resource accessible without client certificate: /edev/0/der/0/ctrl
-  [HIGH    ] sep2     127.0.0.1:18444        Resource accessible without client certificate: /edev/1/der
-  [HIGH    ] sep2     127.0.0.1:18444        Resource accessible without client certificate: /edev/1/der/0/ctrl
-  [HIGH    ] dnp3     127.0.0.1:21000        Outstation responds to unauthenticated DNP3 requests
-  [HIGH    ] dnp3     127.0.0.1:21001        Outstation responds to unauthenticated DNP3 requests
-  [HIGH    ] sunspec  127.0.0.1:5601         SunSpec device exposes its self-describing model map over unauthenticated Modbus
-  [HIGH    ] sunspec  127.0.0.1:5602         SunSpec device exposes its self-describing model map over unauthenticated Modbus
-  [HIGH    ] sunspec  127.0.0.1:5603         SunSpec device exposes its self-describing model map over unauthenticated Modbus
-  [INFO    ] sep2     127.0.0.1:18443        Accessible resource not linked from resource tree: /dcap
-  [INFO    ] sep2     127.0.0.1:18443        Accessible resource not linked from resource tree: /edev/0/sub
-  [INFO    ] sep2     127.0.0.1:18443        Accessible resource not linked from resource tree: /edev/1/sub
-  [INFO    ] sep2     127.0.0.1:18444        Accessible resource not linked from resource tree: /dcap
-  [INFO    ] sep2     127.0.0.1:18444        Accessible resource not linked from resource tree: /edev/0/sub
-  [INFO    ] sep2     127.0.0.1:18444        Accessible resource not linked from resource tree: /edev/1/sub
+  [CRITICAL] sunspec  127.0.10.1:502         Writable DER control models reachable without authentication
+  [CRITICAL] sunspec  127.0.10.2:502         Writable DER control models reachable without authentication
+  [CRITICAL] dnp3     127.0.20.1:20000       Controllable output points reachable without authentication
+  [CRITICAL] dnp3     127.0.20.2:20000       Controllable output points reachable without authentication
+  [HIGH    ] sunspec  127.0.10.1:502         SunSpec device exposes its self-describing model map over unauthenticated Modbus
+  [HIGH    ] sunspec  127.0.10.2:502         SunSpec device exposes its self-describing model map over unauthenticated Modbus
+  [HIGH    ] dnp3     127.0.20.1:20000       Outstation responds to unauthenticated DNP3 requests
+  [HIGH    ] dnp3     127.0.20.2:20000       Outstation responds to unauthenticated DNP3 requests
+  [HIGH    ] sunspec  127.0.10.3:502         SunSpec device exposes its self-describing model map over unauthenticated Modbus
+  [HIGH    ] sep2     127.0.30.2:15388       Resource accessible without client certificate: /edev/0/der
+  [HIGH    ] sep2     127.0.30.2:15388       Resource accessible without client certificate: /edev/0/der/0/ctrl
+  [HIGH    ] sep2     127.0.30.2:15388       Resource accessible without client certificate: /edev/1/der
+  [HIGH    ] sep2     127.0.30.2:15388       Resource accessible without client certificate: /edev/1/der/0/ctrl
+  [INFO    ] sep2     127.0.30.1:15388       Accessible resource not linked from resource tree: /dcap
+  [INFO    ] sep2     127.0.30.1:15388       Accessible resource not linked from resource tree: /edev/0/sub
+  [INFO    ] sep2     127.0.30.1:15388       Accessible resource not linked from resource tree: /edev/1/sub
+  [INFO    ] sep2     127.0.30.2:15388       Accessible resource not linked from resource tree: /dcap
+  [INFO    ] sep2     127.0.30.2:15388       Accessible resource not linked from resource tree: /edev/0/sub
+  [INFO    ] sep2     127.0.30.2:15388       Accessible resource not linked from resource tree: /edev/1/sub
