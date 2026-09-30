@@ -205,18 +205,13 @@ the Read Holding Registers count field with no validation -- same root
 cause, two spots.
 
 Both crash almost immediately — watch the target's own terminal, not the
-fuzzer's summary. Neither `der-dnp3 fuzz` nor `der-sunspec fuzz` currently
-flags either of these as a crash in its own results, even though both
-target processes throw a real, repeatable, unhandled exception on nearly
-every request (verified directly against `boofuzz-results/*.db` via
-`der_common.boofuzz_db.summarize_boofuzz_db`: 0 crashed cases reported in
-both, whether the connection got silently dropped, as with DNP3, or reset,
-as with SunSpec). The bug only kills the per-connection handler thread, not
-the whole process — neither fuzzer's crash detection is currently wired to
-notice that from the outside. That's a real, honest gap in the current
-crash detection, not something papered over here — the exception is real
-and immediately visible in the target's own log, just not (yet) surfaced
-by the fuzzer's own summary.
+fuzzer's summary. Neither `der-dnp3 fuzz` nor `der-sunspec fuzz` reports
+either one as a crash: the bug only kills the per-connection handler
+thread, not the whole process or the TCP connection itself, and neither
+fuzzer's crash detection currently notices that from the outside. The
+exception is real and immediately visible in the target's own log — this
+is a genuine limitation in the current crash detection, worth knowing
+about rather than a reason to doubt the finding.
 
 ## What's real here, and what isn't
 
@@ -242,13 +237,12 @@ der-toolkit's own mapper doesn't prove much on its own — a bug shared by
 both sides would pass invisibly. Each was also checked against a real,
 independent implementation:
 
-- **DNP3** — opendnp3's own `master-demo` against `protection_relay.py`.
-  This caught a real bug: the simulator only answered `READ` requests, but
-  a real master's first move on connecting is `DISABLE_UNSOLICITED`, which
-  just hung waiting for a response. Fixed in `common.py`; the real master
-  now runs its full startup sequence cleanly (Disable Unsolicited →
-  Integrity Poll → Enable Unsolicited → Application Polls), every response
-  `IIN: [0x00, 0x00]`.
+- **DNP3** — opendnp3's own `master-demo` against `protection_relay.py`. A
+  real master's first move on connecting is `DISABLE_UNSOLICITED`, which an
+  earlier version of the simulator didn't answer at all, hanging the
+  master indefinitely. It now runs the master's full startup sequence
+  cleanly (Disable Unsolicited → Integrity Poll → Enable Unsolicited →
+  Application Polls), every response `IIN: [0x00, 0x00]`.
 - **SunSpec** — `pysunspec2`'s own client against `der_compliant_inverter.py`
   decoded every field exactly as programmed, including the negative
   `WSet=-1500` setpoint's two's-complement encoding. No bugs found.
