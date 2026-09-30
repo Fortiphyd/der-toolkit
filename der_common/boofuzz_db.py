@@ -23,6 +23,14 @@ from pathlib import Path
 
 from der_common.schema import FuzzFinding
 
+# Marker der_common.fuzz_monitor puts in its crash synopsis. boofuzz has one
+# notion of failure, but "a process monitor watched the target die" and "the
+# target hung up on us, which MIGHT be a dead handler" are very different
+# levels of certainty, and only the first deserves to be called a crash.
+# Defined here rather than in fuzz_monitor so this module stays importable
+# without boofuzz; fuzz_monitor imports it from here.
+CONNECTION_DROP_MARKER = "closed the connection without responding"
+
 
 def _hex_preview(data: object, limit: int = 64) -> str:
     if not data:
@@ -67,12 +75,17 @@ def parse_boofuzz_db(db_path: str | Path, max_crashes: int | None = None) -> lis
                 cur, "SELECT data FROM steps WHERE test_case_index=? AND type='receive' ORDER BY rowid LIMIT 1",
                 (idx,)
             )
+            dropped = CONNECTION_DROP_MARKER in str(fail_desc)
             findings.append(FuzzFinding(
-                title=f"boofuzz crash: {case_name}",
+                title=(f"target dropped connection: {case_name}" if dropped
+                       else f"boofuzz crash: {case_name}"),
                 input_summary=f"send={_hex_preview(send)} -- {fail_desc}",
                 response_summary=_hex_preview(recv) or None,
-                crashed=True,
-                severity="critical",
+                # A dropped connection is evidence, not a confirmed crash: a
+                # well-built server may hang up on malformed input by design
+                # (pymodbus does). Worth investigating, not worth claiming.
+                crashed=not dropped,
+                severity="high" if dropped else "critical",
                 artifact_ref=f"{db_path}#case={idx}",
             ))
         return findings

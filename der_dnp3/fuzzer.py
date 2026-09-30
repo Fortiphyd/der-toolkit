@@ -8,6 +8,8 @@ from boofuzz.connections.itarget_connection import (
     ITargetConnection,  # ITargetConnection interface :contentReference[oaicite:6]{index=6}
 )
 
+from der_common.fuzz_monitor import RecvReasonMixin, ResponseAnomalyMonitor
+
 # ----------------------------
 # CRC-16/DNP + link-frame packer
 # ----------------------------
@@ -113,7 +115,7 @@ def chunk_bytes(buf: bytes, cuts: Iterable[int]) -> list[bytes]:
 # boofuzz connection: wraps fuzzed "user_data" into a valid DNP3 frame
 # ----------------------------
 
-class Dnp3TcpWrappedConnection(ITargetConnection):
+class Dnp3TcpWrappedConnection(RecvReasonMixin, ITargetConnection):
     def __init__(self, host: str, port: int = 20000, timeout: float = 2.0,
                  dst: int = 10, src: int = 1, link_ctrl: int = 0xC4,
                  send_mode: str = "normal",          # normal|split|coalesce
@@ -235,10 +237,17 @@ class Dnp3TcpWrappedConnection(ITargetConnection):
         return len(data)
 
     def recv(self, max_bytes: int = 4096) -> bytes:
+        # An empty read means two very different things -- the peer closed the
+        # connection, or it's still open and just had nothing to say -- and a
+        # bare b"" can't tell them apart. ResponseAnomalyMonitor needs the
+        # difference, so record it rather than collapsing both.
         try:
-            return self._sock.recv(max_bytes)
+            data = self._sock.recv(max_bytes)
         except TimeoutError:
-            return b""
+            return self._note_recv(b"", closed=False)
+        except ConnectionResetError:
+            return self._note_recv(b"", closed=True)
+        return self._note_recv(data, closed=not data)
 
 # ----------------------------
 # boofuzz model: "user_data" for integrity/class poll (READ class 1/2/3/0)
@@ -595,7 +604,9 @@ def run_fuzz(host: str, port: int = 20000, max_depth: int = 2,
     ]
     conn = Dnp3TcpWrappedConnection(host, port, dst=dst, src=src)
     session = Session(
-        target=Target(connection=conn),
+        # Without a monitor boofuzz records no crashes at all, and its built-in
+        # ones need access to the target host. See der_common/fuzz_monitor.py.
+        target=Target(connection=conn, monitors=[ResponseAnomalyMonitor()]),
         receive_data_after_fuzz=True,
         ignore_connection_reset=True,
         reuse_target_connection=False,

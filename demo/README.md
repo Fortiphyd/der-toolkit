@@ -204,14 +204,19 @@ point list, no bounds check. SunSpec's: trusts the MBAP length field and
 the Read Holding Registers count field with no validation -- same root
 cause, two spots.
 
-Both crash almost immediately — watch the target's own terminal, not the
-fuzzer's summary. Neither `der-dnp3 fuzz` nor `der-sunspec fuzz` reports
-either one as a crash: the bug only kills the per-connection handler
-thread, not the whole process or the TCP connection itself, and neither
-fuzzer's crash detection currently notices that from the outside. The
-exception is real and immediately visible in the target's own log — this
-is a genuine limitation in the current crash detection, worth knowing
-about rather than a reason to doubt the finding.
+Both crash almost immediately, and both fuzzers now report it as a
+`target dropped connection` finding without needing any access to the
+target — the bug kills the per-connection handler thread, so the device
+hangs up mid-exchange, which is visible from the client side. The target's
+own terminal shows the underlying `IndexError` if you want to see it.
+
+That finding is deliberately reported as high severity rather than a
+confirmed crash, because a healthy server is entitled to hang up on input
+it doesn't like, and some do — `pymodbus` drops roughly 1.7% of fuzzed
+Modbus requests while remaining perfectly healthy. From the client side
+those are indistinguishable from a fragile device failing on 1.7% of
+inputs, so the toolkit reports what it saw rather than guessing which it
+was. See `der_common/fuzz_monitor.py`.
 
 ## What's real here, and what isn't
 

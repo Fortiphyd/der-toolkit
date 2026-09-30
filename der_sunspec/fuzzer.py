@@ -27,6 +27,26 @@ from boofuzz import (
     TCPSocketConnection,
     Word,
 )
+from boofuzz import exception as boofuzz_exception
+
+from der_common.fuzz_monitor import RecvReasonMixin, ResponseAnomalyMonitor
+
+
+class _WatchedTCPConnection(RecvReasonMixin, TCPSocketConnection):
+    """boofuzz's TCP connection, plus a record of why a read came back empty.
+
+    An empty read means two very different things -- the peer closed the
+    connection, or it's still open and just had nothing to say -- and a bare
+    b"" can't tell them apart. ResponseAnomalyMonitor needs the difference.
+    """
+
+    def recv(self, max_bytes):
+        try:
+            data = super().recv(max_bytes)
+        except boofuzz_exception.BoofuzzTargetConnectionReset:
+            self._note_recv(b"", closed=True)
+            raise
+        return self._note_recv(data, closed=not data)
 
 
 def _build_function_codes(unit_id: int):
@@ -153,8 +173,12 @@ def run_fuzz(host: str, port: int = 502, unit_id: int = 1, max_depth: int = 3) -
     """
     for i, fc in enumerate(_build_function_codes(unit_id)):
         session = Session(
+            # Without a monitor boofuzz records no crashes at all, and its
+            # built-in ones need access to the target host. See
+            # der_common/fuzz_monitor.py.
             target=Target(
-                connection=TCPSocketConnection(host, port),
+                connection=_WatchedTCPConnection(host, port),
+                monitors=[ResponseAnomalyMonitor()],
             ),
             receive_data_after_fuzz=True,
             reuse_target_connection=False,
